@@ -25,7 +25,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Harus cocok dengan engines di package.json (>=22.12.0).
+          # Astro 7 tidak jalan di Node 20.
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
