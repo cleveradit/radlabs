@@ -60,7 +60,7 @@
   --radius-tag: 2px;
 
   --spacing-section: 56px;
-  --container-page: 760px;
+  --container-page: 1100px;
 }
 
 /* ============================================================
@@ -211,6 +211,10 @@
   /* --- Blok manifest — elemen signature (DESIGN.md) --- */
   .manifest {
     border-top: 1px solid var(--line);
+    /* Ikut lebar kolom teks, bukan lebar container. Dibiarkan melar
+       ke 1100px, garis antar-barisnya memanjang jauh melewati isi dan
+       blok ini kehilangan bentuknya. */
+    max-width: 62ch;
   }
 
   .manifest-row {

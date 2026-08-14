@@ -45,7 +45,12 @@ Skala:
 | lede | `1.08rem` | warna `--muted` |
 | mono utility | `11–13px` | tracking 0.05–0.14em, uppercase untuk label |
 
-Lebar paragraf maksimal **62ch**. Lebar container **760px**, padding samping 24px.
+Lebar container **1100px**, padding samping 24px.
+
+Container itu bingkai luar, bukan lebar teks. Di dalamnya ada dua lebar:
+
+- **Kolom teks — maksimal 62ch.** Berlaku untuk paragraf, lede, daftar, dan blok manifest. Baris pendek itu disengaja; jangan dilebarkan mengikuti container.
+- **Elemen lebar — mengisi penuh container.** Kartu karya, bingkai tangkapan layar, dan tabel. Inilah yang membuat halaman tidak terlihat seperti pita tipis di layar lebar.
 
 ## Bentuk & jarak
 
@@ -59,6 +64,7 @@ Lebar paragraf maksimal **62ch**. Lebar container **760px**, padding samping 24p
 Daftar key/value bergaris tipis dalam mono. Muncul dua kali: di bawah hero landing, dan di atas halaman detail. Ini penanda identitas situs — jangan diganti gaya lain.
 
 - Grid dua kolom: label 128px, nilai fleksibel. Di bawah 520px jadi satu kolom bertumpuk.
+- Ikut lebar kolom teks (62ch), bukan lebar container. Dibiarkan melar, garis antar-barisnya memanjang jauh melewati isi dan blok ini kehilangan bentuknya.
 - Label: mono 11px, uppercase, tracking 0.05em, warna `--muted`.
 - Nilai: mono 12.5px, warna `--ink`.
 - Garis 1px `--line` di atas, di bawah, dan antar-baris. Baris terakhir tanpa garis bawah.
