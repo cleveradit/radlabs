@@ -57,7 +57,9 @@ Skala:
 | lede | `1.08rem` | warna `--muted`, `max-width: 62ch` |
 | mono utility | `10–13px` | tracking 0.03–0.14em, uppercase untuk label |
 
-Lebar container **960px**, padding samping 24px — sama dengan referensi. Ini yang membuat halaman terbaca sebagai satu kolom yang tertata, bukan pita lebar.
+Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px** — tanpa itu, laptop 1440px menyisakan margin 10px per sisi dan halaman terbaca sesak, bukan lapang.
+
+Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per sisi. 1280px memangkasnya jadi 320px tanpa membuat kartu jadi gua. Kolom teks tetap dibatasi terpisah — paragraf 68ch, lede 62ch — jadi melebarkan container tidak memanjangkan baris bacaan.
 
 ## Bentuk & jarak
 

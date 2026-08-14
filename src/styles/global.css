@@ -67,7 +67,7 @@
   --radius-tag: 999px;
 
   --spacing-section: 80px;
-  --container-page: 960px;
+  --container-page: 1280px;
 }
 
 /* ============================================================
@@ -79,6 +79,10 @@
     background-color: var(--bg);
     color: var(--ink);
     -webkit-text-size-adjust: 100%;
+    /* Tautan nav dan tombol hero menggulir, bukan melompat. Blok
+       prefers-reduced-motion di bawah mengembalikannya ke `auto`, jadi
+       pengunjung yang sensitif gerakan tetap dapat lompatan instan. */
+    scroll-behavior: smooth;
     /* Nav menempel di atas; jangkar seksi harus berhenti di bawahnya.
        Di layar sempit nav memakai dua baris, jadi ruangnya lebih besar. */
     scroll-padding-top: 124px;
@@ -187,6 +191,15 @@
     max-width: var(--container-page);
     margin-inline: auto;
     padding-inline: 24px;
+  }
+
+  /* Padding naik di layar besar. Tanpa ini, laptop 1440px membuat
+     container hampir menyentuh tepi jendela — margin sisa cuma 10px
+     per sisi, yang terbaca sesak, bukan lapang. */
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 40px;
+    }
   }
 
   /* --- Kisi milimeter (DESIGN.md, "Kerangka lembar lab") ---
