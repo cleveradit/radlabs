@@ -14,14 +14,14 @@ hero:
 
 manifest:
   - label: "Basis"
-    value: "[GANTI: kota, negara]"
+    value: "Surabaya, Indonesia"
   - label: "Fokus"
     value: "Laravel · Filament · Docker"
   - label: "Sertifikasi"
     value: "Google Project Management Professional (2026)"
     href: "https://www.coursera.org/verify/professional-cert/1N9BWR1AQS1D"
   - label: "Status"
-    value: "[GANTI: status ketersediaan — atau hapus baris ini]"
+    value: "Aktif bekerja — kontrak berjalan"
 
 karya:
   eyebrow: "Karya"
@@ -41,7 +41,7 @@ caraKerja:
 tentang:
   eyebrow: "Tentang"
   photo: "/images/profil.jpg"
-  body: "Sarjana Sistem Informasi Universitas Brawijaya. Sekarang IT Specialist di LHI International Islamic School, membangun sistem internal sekolah dengan Laravel, Filament, dan MySQL di atas arsitektur Domain-Driven Design. Sebelumnya membangun aplikasi kasir berbasis web sebagai freelance, magang di Pemerintah Provinsi Jawa Timur, dan mendalami machine learning serta forecasting di PT Orbit Ventura Indonesia. [GANTI: satu hal personal — tidak ada di CV]"
+  body: "Sarjana Sistem Informasi Universitas Brawijaya, berbasis di Surabaya. Sekarang IT Specialist di LHI International Islamic School, membangun sistem internal sekolah dengan Laravel, Filament, dan MySQL di atas arsitektur Domain-Driven Design. Sebelumnya membangun aplikasi kasir berbasis web sebagai freelance dan magang di Pemerintah Provinsi Jawa Timur. Titik awal saya sebenarnya bukan pengembangan web — saya mulai dari machine learning dan forecasting di PT Orbit Ventura Indonesia."
 
 kontak:
   links:
@@ -52,8 +52,8 @@ kontak:
       value: "cleveradit"
       href: "https://github.com/cleveradit"
     - label: "LinkedIn"
-      value: "[GANTI: nama tampil]"
-      href: "[GANTI: url]"
+      value: "Radityo Dwiki Putra Hamas"
+      href: "https://www.linkedin.com/in/radityo-dwiki/"
 
 notFound:
   heading: "404"
