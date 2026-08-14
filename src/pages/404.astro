@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import { frontmatter as site } from "../../content/id/site.md";
+---
+
+<Base title={site.notFound.heading} description={site.notFound.body}>
+  <div class="container-page pt-[64px] pb-[56px]">
+    <h1>{site.notFound.heading}</h1>
+    <p class="lede mt-5">{site.notFound.body}</p>
+
+    <div class="mt-10 border-t border-line pt-6">
+      <a
+        href="/"
+        class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"
+        >← {site.notFound.backLabel}</a
+      >
+    </div>
+  </div>
+</Base>

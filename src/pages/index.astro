@@ -28,7 +28,7 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
   </div>
 
   <!-- 2 — Karya -->
-  <Section eyebrow={site.karya.eyebrow}>
+  <Section eyebrow={site.karya.eyebrow} id="karya">
     <div
       class:list={[
         "grid gap-5",
@@ -82,21 +82,6 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
   <Section eyebrow={site.kontak.eyebrow}>
     {site.kontak.intro && <p class="lede">{site.kontak.intro}</p>}
 
-    <dl class="manifest mt-6">
-      {
-        site.kontak.links.map(
-          (link: { label: string; value: string; href: string }) => (
-            <div class="manifest-row">
-              <dt class="manifest-label">{link.label}</dt>
-              <dd class="manifest-value">
-                <a href={link.href} rel="noopener" class="no-underline hover:underline">
-                  {link.value}
-                </a>
-              </dd>
-            </div>
-          ),
-        )
-      }
-    </dl>
+    <Manifest rows={site.kontak.links} class="mt-6" />
   </Section>
 </Base>

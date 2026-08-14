@@ -1,8 +1,9 @@
 ---
 // Blok manifest — elemen signature (DESIGN.md).
 // Muncul di bawah hero landing dan di atas halaman detail.
+// `href` opsional: nilai jadi tautan (dipakai seksi Kontak dan baris Repo).
 interface Props {
-  rows: { label: string; value: string }[];
+  rows: { label: string; value: string; href?: string }[];
   class?: string;
 }
 
@@ -14,7 +15,15 @@ const { rows, class: className = "" } = Astro.props;
     rows.map((row) => (
       <div class="manifest-row">
         <dt class="manifest-label">{row.label}</dt>
-        <dd class="manifest-value">{row.value}</dd>
+        <dd class="manifest-value">
+          {row.href ? (
+            <a href={row.href} rel="noopener" class="no-underline hover:underline">
+              {row.value}
+            </a>
+          ) : (
+            row.value
+          )}
+        </dd>
       </div>
     ))
   }

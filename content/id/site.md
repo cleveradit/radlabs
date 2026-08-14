@@ -55,6 +55,11 @@ kontak:
       value: "[GANTI: nama tampil]"
       href: "[GANTI: url]"
 
+notFound:
+  heading: "404"
+  body: "[GANTI: satu kalimat — halaman tidak ditemukan]"
+  backLabel: "[GANTI: label tautan balik ke beranda]"
+
 footer:
   text: "[GANTI: nama] · [GANTI: tahun]"
 ---
