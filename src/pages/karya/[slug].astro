@@ -33,9 +33,7 @@ const metrics = d.metrics.slice(0, 4);
 ---
 
 <Base title={d.title} description={d.summary} ogImage={d.cover}>
-  {/* `measure-wide`: di halaman ini gambar dirender selebar container,
-      jadi kolom teksnya ikut lebar itu. Lihat global.css. */}
-  <article class="measure-wide">
+  <article>
     {/* Kepala halaman memakai kisi yang sama seperti hero landing supaya
         kedua halaman terasa satu sistem. */}
     <div class="lab-grid">

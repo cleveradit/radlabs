@@ -143,10 +143,6 @@
     line-height: 1.4;
   }
 
-  p {
-    max-width: 68ch;
-  }
-
   a {
     color: var(--accent);
     text-decoration-thickness: 1px;
@@ -186,6 +182,11 @@
    ============================================================ */
 
 @layer components {
+  /* Container adalah SATU-SATUNYA pembatas lebar teks. Tidak ada batas
+     baca terpisah (68ch/62ch) di paragraf, lede, manifest, atau daftar:
+     gambar, tabel, dan grid kartu semuanya dirender selebar container,
+     jadi kolom teks yang lebih sempit akan menumpuk di kiri dan
+     menyisakan lubang di kanan pada layar landscape. */
   .container-page {
     width: 100%;
     max-width: var(--container-page);
@@ -381,13 +382,11 @@
     font-size: 1.08rem;
     line-height: 1.6;
     color: var(--muted);
-    max-width: 62ch;
   }
 
   /* --- Blok manifest — dipakai di halaman detail karya --- */
   .manifest {
     border-top: 1px solid var(--line);
-    max-width: 62ch;
   }
 
   .manifest-row {
@@ -465,7 +464,6 @@
   .prose ul,
   .prose ol {
     padding-left: 1.15em;
-    max-width: 68ch;
   }
 
   .prose ul {
@@ -566,26 +564,6 @@
     font-size: 15px;
     line-height: 1.55;
   }
-}
-
-/* ============================================================
-   Kolom teks selebar container — halaman detail karya
-   Studi kasus merender gambar dan tabel selebar container penuh.
-   Dengan batas baca 68ch/62ch, teksnya menumpuk di kiri dan
-   menyisakan ruang kosong besar di kanan pada layar landscape —
-   makin terasa setelah container dilebarkan ke 1280px. Di halaman
-   ini batas itu dilepas supaya teks sejajar dengan tepi gambar.
-
-   Sengaja TIDAK dibungkus @layer: batas lamanya sebagian datang
-   dari utility Tailwind, dan lapisan `utilities` selalu menang atas
-   `components`. CSS tanpa layer menang atas keduanya.
-   ============================================================ */
-
-.measure-wide p,
-.measure-wide .lede,
-.measure-wide .manifest,
-.measure-wide .prose :is(ul, ol) {
-  max-width: none;
 }
 
 /* ============================================================

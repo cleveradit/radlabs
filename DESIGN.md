@@ -53,15 +53,15 @@ Skala:
 | h2 (judul seksi) | `clamp(1.6rem, 4vw, 1.95rem)` | line-height 1.2, tracking -0.014em |
 | h3 | `1.2rem` | line-height 1.35 |
 | h4 | `1rem` | line-height 1.4 |
-| body | `16px` | line-height 1.65, `max-width: 68ch` |
-| lede | `1.08rem` | warna `--muted`, `max-width: 62ch` |
+| body | `16px` | line-height 1.65, lebar ikut container |
+| lede | `1.08rem` | warna `--muted`, lebar ikut container |
 | mono utility | `10–13px` | tracking 0.03–0.14em, uppercase untuk label |
 
 Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px** — tanpa itu, laptop 1440px menyisakan margin 10px per sisi dan halaman terbaca sesak, bukan lapang.
 
-Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per sisi. 1280px memangkasnya jadi 320px tanpa membuat kartu jadi gua. Kolom teks tetap dibatasi terpisah — paragraf 68ch, lede 62ch — jadi melebarkan container tidak memanjangkan baris bacaan.
+Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per sisi. 1280px memangkasnya jadi 320px tanpa membuat kartu jadi gua.
 
-**Kecuali halaman detail karya.** Studi kasus merender tangkapan layar dan tabel selebar container penuh. Kalau teksnya tetap 68ch, paragraf menumpuk di kiri sementara gambar mencapai tepi kanan — di layar landscape sisanya terbaca sebagai lubang, bukan margin. Di halaman itu batas baca dilepas lewat kelas `.measure-wide` pada `<article>`, jadi teks, lede, manifest, dan daftar sejajar dengan tepi gambar. Kelas ini ditulis **di luar `@layer`** karena sebagian batas lama berasal dari utility Tailwind, dan lapisan `utilities` selalu menang atas `components`.
+**Container adalah satu-satunya pembatas lebar teks.** Tidak ada batas baca terpisah di paragraf, lede, manifest, atau daftar. Alasannya: semua media di situs ini — tangkapan layar studi kasus, tabel, grid kartu pendidikan/keahlian/karya — dirender selebar container. Kolom teks yang lebih sempit dari itu akan menumpuk di kiri sementara gambar mencapai tepi kanan, dan di layar landscape sisanya terbaca sebagai lubang, bukan margin. Kalau suatu saat kolom baca yang sempit memang diinginkan, medianya harus ikut dipersempit di halaman yang sama.
 
 ## Bentuk & jarak
 
@@ -93,7 +93,7 @@ Tanpa tombol hamburger. Di bawah 768px, daftar tautan jatuh ke baris kedua dan b
 
 ## Blok manifest
 
-Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar kolom teks (62ch), bukan lebar container — kecuali di halaman detail karya, yang memakai `.measure-wide` sehingga manifest ikut lebar container.
+Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar container.
 
 ## Bingkai tangkapan layar
 
