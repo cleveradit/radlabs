@@ -8,6 +8,7 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 - **Dilarang menambah dependency apa pun** tanpa bertanya lebih dulu. Tidak ada UI library, tidak ada animation library, tidak ada icon pack.
 - Output statis ke `dist/`. Tidak ada SSR, tidak ada adapter.
 - Deploy: GitHub Pages via GitHub Actions.
+- Batas lebar (`max-width`) ditulis di CSS, bukan ditempel sebagai utility `max-w-*` di komponen — utility tidak bisa ditimpa dari `@layer components`, karena lapisan `utilities` selalu menang.
 
 ## Konten
 
@@ -31,7 +32,9 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 
 ## Batas kualitas
 
-- Responsif sampai 360px.
+- Responsif sampai 360px **dan** enak dilihat di landscape lebar (cek 1440px, bukan cuma layar sempit).
+- **Dalam satu halaman, lebar teks dan lebar media harus sepadan.** Kalau gambar atau tabel dirender selebar container, kolom teks di halaman itu wajib ikut lebar container juga. Dilarang membiarkan paragraf terkunci di kolom sempit sementara gambar mencapai tepi kanan — sisanya terbaca sebagai lubang, bukan margin. Kalau memang mau kolom baca yang sempit, media di halaman itu harus ikut dipersempit.
+- Setelah mengubah lebar container atau padding, **cek ulang semua halaman di layar lebar**. Melebarkan container tidak otomatis melebarkan isinya.
 - Focus ring terlihat pada semua elemen interaktif.
 - `prefers-reduced-motion` dihormati.
 - Lighthouse ≥ 95 di keempat kategori.
