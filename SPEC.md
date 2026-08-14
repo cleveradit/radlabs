@@ -51,7 +51,9 @@ Footer: satu baris mono, tahun + nama.
 
 ## Anatomi kartu karya
 
-Urut dari atas: judul (h3) → satu kalimat `summary` → tag stack → garis 1px → baris bawah berisi tiga angka `metrics` (kiri) dan status repo (kanan).
+Urut dari atas: judul (h3) → satu kalimat `summary` → tag stack → garis 1px → baris bawah berisi semua `metrics` (kiri) dan status repo (kanan).
+
+Render **semua** `metrics` yang ada di frontmatter — jangan potong ke jumlah tetap. Di layar sempit, baris metrics membungkus ke baris kedua. Batas atas 4 metric supaya kartu tidak melar; kalau ada file konten yang butuh lebih, itu keputusan desain baru, bukan hal yang diam-diam dipotong.
 
 Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--accent`. Tidak ada transform, tidak ada shadow.
 

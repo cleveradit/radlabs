@@ -1,0 +1,18 @@
+---
+// Seksi landing: garis atas 1px, jarak 56px, eyebrow mono di atas isi.
+interface Props {
+  eyebrow: string;
+  id?: string;
+}
+
+const { eyebrow, id } = Astro.props;
+---
+
+<section id={id} class="border-t border-line">
+  <div class="container-page py-[var(--spacing-section)]">
+    <h2 class="u-eyebrow">{eyebrow}</h2>
+    <div class="mt-6">
+      <slot />
+    </div>
+  </div>
+</section>

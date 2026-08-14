@@ -1,0 +1,21 @@
+---
+// Blok manifest — elemen signature (DESIGN.md).
+// Muncul di bawah hero landing dan di atas halaman detail.
+interface Props {
+  rows: { label: string; value: string }[];
+  class?: string;
+}
+
+const { rows, class: className = "" } = Astro.props;
+---
+
+<dl class:list={["manifest", className]}>
+  {
+    rows.map((row) => (
+      <div class="manifest-row">
+        <dt class="manifest-label">{row.label}</dt>
+        <dd class="manifest-value">{row.value}</dd>
+      </div>
+    ))
+  }
+</dl>
