@@ -2,10 +2,10 @@
 title: "Sistem Penerimaan Peserta Didik Baru (PPDB)"
 slug: "ppdb-lhi"
 client: "Sekolah Islam Terpadu LHI"
-role: "Pengembang aplikasi — melanjutkan & mengembangkan sistem berjalan"
+role: "Pengembang aplikasi berbasis website"
 team: "Tim IT SIT LHI (2 orang)"
 period: "2026"
-status: "Pra-produksi — tahap uji terima dengan data uji"
+status: "Pra-produksi tahap uji terima dengan data uji"
 domain: "Teknologi pendidikan"
 stack: ["Laravel", "Filament", "Livewire", "Tailwind CSS", "Docker"]
 summary: "Membangun lapisan pengelolaan tahun ajaran dan kuota untuk sistem pendaftaran multi-unit sekolah."

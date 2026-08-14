@@ -2,7 +2,7 @@
 # Teks landing page. SEMUA teks yang tampil di halaman dibaca dari sini.
 #
 # Bertanda [GANTI: ...] = fakta yang belum saya punya. Dirender apa adanya,
-# jangan dihapus dan jangan ditebak — isi sendiri lalu tandanya hilang.
+# jangan dihapus dan jangan ditebak isi sendiri lalu tandanya hilang.
 #
 # Nada: netral dan ringkas. Halaman ini memperkenalkan orang, bukan
 # menawarkan jasa. Hindari klausa pembanding ("bukan X"), superlatif,
@@ -12,7 +12,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratorium"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas — IT Specialist di LHI International Islamic School, Surabaya. Sistem internal sekolah: kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas IT Specialist di LHI International Islamic School, Surabaya. Sistem internal sekolah: kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, Docker."
 
 # Tautan navigasi. Urutannya = urutan seksi di halaman, dan nomor seksi
 # digenerate dari urutan ini.
@@ -34,7 +34,7 @@ hero:
   eyebrow: "Surabaya, Indonesia"
   name: "Radityo Dwiki Putra Hamas"
   role: "IT Specialist"
-  lede: "Membangun sistem internal sekolah di LHI International Islamic School — kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, dan Docker, di atas arsitektur Domain-Driven Design."
+  lede: "Web Developer · IT Specialist | Google-Certified Project Manager | Laravel · PHP · Docker · Agile"
   photo: "/images/profil.jpg"
   actions:
     - label: "Lihat karya"
@@ -47,39 +47,46 @@ hero:
 tentang:
   title: "Tentang"
   paragraphs:
-    - "Sarjana Sistem Informasi Universitas Brawijaya, berbasis di Surabaya. Sekarang IT Specialist di LHI International Islamic School, membangun sistem internal sekolah dengan Laravel, Filament, dan MySQL di atas arsitektur Domain-Driven Design."
-    - "Sebelumnya mengerjakan aplikasi kasir berbasis web sebagai freelance dan magang di Pemerintah Provinsi Jawa Timur. Titik awalnya bukan pengembangan web, melainkan machine learning dan forecasting di PT Orbit Ventura Indonesia."
-    - "Kebiasaan kerja saya sederhana: membaca kebutuhan langsung dari orang yang akan memakainya, memecah satu sistem jadi modul terpisah, dan merilis lewat pipeline otomatis. Alasan di balik setiap keputusan teknis ikut didokumentasikan, bukan cuma hasilnya."
+    - "Berlatar Sistem Informasi, dengan pengalaman langsung di pengembangan web full-stack dan manajemen proyek. Sekarang IT Specialist di LHI International Islamic School, memimpin pengembangan beberapa sistem informasi internal sekolah: kepegawaian (HRIS), data akademik, dan penerimaan siswa baru (PPDB) dibangun dengan Laravel, Filament, Docker, dan GitHub Actions."
+    - "Telah menyelesaikan Google Project Management Professional Certificate, program enam kursus yang mencakup inisiasi proyek, perencanaan, eksekusi, manajemen risiko, komunikasi dengan pemangku kepentingan, serta metodologi Agile dan Scrum."
+    - "Dua latar itu membuat saya terbiasa berpindah antara eksekusi teknis dan koordinasi proyek: membaca kodenya, sekaligus melihat gambaran besarnya proyek selesai tepat waktu, sesuai ruang lingkup, dan dengan hasil yang jelas."
 
 pengalaman:
   title: "Pengalaman"
   items:
     - role: "IT Specialist"
       org: "LHI International Islamic School"
-      period: "[GANTI: bulan & tahun mulai] — Sekarang"
-      status: "Aktif bekerja — kontrak berjalan"
+      period: "Januari 2026 - Sekarang"
       summary: "Membangun dan merawat sistem internal sekolah."
       points:
         - "Modul kepegawaian, data akademik, dan penerimaan siswa baru dibangun sebagai bagian terpisah dari satu sistem."
         - "Arsitektur disusun dengan prinsip Domain-Driven Design supaya tetap terbaca saat sistem tumbuh."
         - "Deploy Docker di VPS, dengan rilis otomatis lewat GitHub Actions."
-    - role: "Pengembang web — Freelance"
-      org: "[GANTI: nama klien, atau tulis Mandiri]"
-      period: "[GANTI: periode]"
+    - role: "Pengembang web - Freelance"
+      org: "Bumi Lestari Perkasa"
+      period: "September 2023 - November 2023"
       status: ""
       summary: "Membangun aplikasi kasir berbasis web."
-      points: []
-    - role: "[GANTI: posisi magang]"
+      points: 
+        - "Menganalisis kebutuhan pengguna dan merancang sistem untuk manajemen data serta kontrol keuangan."
+        - "Berkomunikasi dengan stakeholder guna memastikan aplikasi sesuai dengan kebutuhan bisnis."
+        - "Mengembangkan dan mengimplementasikan website menggunakan PHP, JavaScript, dan framework CodeIgniter."
+        - "Berhasil menyelesaikan dan menerapkan sistem yang digunakan untuk operasional bisnis."
+    - role: "Magang"
       org: "Pemerintah Provinsi Jawa Timur"
-      period: "[GANTI: periode]"
+      period: "Januari 2023 - Februari 2023"
       status: ""
-      summary: "[GANTI: satu kalimat tentang yang dikerjakan di sini]"
-      points: []
-    - role: "[GANTI: posisi]"
+      summary: "Mengembangkan website serta mengelola dan merekapitulasi data aset Pemerintah Provinsi Jawa Timur."
+      points: 
+        - "Mengembangkan dan memelihara website untuk mendukung operasional instansi."
+        - "Mendata dan mencatat informasi aset yang dimiliki oleh Pemerintah Provinsi Jawa Timur."
+        - "Melakukan rekapitulasi data aset untuk memastikan kelengkapan dan keteraturan administrasi."
+        - "Meningkatkan keterampilan pemrograman web serta pencatatan dan pengelolaan data dalam lingkungan pemerintahan."
+    - role: "Peserta Studi Independen Kampus Merdeka"
       org: "PT Orbit Ventura Indonesia"
-      period: "[GANTI: periode]"
+      period: "Februari 2022 - Juli 2022"
       status: ""
-      summary: "Mengerjakan machine learning dan forecasting. Titik awal karier, sebelum berpindah ke pengembangan web."
+      summary: "Mempelajari machine learning model, deep learning, dan membuat proyek akhir berupa forecasting"
       points: []
 
 pendidikan:
@@ -87,8 +94,7 @@ pendidikan:
   items:
     - title: "Sarjana Sistem Informasi"
       org: "Universitas Brawijaya"
-      period: "[GANTI: periode]"
-      note: "[GANTI: IPK atau catatan lain, hapus baris ini kalau tidak perlu]"
+      period: "Agustus 2018 - Januari 2025"
     - title: "Google Project Management Professional Certificate"
       org: "Coursera"
       period: "2026"
