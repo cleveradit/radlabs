@@ -144,5 +144,5 @@ notFound:
   backLabel: "Kembali ke beranda"
 
 footer:
-  text: "Radityo Dwiki Putra Hamas · 2026"
+  text: "radlabs · 2026"
 ---
