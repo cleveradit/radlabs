@@ -1,0 +1,86 @@
+---
+import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { frontmatter as site } from "../../content/id/site.md";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+
+const pageTitle = title ? `${site.meta.siteName} — ${title}` : site.meta.siteName;
+const pageDescription = description ?? site.meta.description;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.meta.url);
+const ogUrl = ogImage ? new URL(ogImage, canonical) : null;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (!t)
+            t = matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.meta.siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    <meta
+      name="twitter:card"
+      content={ogUrl ? "summary_large_image" : "summary"}
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Serif:wght@500&display=swap"
+    />
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-line">
+      <div
+        class="container-page flex items-center justify-between gap-4 py-4"
+      >
+        <a
+          href="/"
+          class="font-mono text-[13px] font-medium tracking-[0.08em] text-ink no-underline hover:text-accent"
+          >{site.meta.siteName}</a
+        >
+        <ThemeToggle />
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-[var(--spacing-section)] border-t border-line">
+      <div class="container-page py-5">
+        <p class="u-mono text-muted">{site.footer.text}</p>
+      </div>
+    </footer>
+  </body>
+</html>

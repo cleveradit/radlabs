@@ -1,0 +1,132 @@
+---
+// HALAMAN UJI TAHAP 1 — spesimen token visual.
+// Dibuang di tahap 2 dan diganti landing lima seksi (SPEC.md).
+import Base from "../layouts/Base.astro";
+import { frontmatter as site } from "../../content/id/site.md";
+
+const swatches = [
+  { token: "--bg", dark: "#161514", light: "#FAF9F7" },
+  { token: "--surface", dark: "#1E1D1B", light: "#FFFFFF" },
+  { token: "--sunken", dark: "#121110", light: "#F1EEE9" },
+  { token: "--line", dark: "#2E2C29", light: "#E3DFD8" },
+  { token: "--ink", dark: "#EDEAE4", light: "#1A1917" },
+  { token: "--muted", dark: "#A19C93", light: "#6B665E" },
+  { token: "--accent", dark: "#E0913C", light: "#B45309" },
+];
+---
+
+<Base title="Spesimen token">
+  <div class="container-page py-[64px] pb-[56px]">
+    <p class="u-eyebrow">Spesimen</p>
+    <h1 class="mt-3">Tipografi &amp; token warna</h1>
+    <p class="lede mt-4">
+      Halaman uji tahap 1. Serif untuk judul, sans untuk isi, mono untuk
+      metadata.
+    </p>
+  </div>
+
+  <!-- Tipografi -->
+  <section
+    class="container-page border-t border-line py-[var(--spacing-section)]"
+  >
+    <p class="u-eyebrow">Tipografi</p>
+
+    <h2 class="mt-6">Judul tingkat dua — IBM Plex Serif 500</h2>
+    <h3 class="mt-5">Judul tingkat tiga — IBM Plex Serif 500</h3>
+
+    <p class="mt-4">
+      Paragraf isi memakai IBM Plex Sans 400 pada 16px dengan tinggi baris 1,65
+      dan lebar maksimal 62ch. Baris ini sengaja dibuat panjang supaya batas
+      lebar paragraf terlihat jelas saat diukur di layar lebar maupun sempit.
+    </p>
+
+    <p class="mt-4">
+      Sans 500 dipakai untuk <strong class="font-medium">penekanan</strong>, dan
+      <a href="#top">tautan memakai warna aksen</a> dengan garis bawah tipis.
+    </p>
+
+    <div class="mt-8 space-y-3">
+      <p class="u-eyebrow">Eyebrow — mono 11px / 0.14em</p>
+      <p class="u-label">Label — mono 11px / 0.05em</p>
+      <p class="u-mono text-ink">Mono 12px — nilai, tag, dan metadata</p>
+      <p class="u-caption">Caption — mono 11,5px warna muted</p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-2">
+      {
+        ["Astro", "Tailwind CSS", "TypeScript"].map((tag) => (
+          <span class="u-mono rounded-[var(--radius-tag)] border border-line px-2 py-0.5 text-[11px] text-muted">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Warna -->
+  <section
+    class="container-page border-t border-line py-[var(--spacing-section)]"
+  >
+    <p class="u-eyebrow">Warna</p>
+    <p class="u-caption mt-3">
+      Nilai kiri berlaku di tema gelap, kanan di tema terang.
+    </p>
+
+    <div class="mt-6 border-t border-line">
+      {
+        swatches.map((s) => (
+          <div class="flex items-center gap-4 border-b border-line py-3">
+            <span
+              class="h-9 w-9 shrink-0 rounded-[var(--radius-tag)] border border-line"
+              style={`background-color: var(${s.token})`}
+              aria-hidden="true"
+            />
+            <span class="manifest-label w-[128px] shrink-0 normal-case tracking-[0.05em]">
+              {s.token}
+            </span>
+            <span class="manifest-value">
+              {s.dark} <span class="text-muted">/</span> {s.light}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Manifest -->
+  <section
+    class="container-page border-t border-line py-[var(--spacing-section)]"
+  >
+    <p class="u-eyebrow">Blok manifest</p>
+
+    <div class="manifest mt-6">
+      {
+        site.manifest.map((row: { label: string; value: string }) => (
+          <div class="manifest-row">
+            <span class="manifest-label">{row.label}</span>
+            <span class="manifest-value">{row.value}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Permukaan -->
+  <section
+    class="container-page border-t border-line py-[var(--spacing-section)]"
+  >
+    <p class="u-eyebrow">Permukaan &amp; bingkai</p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-[var(--radius-card)] border border-line bg-surface p-5">
+        <h3>Kartu</h3>
+        <p class="u-caption mt-2">Latar --surface, border 1px --line, radius 3px.</p>
+      </div>
+      <div class="figure-frame">
+        <div class="flex h-[92px] items-center justify-center bg-white">
+          <span class="u-caption text-[#1A1917]">Area gambar putih</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

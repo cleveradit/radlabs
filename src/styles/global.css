@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Token warna — DESIGN.md
+   Gelap adalah default. Tanpa JS, `data-theme` tidak pernah
+   terpasang, jadi bare :root wajib berisi nilai gelap dan
+   preferensi sistem ditangani lewat media query.
+   ============================================================ */
+
+:root {
+  --bg: #161514;
+  --surface: #1e1d1b;
+  --sunken: #121110;
+  --line: #2e2c29;
+  --ink: #edeae4;
+  --muted: #a19c93;
+  --accent: #e0913c;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --sunken: #f1eee9;
+    --line: #e3dfd8;
+    --ink: #1a1917;
+    --muted: #6b665e;
+    --accent: #b45309;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #faf9f7;
+  --surface: #ffffff;
+  --sunken: #f1eee9;
+  --line: #e3dfd8;
+  --ink: #1a1917;
+  --muted: #6b665e;
+  --accent: #b45309;
+}
+
+/* ============================================================
+   Pemetaan ke Tailwind
+   ============================================================ */
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+
+  --font-serif: "IBM Plex Serif", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-card: 3px;
+  --radius-tag: 2px;
+
+  --spacing-section: 56px;
+  --container-page: 760px;
+}
+
+/* ============================================================
+   Dasar
+   ============================================================ */
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html,
+  body {
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 2.9rem);
+    line-height: 1.12;
+    letter-spacing: -0.018em;
+  }
+
+  h2 {
+    font-size: 1.65rem;
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  p {
+    max-width: 62ch;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Pola berulang
+   ============================================================ */
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* Mono utility: label, eyebrow, tag, caption, footer */
+  .u-mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+  }
+
+  .u-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .u-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .u-caption {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.55;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
+  .lede {
+    font-size: 1.08rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+
+  /* --- Blok manifest — elemen signature (DESIGN.md) --- */
+  .manifest {
+    border-top: 1px solid var(--line);
+  }
+
+  .manifest-row {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 0 16px;
+    padding-block: 9px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .manifest-row:last-child {
+    border-bottom: 0;
+  }
+
+  .manifest-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .manifest-value {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  @media (max-width: 519px) {
+    .manifest-row {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+
+  /* --- Bingkai tangkapan layar (DESIGN.md) --- */
+  .figure-frame {
+    background-color: var(--sunken);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 14px;
+  }
+}
+
+/* ============================================================
+   Toggle tema — label menyebut tema TUJUAN.
+   Ditentukan lewat CSS, bukan JS, supaya tidak ada kedipan
+   dan tetap benar saat JS mati.
+   ============================================================ */
+
+[data-theme-label="light"] {
+  display: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) [data-theme-label="light"] {
+    display: inline;
+  }
+  :root:not([data-theme="dark"]) [data-theme-label="dark"] {
+    display: none;
+  }
+}
+
+:root[data-theme="dark"] [data-theme-label="dark"] {
+  display: inline;
+}
+:root[data-theme="dark"] [data-theme-label="light"] {
+  display: none;
+}
+
+:root[data-theme="light"] [data-theme-label="light"] {
+  display: inline;
+}
+:root[data-theme="light"] [data-theme-label="dark"] {
+  display: none;
+}
