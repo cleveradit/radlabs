@@ -1,36 +1,33 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-// Layout adaptif (SPEC.md):
-//   solo → satu kartu selebar container, cover ditampilkan di dalam kartu
-//   grid → kartu ringkas dalam grid dua kolom, cover tidak ditampilkan
+// Kartu proyek: notasi katalog → judul + panah → ringkasan → tag stack.
+// Angka `metrics` tidak ikut di sini — tempatnya di halaman detail, di
+// bawah lembar data, supaya kartu tetap ringkas seperti referensi.
 interface Props {
   entry: CollectionEntry<"karya">;
+  /* solo → kartu tunggal selebar container, cover ditampilkan di dalamnya
+     grid → kartu ringkas dalam grid dua kolom, cover tidak ditampilkan */
   variant: "solo" | "grid";
 }
 
 const { entry, variant } = Astro.props;
 const d = entry.data;
 
-// Semua metrics dirender, wrap bila perlu. Dibatasi 4 agar kartu tidak melar.
-const METRICS_MAX = 4;
-const metrics = d.metrics.slice(0, METRICS_MAX);
-
 const href = `/karya/${d.slug}`;
 
 // Notasi katalog — struktural, diturunkan dari `order` di frontmatter.
-// Bukan data baru, jadi tidak perlu ditulis di content/.
 const catalog = `K-${String(d.order).padStart(2, "0")}`;
 ---
 
 <article
-  class="group relative flex flex-col rounded-[var(--radius-card)] border border-line bg-surface p-6 transition-colors focus-within:border-accent hover:border-accent"
+  class="card group relative flex flex-col transition-colors focus-within:border-accent hover:border-accent"
 >
   {/* Baris notasi. Di layar sempit bertumpuk supaya status yang panjang
-      terbaca utuh — memotongnya di sana akan menyembunyikan teks di balik
-      tooltip `title`, yang tidak bisa dibuka di perangkat sentuh. */}
+      terbaca utuh — memotongnya akan menyembunyikan teks di balik tooltip
+      `title`, yang tidak bisa dibuka di perangkat sentuh. */}
   <div
-    class="u-mono mb-3 flex flex-col gap-1 text-[11px] tracking-[0.08em] text-muted min-[560px]:flex-row min-[560px]:items-center min-[560px]:gap-4"
+    class="u-mono mb-4 flex flex-col gap-1 text-[11px] tracking-[0.08em] text-muted min-[560px]:flex-row min-[560px]:items-center min-[560px]:gap-4"
   >
     <span class="shrink-0">{catalog}</span>
     <span class="flex min-w-0 items-center gap-1.5 min-[560px]:ml-auto">
@@ -41,16 +38,24 @@ const catalog = `K-${String(d.order).padStart(2, "0")}`;
     </span>
   </div>
 
-  <h3>
-    {/* Tautan meregang menutupi seluruh kartu lewat ::after — menghindari <a> bersarang. */}
-    <a
-      href={href}
-      class="text-ink no-underline after:absolute after:inset-0 after:content-['']"
-      >{d.title}</a
+  <div class="flex items-start justify-between gap-4">
+    <h3>
+      {/* Tautan meregang menutupi seluruh kartu lewat ::after — menghindari
+          <a> bersarang dengan tautan repo di bawah. */}
+      <a
+        href={href}
+        class="text-ink no-underline after:absolute after:inset-0 after:content-['']"
+        >{d.title}</a
+      >
+    </h3>
+    <span
+      aria-hidden="true"
+      class="mt-1 shrink-0 text-muted transition-colors group-hover:text-accent"
+      >↗</span
     >
-  </h3>
+  </div>
 
-  <p class="mt-2 text-muted">{d.summary}</p>
+  <p class="mt-3 text-muted">{d.summary}</p>
 
   {
     variant === "solo" && (
@@ -61,8 +66,8 @@ const catalog = `K-${String(d.order).padStart(2, "0")}`;
           width="1920"
           height="961"
           {/* Gambar ini elemen LCP di layar lebar, jadi `eager` menolong
-              sedikit di desktop — tapi di mobile ia ada jauh di bawah lipatan
-              dan justru berebut bandwidth dengan jalur kritis (LCP 3,5s → 4,0s).
+              sedikit di desktop — tapi di mobile ia ada jauh di bawah
+              lipatan dan justru berebut bandwidth dengan jalur kritis.
               Mobile profil yang lebih ketat, jadi tetap `lazy`. */}
           loading="lazy"
           decoding="async"
@@ -72,49 +77,30 @@ const catalog = `K-${String(d.order).padStart(2, "0")}`;
     )
   }
 
-  <ul class="mt-5 flex flex-wrap gap-1.5">
-    {
-      d.stack.map((tag) => (
-        <li class="u-mono rounded-[var(--radius-tag)] border border-line px-2 py-0.5 text-[11px] text-muted">
-          {tag}
-        </li>
-      ))
-    }
+  <ul class="mt-6 flex flex-wrap gap-2">
+    {d.stack.map((tag) => <li class="pill">{tag}</li>)}
   </ul>
 
   <div
-    class="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-line pt-4"
+    class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-4"
   >
-    <ul class="flex flex-wrap gap-x-6 gap-y-3">
-      {
-        metrics.map((m) => (
-          <li>
-            {/* Mono 13px, bukan serif 1.15rem — angka bukan judul, dan
-                nilai `TODO` di content/ tidak boleh jadi teks terbesar
-                di seksi ini (DESIGN.md, tabel skala). */}
-            <p class="font-mono text-[13px] leading-tight font-medium tracking-[0.02em] text-accent">
-              {m.value}
-            </p>
-            <p class="u-label mt-1">{m.label}</p>
-          </li>
-        ))
-      }
-    </ul>
-
+    <span class="u-mono text-[11px] tracking-[0.08em] text-muted"
+      >{d.period}</span
+    >
     {
       d.repo ? (
         // z-10 mengangkatnya di atas tautan kartu yang meregang.
         <a
           href={d.repo}
           rel="noopener"
-          class="u-mono relative z-10 shrink-0 text-[11px] tracking-[0.08em] text-muted no-underline hover:text-accent hover:underline"
+          class="u-mono relative z-10 ml-auto text-[11px] tracking-[0.08em] text-muted no-underline hover:text-accent hover:underline"
         >
           ↗ GitHub
         </a>
       ) : (
-        <p class="u-mono shrink-0 text-[11px] tracking-[0.08em] text-muted">
+        <span class="u-mono ml-auto text-[11px] tracking-[0.08em] text-muted">
           Repositori privat
-        </p>
+        </span>
       )
     }
   </div>

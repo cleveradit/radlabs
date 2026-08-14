@@ -63,11 +63,11 @@
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  --radius-card: 3px;
-  --radius-tag: 2px;
+  --radius-card: 8px;
+  --radius-tag: 999px;
 
-  --spacing-section: 56px;
-  --container-page: 1420px;
+  --spacing-section: 80px;
+  --container-page: 960px;
 }
 
 /* ============================================================
@@ -79,6 +79,15 @@
     background-color: var(--bg);
     color: var(--ink);
     -webkit-text-size-adjust: 100%;
+    /* Nav menempel di atas; jangkar seksi harus berhenti di bawahnya.
+       Di layar sempit nav memakai dua baris, jadi ruangnya lebih besar. */
+    scroll-padding-top: 124px;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 88px;
+    }
   }
 
   html,
@@ -100,7 +109,8 @@
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     font-family: var(--font-serif);
     font-weight: 500;
     color: var(--ink);
@@ -108,24 +118,29 @@
   }
 
   h1 {
-    font-size: clamp(2rem, 6vw, 2.9rem);
-    line-height: 1.12;
-    letter-spacing: -0.018em;
+    font-size: clamp(2.1rem, 6vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 
   h2 {
-    font-size: 1.65rem;
-    line-height: 1.22;
-    letter-spacing: -0.012em;
+    font-size: clamp(1.6rem, 4vw, 1.95rem);
+    line-height: 1.2;
+    letter-spacing: -0.014em;
   }
 
   h3 {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     line-height: 1.35;
   }
 
+  h4 {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
   p {
-    max-width: 62ch;
+    max-width: 68ch;
   }
 
   a {
@@ -137,7 +152,7 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: 1px;
+    border-radius: 2px;
   }
 
   ::selection {
@@ -174,11 +189,9 @@
     padding-inline: 24px;
   }
 
-  /* --- Kerangka lembar lab (DESIGN.md) --- */
-
-  /* Kisi milimeter. Digambar di ::before, bukan di elemennya sendiri:
-     `mask-image` membuat SELURUH elemen ikut memudar, termasuk teks
-     di dalamnya. Pseudo-element mengurung efeknya ke latar saja. */
+  /* --- Kisi milimeter (DESIGN.md, "Kerangka lembar lab") ---
+     Digambar di ::before, bukan di elemennya sendiri: `mask-image`
+     membuat SELURUH elemen ikut memudar, termasuk teks di dalamnya. */
   .lab-grid {
     position: relative;
     isolation: isolate;
@@ -201,45 +214,123 @@
         var(--grid) 0 1px,
         transparent 1px 32px
       );
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
-    mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
   }
 
-  /* Tanda ukur: tick 6px menggantung dari garis pemisah, di kedua tepi
-     kolom konten.
-     Tick harus jatuh di tepi KONTEN, bukan tepi kotak. Kalau dipasang
-     pada .container-page, tepi konten ada 24px ke dalam karena padding
-     container; kalau dipasang pada elemen yang sudah berada di dalam
-     container, tepi kotak sudah sama dengan tepi konten. */
-  .rule-ticks {
+  /* --- Judul seksi: serif + garis aksen 48px di bawahnya --- */
+  .section-title {
     position: relative;
-    --tick-inset: 0px;
+    padding-bottom: 14px;
   }
 
-  .rule-ticks.container-page {
-    --tick-inset: 24px;
-  }
-
-  .rule-ticks::before,
-  .rule-ticks::after {
+  .section-title::after {
     content: "";
     position: absolute;
-    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--accent);
+  }
+
+  /* --- Tombol --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 26px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-card);
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover {
+    background-color: transparent;
+    color: var(--accent);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  /* --- Kartu --- */
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 28px;
+  }
+
+  /* --- Pill: tag stack, daftar keahlian --- */
+  .pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    background-color: var(--sunken);
+    color: var(--muted);
+  }
+
+  /* --- Timeline pengalaman --- */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
     width: 1px;
-    height: 6px;
     background-color: var(--line);
-    pointer-events: none;
   }
 
-  .rule-ticks::before {
-    left: var(--tick-inset);
+  .timeline-marker {
+    position: absolute;
+    left: -32px;
+    top: 7px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: var(--bg);
+    border: 2px solid var(--accent);
   }
 
-  .rule-ticks::after {
-    right: var(--tick-inset);
+  /* Seksi berlatar --sunken: markernya harus ikut latar itu supaya
+     garis timeline tidak terlihat menembus lubang markernya. */
+  .section-alt .timeline-marker {
+    background-color: var(--sunken);
   }
 
-  /* Mono utility: label, eyebrow, tag, caption, footer */
+  /* --- Mono utility: label, eyebrow, caption, footer --- */
   .u-mono {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -280,12 +371,9 @@
     max-width: 62ch;
   }
 
-  /* --- Blok manifest — elemen signature (DESIGN.md) --- */
+  /* --- Blok manifest — dipakai di halaman detail karya --- */
   .manifest {
     border-top: 1px solid var(--line);
-    /* Ikut lebar kolom teks, bukan lebar container. Dibiarkan melar
-       ke lebar container, garis antar-barisnya memanjang jauh melewati
-       isi dan blok ini kehilangan bentuknya. */
     max-width: 62ch;
   }
 
@@ -324,7 +412,7 @@
     }
   }
 
-  /* --- Bingkai tangkapan layar (DESIGN.md) --- */
+  /* --- Bingkai tangkapan layar --- */
   .figure-frame {
     background-color: var(--sunken);
     border: 1px solid var(--line);
@@ -364,7 +452,7 @@
   .prose ul,
   .prose ol {
     padding-left: 1.15em;
-    max-width: 62ch;
+    max-width: 68ch;
   }
 
   .prose ul {
@@ -418,14 +506,13 @@
     font-size: 12.5px;
     background-color: var(--sunken);
     border: 1px solid var(--line);
-    border-radius: var(--radius-tag);
+    border-radius: 4px;
     padding: 0.1em 0.35em;
   }
 
   /* --- Tabel: header mono uppercase, garis 1px, tanpa zebra --- */
   .table-scroll {
     overflow-x: auto;
-    /* Tabel boleh melebihi 62ch — kolomnya butuh ruang. */
     max-width: 100%;
   }
 
@@ -456,10 +543,6 @@
     padding: 10px 16px 10px 0;
     border-bottom: 1px solid var(--line);
     vertical-align: top;
-  }
-
-  .prose thead th {
-    border-bottom-color: var(--line);
   }
 
   .prose tbody tr:last-child td {

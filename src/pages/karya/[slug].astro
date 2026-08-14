@@ -16,7 +16,6 @@ const { entry } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
 
-// Urutan baris sesuai SPEC.md.
 const rows = [
   { label: "Peran", value: d.role },
   { label: "Tim", value: d.team },
@@ -27,6 +26,10 @@ const rows = [
     ? { label: "Repo", value: "↗ GitHub", href: d.repo }
     : { label: "Repo", value: "Repositori privat" },
 ];
+
+// Semua metrics dirender, wrap bila perlu. Dibatasi 4 agar barisnya
+// tidak melar melewati lebar kolom teks.
+const metrics = d.metrics.slice(0, 4);
 ---
 
 <Base title={d.title} description={d.summary} ogImage={d.cover}>
@@ -34,22 +37,41 @@ const rows = [
     {/* Kepala halaman memakai kisi yang sama seperti hero landing supaya
         kedua halaman terasa satu sistem. */}
     <div class="lab-grid">
-      <div class="container-page pt-[64px] pb-[56px]">
-        <h1>{d.title}</h1>
+      <div class="container-page pt-[64px] pb-[64px]">
+        <p class="u-eyebrow">
+          <a href="/#karya" class="text-muted no-underline hover:text-accent"
+            >Karya</a
+          >
+        </p>
+
+        <h1 class="mt-3">{d.title}</h1>
         <p class="lede mt-5">{d.summary}</p>
 
         <Manifest rows={rows} caption="Lembar data" class="mt-10" />
+
+        {
+          metrics.length > 0 && (
+            <ul class="mt-8 flex max-w-[62ch] flex-wrap gap-x-10 gap-y-4">
+              {metrics.map((m) => (
+                <li>
+                  <p class="font-mono text-[13px] leading-tight font-medium tracking-[0.02em] text-accent">
+                    {m.value}
+                  </p>
+                  <p class="u-label mt-1">{m.label}</p>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
     </div>
 
-    <div class="container-page pb-[56px]">
+    <div class="container-page pt-[8px] pb-[var(--spacing-section)]">
       <div class="prose">
         <Content />
       </div>
 
-      <div
-        class="rule-ticks mt-[var(--spacing-section)] border-t border-line pt-6"
-      >
+      <div class="mt-[var(--spacing-section)] border-t border-line pt-6">
         <a
           href="/#karya"
           class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"

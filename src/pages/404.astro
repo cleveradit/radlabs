@@ -5,17 +5,13 @@ import { frontmatter as site } from "../../content/id/site.md";
 
 <Base title={site.notFound.heading} description={site.notFound.body}>
   <div class="lab-grid">
-    <div class="container-page pt-[64px] pb-[56px]">
+    <div class="container-page pt-[80px] pb-[var(--spacing-section)]">
       <h1>{site.notFound.heading}</h1>
       <p class="lede mt-5">{site.notFound.body}</p>
 
-      <div class="rule-ticks mt-10 border-t border-line pt-6">
-        <a
-          href="/"
-          class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"
-          >← {site.notFound.backLabel}</a
-        >
-      </div>
+      <p class="mt-9">
+        <a href="/" class="btn btn-outline">{site.notFound.backLabel}</a>
+      </p>
     </div>
   </div>
 </Base>

@@ -1,14 +1,14 @@
 # DESIGN.md — token visual
 
-Nilai di bawah sudah disetujui lewat spesimen. **Pakai persis. Jangan menambah warna, font, atau radius baru.**
+Arah desain: **portofolio bertingkat seksi** dengan kerangka *lembar laboratorium*. Struktur penempatan kontennya mengikuti https://zairussalam.id/ — nav menempel, hero dua kolom, timeline pengalaman, kartu pendidikan/keahlian/proyek, kontak berbentuk kartu.
 
-Arah desain: *technical editorial* dengan kerangka **lembar laboratorium**. Serif untuk judul, sans untuk isi, mono untuk metadata. Netral hangat, satu aksen ochre. Lapang. Bukan dashboard, bukan showcase — halaman yang terbaca seperti tulisan yang dipikirkan.
+Yang membedakannya dari referensi: paletnya netral hangat dengan satu aksen ochre (bukan biru), tipografinya IBM Plex Serif/Sans/Mono (bukan Inter), dan nama situs dibaca lewat struktur — **radlabs = radityo laboratorium**.
 
-Nama situs adalah kiasan: **radlabs = radityo laboratorium**. Kiasan itu diwujudkan lewat *struktur*, bukan motif — kisi milimeter, tanda ukur, penomoran, notasi katalog. Tidak ada ikon alat lab, tidak ada tabung reaksi, tidak ada latar bertema. Kalau sebuah elemen lab hanya menghias dan tidak menandai apa pun, elemen itu tidak dipakai.
+Kiasan lab diwujudkan lewat *struktur*, bukan motif: kisi milimeter, penomoran seksi, notasi katalog, lembar data. Tidak ada ikon alat lab, tidak ada tabung reaksi. Kalau sebuah elemen lab hanya menghias dan tidak menandai apa pun, elemen itu tidak dipakai.
 
 ## Warna
 
-Definisikan sebagai CSS custom property di `:root[data-theme="..."]`, lalu petakan ke Tailwind lewat `theme.extend.colors` memakai `var(--...)`.
+Definisikan sebagai CSS custom property di `:root[data-theme="..."]`, lalu petakan ke Tailwind lewat `@theme` memakai `var(--...)`.
 
 | Token | Gelap (default) | Terang |
 |---|---|---|
@@ -31,8 +31,9 @@ Satu token turunan, bukan warna baru:
 Catatan penting:
 - Aksen punya **dua nilai berbeda**. Jangan pakai satu warna untuk kedua tema.
 - Netral gelap itu hangat (`#161514`), bukan slate/zinc bawaan Tailwind yang kebiruan.
-- Aksen hanya untuk: nilai metrics, status dot, nomor seksi, hover border, focus ring, tautan. **Tidak untuk tombol besar, tidak untuk gradien, tidak untuk background seksi.**
-- **Tidak ada gradien sebagai isian warna** — tidak ada sapuan, tidak ada latar berwarna gradasi. `repeating-linear-gradient` boleh dipakai **hanya** untuk menggambar garis kisi (lihat "Kerangka lembar lab"), dan `mask-image: linear-gradient(...)` boleh dipakai **hanya** untuk memudarkan kisi itu. Keduanya menghasilkan garis rambut 1px, bukan bidang warna.
+- Aksen dipakai untuk: tombol primer, garis bawah judul seksi, nomor seksi, peran di hero, marker timeline, status dot, nilai metrics, hover border, focus ring, dan tautan.
+- **Tidak ada gradien sebagai isian warna.** `repeating-linear-gradient` boleh dipakai hanya untuk menggambar garis kisi, dan `mask-image: linear-gradient(...)` hanya untuk memudarkan kisi itu. Keduanya menghasilkan garis rambut 1px, bukan bidang warna.
+- Latar seksi **berselang-seling** `--bg` / `--sunken`. Ini yang memisahkan seksi, bukan garis.
 
 ## Tipografi
 
@@ -40,67 +41,59 @@ Satu keluarga, tiga peran — IBM Plex, dari Google Fonts.
 
 | Peran | Font | Pemakaian |
 |---|---|---|
-| Display | IBM Plex Serif 500 | h1, h2, h3 |
-| Body | IBM Plex Sans 400/500 | paragraf, navigasi |
-| Utility | IBM Plex Mono 400/500 | manifest, tag stack, label, eyebrow, caption, footer, **nilai metrics**, nomor katalog, nomor seksi |
+| Display | IBM Plex Serif 500/600 | h1, h2, h3, h4, peran di hero |
+| Body | IBM Plex Sans 400/500 | paragraf, tombol, poin timeline |
+| Utility | IBM Plex Mono 400/500 | nav, eyebrow, label, pill, periode, nomor katalog, nilai metrics, footer |
 
 Skala:
 
 | Elemen | Ukuran | Detail |
 |---|---|---|
-| h1 | `clamp(2rem, 6vw, 2.9rem)` | line-height 1.12, tracking -0.018em |
-| h2 | `1.65rem` | line-height 1.22, tracking -0.012em |
-| h3 | `1.15rem` | line-height 1.35 |
-| body | `16px` | line-height 1.65 |
-| lede | `1.08rem` | warna `--muted` |
-| mono utility | `11–13px` | tracking 0.05–0.14em, uppercase untuk label |
-| nilai metrics | mono `13px` | warna `--accent`, tracking 0.02em |
+| h1 | `clamp(2.1rem, 6vw, 3.1rem)` | line-height 1.1, tracking -0.02em |
+| h2 (judul seksi) | `clamp(1.6rem, 4vw, 1.95rem)` | line-height 1.2, tracking -0.014em |
+| h3 | `1.2rem` | line-height 1.35 |
+| h4 | `1rem` | line-height 1.4 |
+| body | `16px` | line-height 1.65, `max-width: 68ch` |
+| lede | `1.08rem` | warna `--muted`, `max-width: 62ch` |
+| mono utility | `10–13px` | tracking 0.03–0.14em, uppercase untuk label |
 
-Nilai metrics **tidak lagi memakai serif 1.15rem**. Angka bukan judul, dan nilai `TODO` yang masih terpasang di `content/` tidak boleh jadi teks terbesar di halaman. Aksennya tetap — bobotnya yang turun.
-
-Lebar container **1420px**, padding samping 24px. Di layar 1920px ini menyisakan 250px per sisi.
-
-Container itu bingkai luar, bukan lebar teks. Di dalamnya ada dua lebar:
-
-- **Kolom teks — maksimal 62ch.** Berlaku untuk paragraf, lede, daftar, dan blok manifest. Baris pendek itu disengaja; jangan dilebarkan mengikuti container.
-- **Elemen lebar — mengisi penuh container.** Kartu karya, bingkai tangkapan layar, dan tabel. Inilah yang membuat halaman tidak terlihat seperti pita tipis di layar lebar.
+Lebar container **960px**, padding samping 24px — sama dengan referensi. Ini yang membuat halaman terbaca sebagai satu kolom yang tertata, bukan pita lebar.
 
 ## Bentuk & jarak
 
-- Radius: **3px** untuk kartu dan bingkai, **2px** untuk tag dan tombol kecil. Tidak ada radius besar.
+- Radius: **8px** untuk kartu, bingkai, dan tombol. **999px** untuk pill.
 - Border: selalu 1px `--line`. Tidak ada shadow di mana pun.
-- Jarak antar-seksi: 56px, dipisah garis atas 1px `--line`.
-- Hero: padding 64px atas, 56px bawah.
+- Padding kartu: 28px.
+- Jarak antar-seksi: 80px atas dan bawah.
+- Hero: padding 72px atas, 80px bawah.
 
 ## Kerangka lembar lab
 
-Empat perangkat, semuanya struktural. Tidak ada yang kelima tanpa keputusan desain baru.
+Empat perangkat, semuanya struktural.
 
-**1 — Kisi milimeter.** Hanya di blok hero (landing dan halaman detail), tidak di seluruh halaman — kelapangan tetap yang utama. Kotak 32px, garis 1px `--grid`, digambar dengan dua `repeating-linear-gradient`. Dipudarkan ke bawah dengan `mask-image` supaya blok manifest duduk di latar bersih.
+**1 — Kisi milimeter.** Hanya di blok hero (landing, kepala halaman detail, dan 404), tidak di seluruh halaman. Kotak 32px, garis 1px `--grid`, digambar dengan dua `repeating-linear-gradient` pada `::before`. **Wajib di pseudo-element, bukan di elemennya sendiri** — `mask-image` memudarkan seluruh elemen termasuk teks di dalamnya.
 
-**2 — Tanda ukur pada garis seksi.** Garis pemisah 1px `--line` antar-seksi diberi tick 1px setinggi 6px di kedua ujung container, digambar dengan `::before`/`::after`. Tanpa elemen DOM tambahan. Berlaku juga di garis atas footer.
+**2 — Nomor seksi.** Mono kecil warna `--accent` tepat di atas judul seksi: `01`, `02`, … Penomoran mengikuti urutan seksi yang benar-benar dirender, jadi tidak pernah ada nomor yang bolong. **Hanya nomornya** — judulnya sudah ada di `h2` di bawahnya, menulis ulang membuat pembaca layar mengumumkannya dua kali.
 
-**3 — Nomor seksi.** Eyebrow jadi `01 / KARYA`: nomor dua digit warna `--accent`, garis miring dan nama seksi warna `--muted`, semuanya mono uppercase. Penomoran mengikuti urutan seksi yang benar-benar dirender, jadi tidak pernah ada nomor yang bolong.
+**3 — Garis aksen judul seksi.** Batang 48×3px `--accent` di bawah tiap judul seksi, radius 2px.
 
-Konsekuensinya: **nomor langkah di dalam seksi Metode memakai `--muted`, bukan `--accent`.** Nomor seksi dan nomor langkah punya font, ukuran, dan tracking yang sama persis dan duduk di kolom yang sama — kalau warnanya juga sama, keduanya terbaca sebagai satu deret bernomor `01, 01, 02, 03, 04`. Aksen dipegang oleh penanda seksi; langkah menempel di bawahnya sebagai deret sekunder.
+**4 — Notasi katalog pada kartu karya.** Baris mono di atas judul kartu: nomor katalog `K-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`.
 
-**4 — Notasi katalog pada kartu karya.** Baris mono di atas judul kartu: nomor katalog `K-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`. Nomor katalog adalah notasi struktural, bukan klaim — sama statusnya dengan penomoran seksi.
+## Navigasi
 
-## Elemen signature — blok manifest
+Nav **`sticky`, bukan `fixed`.** Nav ini setinggi dua baris di layar sempit dan satu baris di layar lebar; kalau `fixed`, body butuh padding atas yang harus ditebak per breakpoint. Sticky tetap ikut alur dokumen.
 
-Daftar key/value bergaris tipis dalam mono. Muncul dua kali: di bawah hero landing, dan di atas halaman detail. Ini penanda identitas situs — jangan diganti gaya lain.
+Tanpa tombol hamburger. Di bawah 768px, daftar tautan jatuh ke baris kedua dan bisa digeser horizontal — **tidak ada navigasi yang bergantung pada JavaScript.**
 
-- Grid dua kolom: label 128px, nilai fleksibel. Di bawah 520px jadi satu kolom bertumpuk.
-- Ikut lebar kolom teks (62ch), bukan lebar container. Dibiarkan melar, garis antar-barisnya memanjang jauh melewati isi dan blok ini kehilangan bentuknya.
-- Label: mono 11px, uppercase, tracking 0.05em, warna `--muted`.
-- Nilai: mono 12.5px, warna `--ink`.
-- Garis 1px `--line` di atas, di bawah, dan antar-baris. Baris terakhir tanpa garis bawah.
+`scroll-padding-top` wajib diset supaya jangkar seksi berhenti di bawah nav: 124px di layar sempit (nav dua baris), 88px di 768px ke atas.
+
+## Blok manifest
+
+Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar kolom teks (62ch), bukan lebar container.
 
 ## Bingkai tangkapan layar
 
-Semua screenshot berlatar putih. Tanpa bingkai, gambar menyilaukan di tema gelap.
-
-Setiap gambar dibungkus: latar `--sunken`, border 1px `--line`, radius 3px, padding 14px. Caption di bawahnya memakai mono 11.5px warna `--muted`.
+Semua screenshot berlatar putih. Tanpa bingkai, gambar menyilaukan di tema gelap. Setiap gambar dibungkus: latar `--sunken`, border 1px `--line`, radius 8px, padding 14px. Caption di bawahnya mono 11.5px warna `--muted`.
 
 ## Tema
 
@@ -123,10 +116,10 @@ Setiap gambar dibungkus: latar `--sunken`, border 1px `--line`, radius 3px, padd
 </script>
 ```
 
-Tombol toggle di kanan atas: teks mono uppercase yang menyebut tema **tujuan** ("Terang" saat sedang gelap), border 1px, hover berubah ke `--accent`, punya `aria-label`.
+Tombol toggle di kanan atas: teks mono uppercase yang menyebut tema **tujuan** ("Terang" saat sedang gelap), border 1px, hover berubah ke `--accent`. Label dipilih lewat CSS, bukan JS, supaya tidak ada kedipan dan tetap benar saat JS mati.
 
 ## Yang dilarang
 
-Gradien sebagai isian warna · shadow · glassmorphism · animasi scroll-reveal · skill bar persentase · grid logo teknologi · font Inter · aksen biru atau ungu · emoji sebagai ikon · teks "passionate" atau sejenisnya.
+Gradien sebagai isian warna · shadow · animasi scroll-reveal · skill bar persentase · grid logo teknologi · font Inter · aksen biru atau ungu · emoji sebagai ikon · teks "passionate" atau sejenisnya.
 
 Khusus untuk nuansa lab: ikon alat laboratorium · tabung reaksi · molekul · latar kisi di seluruh halaman · label bergaya stiker botol spesimen · font monospace kedua "biar terlihat teknis".

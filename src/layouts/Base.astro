@@ -7,14 +7,21 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /* Tautan seksi hanya bermakna di landing. Halaman lain memakai nav
+     ringkas: wordmark + toggle saja. */
+  showNavLinks?: boolean;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, showNavLinks = false } = Astro.props;
 
 const pageTitle = title ? `${site.meta.siteName} — ${title}` : site.meta.siteName;
 const pageDescription = description ?? site.meta.description;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.meta.url);
 const ogUrl = ogImage ? new URL(ogImage, canonical) : null;
+
+const navLinks: { label: string; href: string }[] = showNavLinks
+  ? site.nav
+  : [];
 ---
 
 <!doctype html>
@@ -55,40 +62,74 @@ const ogUrl = ogImage ? new URL(ogImage, canonical) : null;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Serif:wght@500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Serif:wght@500;600&display=swap"
     />
   </head>
 
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b border-line">
-      <div
-        class="container-page flex items-center justify-between gap-4 py-4"
+  <body class="flex min-h-screen flex-col">
+    {/*
+      `sticky`, bukan `fixed`. Nav ini setinggi dua baris di layar sempit
+      dan satu baris di layar lebar; kalau `fixed`, body butuh padding atas
+      yang tingginya harus ditebak per breakpoint. Sticky tetap ikut alur
+      dokumen, jadi tidak ada yang perlu ditebak.
+    */}
+    <header
+      class="sticky top-0 z-50 border-b border-line bg-bg/95 backdrop-blur-[2px]"
+    >
+      <nav
+        class="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3"
+        aria-label="Navigasi utama"
       >
-        {/* Kepanjangan nama berada DI LUAR tautan supaya nama aksesibel
-            tautan tetap "radlabs" saja. Disembunyikan di bawah 480px
-            agar header tidak pecah di 360px. */}
-        <div class="flex min-w-0 items-baseline gap-2.5">
-          <a
-            href="/"
-            class="font-mono text-[13px] font-medium tracking-[0.08em] text-ink no-underline hover:text-accent"
-            >{site.meta.siteName}</a
+        <a
+          href="/"
+          class="order-1 flex items-baseline gap-2.5 no-underline"
+          aria-label={site.meta.siteName}
+        >
+          <span
+            class="font-mono text-[14px] font-medium tracking-[0.08em] text-ink"
+            >{site.meta.siteName}</span
           >
           <span
-            class="u-mono hidden shrink-0 text-[10px] tracking-[0.14em] text-muted min-[480px]:inline"
+            class="u-mono hidden shrink-0 text-[10px] tracking-[0.14em] text-muted min-[520px]:inline"
             >{site.meta.siteNameExpansion}</span
           >
+        </a>
+
+        {
+          navLinks.length > 0 && (
+            /*
+              order-3 di layar sempit + w-full → jatuh ke baris kedua dan
+              bisa digeser horizontal. Tanpa tombol hamburger, jadi tidak
+              ada navigasi yang bergantung pada JavaScript.
+            */
+            <ul class="order-3 -mx-1 flex w-full gap-x-5 overflow-x-auto px-1 pb-0.5 md:order-2 md:mx-0 md:w-auto md:overflow-visible md:px-0 md:pb-0">
+              {navLinks.map((link) => (
+                <li class="shrink-0">
+                  <a
+                    href={link.href}
+                    class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        <div class="order-2 md:order-3">
+          <ThemeToggle />
         </div>
-        <ThemeToggle />
-      </div>
+      </nav>
     </header>
 
     <main class="flex-1">
       <slot />
     </main>
 
-    <footer class="mt-[var(--spacing-section)] border-t border-line">
-      <div class="container-page rule-ticks py-5">
-        <p class="u-mono text-muted">{site.footer.text}</p>
+    <footer class="border-t border-line">
+      <div class="container-page py-8 text-center">
+        <p class="u-mono mx-auto text-muted">{site.footer.text}</p>
       </div>
     </footer>
   </body>

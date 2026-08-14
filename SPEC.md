@@ -10,81 +10,74 @@
 
 Bahasa: Indonesia saja untuk sekarang. Folder `content/id/` sudah menyiapkan i18n nanti — **jangan bangun routing i18n sekarang.**
 
-## Struktur folder target
+## Landing — hero + enam seksi, urut
 
-```
-src/
-├── content/
-│   ├── config.ts            ← skema koleksi
-│   └── karya/               ← symlink/salinan dari content/id/*.md project
-├── components/
-│   ├── Manifest.astro
-│   ├── KaryaCard.astro
-│   ├── Figure.astro         ← bingkai screenshot
-│   ├── ThemeToggle.astro
-│   └── Section.astro
-├── layouts/
-│   └── Base.astro           ← head, meta, script anti-kedip, header, footer
-└── pages/
-    ├── index.astro
-    ├── 404.astro
-    └── karya/[slug].astro
-public/
-├── CNAME
-├── images/ppdb/
-└── favicon.png
-```
+Penempatan kontennya mengikuti https://zairussalam.id/.
 
-Catatan: file case study ada di `content/id/`. Konfigurasikan koleksi Astro agar membacanya dari sana, atau salin saat build. Jangan duplikasi manual.
+0. **Hero** — tanpa nomor, tanpa judul seksi. Eyebrow mono → nama (`h1`) → peran (serif, aksen) → lede → dua tombol. Foto profil bundar di kanan pada ≥860px, di atas teks pada layar sempit. Latar memakai kisi milimeter.
+1. **Tentang** — beberapa paragraf, latar `--sunken`.
+2. **Pengalaman** — timeline dengan marker aksen. Tiap entri: peran (`h3`) → organisasi → periode + status → ringkasan → poin.
+3. **Pendidikan** — kartu, grid dua kolom di ≥720px. Latar `--sunken`.
+4. **Keahlian** — kartu per kelompok, tiap kelompok berisi pill. Grid 1 / 2 / 4 kolom di 0 / 560px / 900px.
+5. **Karya** — kartu proyek. Latar `--sunken`.
+6. **Kontak** — kartu tautan email, GitHub, LinkedIn. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
 
-## Landing — lima seksi, urut
+Latar seksi berselang-seling `--sunken` / `--bg`. Nomor seksi digenerate dari urutan seksi yang dirender, bukan ditulis di `content/` — kalau ada seksi ditambah atau dihapus, penomoran ikut menyesuaikan sendiri. Hero tidak ikut dihitung.
 
-1. **Hero** — h1 berisi nama, lede, lalu blok manifest. Tanpa eyebrow, tanpa nomor, tanpa foto, tanpa tombol besar, tanpa animasi ketik. Latar hero memakai kisi milimeter (`DESIGN.md`, "Kerangka lembar lab").
-2. **Karya** — eyebrow `01 / KARYA`, lalu kartu.
-3. **Metode** — eyebrow `02 / METODE`, 4 langkah bernomor `01–04`.
-4. **Tentang** — eyebrow `03 / TENTANG`, foto profil kecil + 3–4 kalimat.
-5. **Kontak** — eyebrow `04 / KONTAK`, tautan email, GitHub, LinkedIn dalam gaya manifest. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
+Header: wordmark + kepanjangan, tautan seksi, toggle tema. Tautan seksi **hanya dirender di landing** (`showNavLinks`); halaman lain memakai nav ringkas.
 
-Semua eyebrow bernomor. Nomornya mengikuti urutan seksi yang dirender, bukan angka yang ditulis tangan di `content/` — kalau ada seksi ditambah atau dihapus, penomoran ikut menyesuaikan sendiri. Hero tidak ikut dihitung karena tidak punya eyebrow. Penomoran `01–04` di dalam seksi Metode tetap ada dan tidak bentrok: yang satu menomori seksi, yang satu menomori langkah.
-
-Teks eyebrow tetap dibaca dari `content/id/site.md` (`karya.eyebrow`, `caraKerja.eyebrow`, `tentang.eyebrow`, `kontak.eyebrow`). Hanya nomor dan pemisah `/` yang digenerate.
-
-Header: wordmark kiri, toggle tema kanan. Tanpa menu navigasi — halamannya cuma satu. Wordmark `radlabs` diikuti kepanjangannya (`meta.siteNameExpansion`) dalam mono kecil warna `--muted`; kepanjangannya disembunyikan di bawah 480px.
-
-Footer: satu baris mono, tahun + nama.
+Footer: satu baris mono di tengah, tahun + nama.
 
 ## Anatomi kartu karya
 
-Urut dari atas: baris notasi → judul (h3) → satu kalimat `summary` → tag stack → garis 1px → baris bawah berisi semua `metrics` (kiri) dan status repo (kanan).
+Urut dari atas: baris notasi → judul (`h3`) + panah `↗` → ringkasan → cover (hanya varian solo) → tag stack sebagai pill → garis 1px → periode (kiri) dan status repo (kanan).
 
-**Baris notasi** ada di paling atas kartu, mono 11px: nomor katalog `K-` + `order` dua digit di kiri, `status` dari frontmatter di kanan didahului titik 5px warna `--accent`. Status yang panjang dipotong di layar sempit, teks penuhnya tetap tersedia lewat atribut `title`. Nomor katalog digenerate dari `order` — ini notasi struktural, bukan data yang perlu ditulis di `content/`.
+**Baris notasi**: nomor katalog `K-` + `order` dua digit di kiri, `status` dari frontmatter di kanan didahului titik 5px `--accent`. Di bawah 560px bertumpuk supaya status yang panjang terbaca utuh — memotongnya menyembunyikan teks di balik tooltip `title`, yang tidak bisa dibuka di perangkat sentuh.
 
-Nilai `metrics` dirender mono 13px warna `--accent`, bukan serif 1.15rem (`DESIGN.md`, tabel skala). Render **semua** `metrics` yang ada di frontmatter — jangan potong ke jumlah tetap. Di layar sempit, baris metrics membungkus ke baris kedua. Batas atas 4 metric supaya kartu tidak melar; kalau ada file konten yang butuh lebih, itu keputusan desain baru, bukan hal yang diam-diam dipotong.
+**Angka `metrics` tidak dirender di kartu.** Tempatnya di halaman detail, di bawah lembar data. Kartu tetap ringkas seperti referensi.
 
-Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--accent`. Tidak ada transform, tidak ada shadow.
+Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--accent` dan panah ikut menguning. Tidak ada transform, tidak ada shadow.
 
 **Status repo** dibaca dari field `repo`:
-- berisi URL → label mono `↗ GitHub` sebagai tautan terpisah (`stopPropagation`, jangan nested `<a>`)
+- berisi URL → label mono `↗ GitHub` sebagai tautan terpisah (`z-10` di atas tautan kartu yang meregang, jangan nested `<a>`)
 - `null` → label mono `Repositori privat`, warna `--muted`, bukan tautan
 
-**Layout adaptif — penting:**
-- 1 item → satu kartu selebar container, gambar `cover` ditampilkan di dalam kartu
-- 2+ item → grid 2 kolom, `cover` tidak ditampilkan, kartu jadi ringkas
+**Layout adaptif:**
+- 1 item → satu kartu selebar container, `cover` ditampilkan di dalam kartu
+- 2+ item → grid 2 kolom, `cover` tidak ditampilkan
 - Di bawah 720px → selalu satu kolom
 
 Jangan render placeholder "coming soon" untuk slot kosong.
 
 ## Halaman detail
 
-Urut: judul (h1) → `summary` sebagai lede → blok manifest (peran, tim, periode, status, stack, repo) → isi Markdown.
+Urut: eyebrow `Karya` (tautan balik) → judul (`h1`) → `summary` sebagai lede → blok manifest bercaption `LEMBAR DATA` → baris `metrics` → isi Markdown → tautan balik `← Semua karya`.
 
-Blok manifest di halaman ini diberi caption mono `LEMBAR DATA` di atasnya. Gaya blok manifestnya sendiri tidak berubah — ia elemen signature (`DESIGN.md`). Bagian atas halaman (judul + lede + manifest) memakai kisi milimeter yang sama seperti hero landing.
+Kepala halaman memakai kisi milimeter yang sama seperti hero landing.
 
-Semua gambar dalam isi Markdown dibungkus komponen `Figure` secara otomatis — override `img` di konfigurasi Markdown, jangan tulis manual per gambar.
+Semua gambar dalam isi Markdown dibungkus `figure` berbingkai secara otomatis lewat `src/plugins/satteri-figure.mjs` — override di lapisan prosesor Markdown, jangan tulis manual per gambar. Tabel juga dibungkus `.table-scroll` di sana.
 
-Tabel Markdown perlu style: header mono uppercase kecil, garis 1px `--line`, tanpa zebra stripe. Di layar sempit, tabel bisa di-scroll horizontal.
+Tabel Markdown: header mono uppercase kecil, garis 1px `--line`, tanpa zebra stripe, bisa di-scroll horizontal di layar sempit.
 
-Di bawah isi: tautan balik `← Semua karya`.
+## Model konten `content/id/site.md`
+
+Semua teks yang tampil wajib berasal dari sini. Kunci tingkat atas:
+
+```
+meta      siteName, siteNameExpansion, url, description
+nav       [{ label, href }]          ← urutannya = urutan seksi
+hero      eyebrow, name, role, lede, photo, actions[{ label, href, variant }]
+tentang   title, paragraphs[]
+pengalaman title, items[{ role, org, period, status, summary, points[] }]
+pendidikan title, items[{ title, org, period, note?, href? }]
+keahlian  title, groups[{ title, items[] }]
+karya     title, intro
+kontak    title, intro, links[{ label, value, href }]
+notFound  heading, body, backLabel
+footer    text
+```
+
+Teks bertanda `[GANTI: ...]` adalah fakta yang belum tersedia. **Dirender apa adanya** — jangan dihapus, jangan ditebak, jangan "diperbaiki".
 
 ## Skema koleksi `karya`
 
@@ -111,16 +104,21 @@ Di bawah isi: tautan balik `← Semua karya`.
 
 Urutkan kartu berdasarkan `order` menaik.
 
-**Catatan:** `content/id/ppdb-lhi.md` belum punya field `repo`. Tambahkan `repo: null`. Beberapa `metrics` bernilai `TODO` — render apa adanya.
-
 ## SEO
 
 - `<title>`: `radlabs — [judul halaman]`
 - Meta description dari `summary`
 - og:image dari `cover`; landing pakai `/images/og.png` bila ada, kalau tidak ada lewati
-- `sitemap` bawaan Astro boleh dipakai (`@astrojs/sitemap` diizinkan, ini satu-satunya pengecualian dependency)
 - `site: 'https://radlabs.my.id'` di `astro.config.mjs`
+
+## Aset yang belum ada
+
+Dirender hanya kalau filenya ada, tanpa placeholder:
+
+- `public/images/profil.jpg` → foto hero
+- `public/images/og.png` → og:image landing
+- `public/favicon.png` → dirujuk `Base.astro`; selama belum ada, tiap halaman kena satu 404
 
 ## Deploy
 
-Workflow `.github/workflows/deploy.yml`: checkout → setup Node 20 → `npm ci` → `npm run build` → `actions/upload-pages-artifact` dengan path `./dist` → `actions/deploy-pages`. Trigger `push` ke `main` + `workflow_dispatch`. Permissions: `contents: read`, `pages: write`, `id-token: write`.
+Workflow `.github/workflows/deploy.yml`: checkout → setup Node → `npm ci` → `npm run build` → `actions/upload-pages-artifact` dengan path `./dist` → `actions/deploy-pages`. Trigger `push` ke `main` + `workflow_dispatch`. Permissions: `contents: read`, `pages: write`, `id-token: write`.

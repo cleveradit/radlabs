@@ -1,10 +1,12 @@
 ---
-# Teks landing page.
-# Bertanda [GANTI: ...] = placeholder yang belum diputuskan. Render apa adanya.
-# Isi diambil dari CV. Yang masih [GANTI: ...] artinya CV tidak memuatnya.
+# Teks landing page. SEMUA teks yang tampil di halaman dibaca dari sini.
 #
-# Nada: netral dan ringkas. Halaman ini memperkenalkan orang, bukan menawarkan
-# jasa. Hindari klausa pembanding ("bukan X"), superlatif, dan janji hasil.
+# Bertanda [GANTI: ...] = fakta yang belum saya punya. Dirender apa adanya,
+# jangan dihapus dan jangan ditebak — isi sendiri lalu tandanya hilang.
+#
+# Nada: netral dan ringkas. Halaman ini memperkenalkan orang, bukan
+# menawarkan jasa. Hindari klausa pembanding ("bukan X"), superlatif,
+# dan janji hasil.
 
 meta:
   siteName: "radlabs"
@@ -12,43 +14,113 @@ meta:
   url: "https://radlabs.my.id"
   description: "Radityo Dwiki Putra Hamas — IT Specialist di LHI International Islamic School, Surabaya. Sistem internal sekolah: kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, Docker."
 
+# Tautan navigasi. Urutannya = urutan seksi di halaman, dan nomor seksi
+# digenerate dari urutan ini.
+nav:
+  - label: "Tentang"
+    href: "#tentang"
+  - label: "Pengalaman"
+    href: "#pengalaman"
+  - label: "Pendidikan"
+    href: "#pendidikan"
+  - label: "Keahlian"
+    href: "#keahlian"
+  - label: "Karya"
+    href: "#karya"
+  - label: "Kontak"
+    href: "#kontak"
+
 hero:
-  heading: "Radityo Dwiki Putra Hamas"
-  lede: "IT Specialist di LHI International Islamic School, Surabaya. Mengerjakan sistem internal sekolah — kepegawaian, data akademik, dan penerimaan siswa baru."
-
-manifest:
-  - label: "Basis"
-    value: "Surabaya, Indonesia"
-  - label: "Fokus"
-    value: "Laravel · Filament · Docker"
-  - label: "Sertifikasi"
-    value: "Google Project Management Professional (2026)"
-    href: "https://www.coursera.org/verify/professional-cert/1N9BWR1AQS1D"
-  - label: "Status"
-    value: "Aktif bekerja — kontrak berjalan"
-
-karya:
-  eyebrow: "Karya"
-
-caraKerja:
-  eyebrow: "Metode"
-  steps:
-    - title: "Membaca kebutuhan"
-      body: "Kebutuhan dibaca langsung dari orang yang akan memakainya, sebelum ada keputusan teknis."
-    - title: "Merancang untuk dirawat"
-      body: "Arsitektur disusun dengan prinsip Domain-Driven Design, supaya tetap terbaca saat sistem tumbuh."
-    - title: "Membangun per modul"
-      body: "Satu sistem dipecah jadi modul terpisah — kepegawaian, akademik, penerimaan siswa baru."
-    - title: "Merilis lewat pipeline"
-      body: "Deploy Docker di VPS, dengan rilis otomatis lewat GitHub Actions."
+  eyebrow: "Surabaya, Indonesia"
+  name: "Radityo Dwiki Putra Hamas"
+  role: "IT Specialist"
+  lede: "Membangun sistem internal sekolah di LHI International Islamic School — kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, dan Docker, di atas arsitektur Domain-Driven Design."
+  photo: "/images/profil.jpg"
+  actions:
+    - label: "Lihat karya"
+      href: "#karya"
+      variant: "primary"
+    - label: "Kontak"
+      href: "#kontak"
+      variant: "outline"
 
 tentang:
-  eyebrow: "Tentang"
-  photo: "/images/profil.jpg"
-  body: "Sarjana Sistem Informasi Universitas Brawijaya, berbasis di Surabaya. Sekarang IT Specialist di LHI International Islamic School, membangun sistem internal sekolah dengan Laravel, Filament, dan MySQL di atas arsitektur Domain-Driven Design. Sebelumnya mengerjakan aplikasi kasir berbasis web sebagai freelance dan magang di Pemerintah Provinsi Jawa Timur. Titik awalnya bukan pengembangan web, melainkan machine learning dan forecasting di PT Orbit Ventura Indonesia."
+  title: "Tentang"
+  paragraphs:
+    - "Sarjana Sistem Informasi Universitas Brawijaya, berbasis di Surabaya. Sekarang IT Specialist di LHI International Islamic School, membangun sistem internal sekolah dengan Laravel, Filament, dan MySQL di atas arsitektur Domain-Driven Design."
+    - "Sebelumnya mengerjakan aplikasi kasir berbasis web sebagai freelance dan magang di Pemerintah Provinsi Jawa Timur. Titik awalnya bukan pengembangan web, melainkan machine learning dan forecasting di PT Orbit Ventura Indonesia."
+    - "Kebiasaan kerja saya sederhana: membaca kebutuhan langsung dari orang yang akan memakainya, memecah satu sistem jadi modul terpisah, dan merilis lewat pipeline otomatis. Alasan di balik setiap keputusan teknis ikut didokumentasikan, bukan cuma hasilnya."
+
+pengalaman:
+  title: "Pengalaman"
+  items:
+    - role: "IT Specialist"
+      org: "LHI International Islamic School"
+      period: "[GANTI: bulan & tahun mulai] — Sekarang"
+      status: "Aktif bekerja — kontrak berjalan"
+      summary: "Membangun dan merawat sistem internal sekolah."
+      points:
+        - "Modul kepegawaian, data akademik, dan penerimaan siswa baru dibangun sebagai bagian terpisah dari satu sistem."
+        - "Arsitektur disusun dengan prinsip Domain-Driven Design supaya tetap terbaca saat sistem tumbuh."
+        - "Deploy Docker di VPS, dengan rilis otomatis lewat GitHub Actions."
+    - role: "Pengembang web — Freelance"
+      org: "[GANTI: nama klien, atau tulis Mandiri]"
+      period: "[GANTI: periode]"
+      status: ""
+      summary: "Membangun aplikasi kasir berbasis web."
+      points: []
+    - role: "[GANTI: posisi magang]"
+      org: "Pemerintah Provinsi Jawa Timur"
+      period: "[GANTI: periode]"
+      status: ""
+      summary: "[GANTI: satu kalimat tentang yang dikerjakan di sini]"
+      points: []
+    - role: "[GANTI: posisi]"
+      org: "PT Orbit Ventura Indonesia"
+      period: "[GANTI: periode]"
+      status: ""
+      summary: "Mengerjakan machine learning dan forecasting. Titik awal karier, sebelum berpindah ke pengembangan web."
+      points: []
+
+pendidikan:
+  title: "Pendidikan"
+  items:
+    - title: "Sarjana Sistem Informasi"
+      org: "Universitas Brawijaya"
+      period: "[GANTI: periode]"
+      note: "[GANTI: IPK atau catatan lain, hapus baris ini kalau tidak perlu]"
+    - title: "Google Project Management Professional Certificate"
+      org: "Coursera"
+      period: "2026"
+      note: "Sertifikat terverifikasi."
+      href: "https://www.coursera.org/verify/professional-cert/1N9BWR1AQS1D"
+
+keahlian:
+  title: "Keahlian"
+  groups:
+    - title: "Backend"
+      items: ["Laravel", "Filament", "Livewire", "MySQL"]
+    - title: "Arsitektur & kualitas"
+      items:
+        [
+          "Domain-Driven Design",
+          "Pemisahan modul",
+          "Pengujian otomatis",
+          "Dokumentasi keputusan teknis",
+        ]
+    - title: "Infrastruktur & rilis"
+      items: ["Docker", "VPS", "GitHub Actions", "CI/CD"]
+    - title: "Lainnya"
+      items:
+        ["Tailwind CSS", "Machine learning", "Forecasting", "Manajemen proyek"]
+
+karya:
+  title: "Karya"
+  intro: "Studi kasus sistem yang saya kerjakan."
 
 kontak:
-  eyebrow: "Kontak"
+  title: "Kontak"
+  intro: "Paling mudah lewat email. Tautan lain ada di bawah."
   links:
     - label: "Email"
       value: "radityodwiki@gmail.com"

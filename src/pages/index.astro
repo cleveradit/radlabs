@@ -3,7 +3,6 @@ import { existsSync } from "node:fs";
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
-import Manifest from "../components/Manifest.astro";
 import KaryaCard from "../components/KaryaCard.astro";
 import { frontmatter as site } from "../../content/id/site.md";
 
@@ -11,83 +10,215 @@ const karya = (await getCollection("karya")).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
-// 1 item → kartu tunggal selebar container; 2+ → grid dua kolom (SPEC.md).
+// 1 item → kartu tunggal selebar container; 2+ → grid dua kolom.
 const variant = karya.length === 1 ? "solo" : "grid";
 
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
-const photo = existsSync(`public${site.tentang.photo}`) ? site.tentang.photo : null;
+const photo = existsSync(`public${site.hero.photo}`) ? site.hero.photo : null;
 const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefined;
+
+type Action = { label: string; href: string; variant: "primary" | "outline" };
+type Pengalaman = {
+  role: string;
+  org: string;
+  period: string;
+  status: string;
+  summary: string;
+  points: string[];
+};
+type Pendidikan = {
+  title: string;
+  org: string;
+  period: string;
+  note?: string;
+  href?: string;
+};
+type Keahlian = { title: string; items: string[] };
 ---
 
-<Base ogImage={ogImage}>
-  <!-- 1 — Hero (tanpa eyebrow, jadi tidak ikut penomoran seksi) -->
+<Base ogImage={ogImage} showNavLinks>
+  <!-- Hero -->
   <div class="lab-grid">
-    <div class="container-page pt-[64px] pb-[56px]">
-      <h1>{site.hero.heading}</h1>
-      <p class="lede mt-5">{site.hero.lede}</p>
-      <Manifest rows={site.manifest} class="mt-10" />
-    </div>
-  </div>
-
-  <!-- 2 — Karya -->
-  <Section eyebrow={site.karya.eyebrow} index={1} id="karya">
     <div
-      class:list={[
-        "grid gap-5",
-        variant === "grid" && "min-[720px]:grid-cols-2",
-      ]}
+      class="container-page flex flex-col-reverse items-start gap-10 pt-[72px] pb-[80px] min-[860px]:flex-row min-[860px]:items-center min-[860px]:gap-14"
     >
-      {karya.map((entry) => <KaryaCard entry={entry} variant={variant} />)}
-    </div>
-  </Section>
+      <div class="min-w-0 flex-1">
+        <p class="u-eyebrow">{site.hero.eyebrow}</p>
+        <h1 class="mt-3">{site.hero.name}</h1>
+        <p class="mt-3 font-serif text-[1.4rem] leading-snug text-accent">
+          {site.hero.role}
+        </p>
+        <p class="lede mt-5">{site.hero.lede}</p>
 
-  <!-- 3 — Metode -->
-  <Section eyebrow={site.caraKerja.eyebrow} index={2}>
-    <ol class="grid gap-8 min-[560px]:grid-cols-2">
-      {
-        site.caraKerja.steps.map(
-          (step: { title: string; body: string }, i: number) => (
-            <li>
-              {/* Muted, bukan aksen: nomor seksi tepat di atasnya sudah
-                  memakai aksen pada ukuran dan font yang sama persis.
-                  Dua sistem penomoran berwarna sama di kolom yang sama
-                  membuat pembaca mengira keduanya satu deret. */}
-              <p class="u-mono text-[11px] tracking-[0.14em] text-muted">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <h3 class="mt-2">{step.title}</h3>
-              <p class="mt-2 text-muted">{step.body}</p>
-            </li>
-          ),
-        )
-      }
-    </ol>
-  </Section>
+        <div class="mt-9 flex flex-wrap gap-3">
+          {
+            (site.hero.actions as Action[]).map((action) => (
+              <a
+                href={action.href}
+                class:list={[
+                  "btn",
+                  action.variant === "primary" ? "btn-primary" : "btn-outline",
+                ]}
+              >
+                {action.label}
+              </a>
+            ))
+          }
+        </div>
+      </div>
 
-  <!-- 4 — Tentang -->
-  <Section eyebrow={site.tentang.eyebrow} index={3}>
-    <div class="flex flex-col gap-6 min-[560px]:flex-row min-[560px]:items-start">
       {
         photo && (
           <img
             src={photo}
             alt=""
-            width="96"
-            height="96"
-            loading="lazy"
+            width="240"
+            height="240"
             decoding="async"
-            class="h-24 w-24 shrink-0 rounded-[var(--radius-card)] border border-line object-cover"
+            class="size-[180px] shrink-0 rounded-full border border-line object-cover min-[860px]:size-[240px]"
           />
         )
       }
-      <p>{site.tentang.body}</p>
+    </div>
+  </div>
+
+  <!-- 01 — Tentang -->
+  <Section title={site.tentang.title} index={1} id="tentang" alt>
+    <div class="space-y-4">
+      {
+        (site.tentang.paragraphs as string[]).map((text) => (
+          <p class="text-muted">{text}</p>
+        ))
+      }
     </div>
   </Section>
 
-  <!-- 5 — Kontak -->
-  <Section eyebrow={site.kontak.eyebrow} index={4}>
-    {site.kontak.intro && <p class="lede">{site.kontak.intro}</p>}
+  <!-- 02 — Pengalaman -->
+  <Section title={site.pengalaman.title} index={2} id="pengalaman">
+    <ol class="timeline space-y-10">
+      {
+        (site.pengalaman.items as Pengalaman[]).map((job) => (
+          <li class="relative">
+            <span class="timeline-marker" aria-hidden="true" />
 
-    <Manifest rows={site.kontak.links} class="mt-6" />
+            <h3>{job.role}</h3>
+            <p class="mt-1 text-[0.98rem] text-ink">{job.org}</p>
+
+            <p class="u-mono mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] tracking-[0.08em] text-muted">
+              <span>{job.period}</span>
+              {job.status && (
+                <span class="flex items-center gap-1.5">
+                  <span
+                    aria-hidden="true"
+                    class="size-[5px] shrink-0 rounded-full bg-accent"
+                  />
+                  {job.status}
+                </span>
+              )}
+            </p>
+
+            {job.summary && <p class="mt-3 text-muted">{job.summary}</p>}
+
+            {job.points.length > 0 && (
+              <ul class="mt-3 space-y-2 pl-[1.15em]">
+                {job.points.map((point) => (
+                  <li class="relative text-muted">
+                    <span
+                      aria-hidden="true"
+                      class="absolute -left-[1.15em] text-muted"
+                    >
+                      —
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <!-- 03 — Pendidikan -->
+  <Section title={site.pendidikan.title} index={3} id="pendidikan" alt>
+    <ul class="grid gap-5 min-[720px]:grid-cols-2">
+      {
+        (site.pendidikan.items as Pendidikan[]).map((item) => (
+          <li class="card">
+            <h3>{item.title}</h3>
+            <p class="mt-1 text-[0.98rem] text-ink">{item.org}</p>
+            <p class="u-mono mt-1.5 text-[11px] tracking-[0.08em] text-muted">
+              {item.period}
+            </p>
+            {item.note && <p class="mt-3 text-muted">{item.note}</p>}
+            {item.href && (
+              <p class="mt-3">
+                <a
+                  href={item.href}
+                  rel="noopener"
+                  class="u-mono text-[11px] tracking-[0.08em] no-underline hover:underline"
+                >
+                  ↗ Verifikasi
+                </a>
+              </p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- 04 — Keahlian -->
+  <Section title={site.keahlian.title} index={4} id="keahlian">
+    <ul class="grid gap-5 min-[560px]:grid-cols-2 min-[900px]:grid-cols-4">
+      {
+        (site.keahlian.groups as Keahlian[]).map((group) => (
+          <li class="card">
+            <h3 class="text-[1.05rem]">{group.title}</h3>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {group.items.map((item) => (
+                <li class="pill">{item}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- 05 — Karya -->
+  <Section title={site.karya.title} index={5} id="karya" alt>
+    {site.karya.intro && <p class="lede -mt-4 mb-8">{site.karya.intro}</p>}
+
+    <div
+      class:list={["grid gap-5", variant === "grid" && "min-[720px]:grid-cols-2"]}
+    >
+      {karya.map((entry) => <KaryaCard entry={entry} variant={variant} />)}
+    </div>
+  </Section>
+
+  <!-- 06 — Kontak -->
+  <Section title={site.kontak.title} index={6} id="kontak">
+    {site.kontak.intro && <p class="lede -mt-4 mb-8">{site.kontak.intro}</p>}
+
+    <ul class="flex flex-wrap gap-4">
+      {
+        site.kontak.links.map(
+          (link: { label: string; value: string; href: string }) => (
+            <li>
+              <a
+                href={link.href}
+                rel="noopener"
+                class="card flex flex-col gap-1 px-6 py-4 no-underline transition-colors hover:border-accent"
+              >
+                <span class="u-label">{link.label}</span>
+                <span class="font-mono text-[13px] text-ink">{link.value}</span>
+              </a>
+            </li>
+          ),
+        )
+      }
+    </ul>
   </Section>
 </Base>
