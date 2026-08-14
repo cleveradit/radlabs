@@ -41,6 +41,10 @@ const href = `/karya/${d.slug}`;
           alt={d.title}
           width="1920"
           height="961"
+          {/* Gambar ini elemen LCP di layar lebar, jadi `eager` menolong
+              sedikit di desktop — tapi di mobile ia ada jauh di bawah lipatan
+              dan justru berebut bandwidth dengan jalur kritis (LCP 3,5s → 4,0s).
+              Mobile profil yang lebih ketat, jadi tetap `lazy`. */}
           loading="lazy"
           decoding="async"
           class="block w-full"

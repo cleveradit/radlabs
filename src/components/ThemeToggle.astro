@@ -7,9 +7,15 @@
 <button
   type="button"
   id="theme-toggle"
-  aria-label="Ganti tema"
   class="u-mono inline-flex items-center rounded-[var(--radius-tag)] border border-line px-2.5 py-1 uppercase tracking-[0.1em] text-[11px] text-muted transition-colors hover:border-accent hover:text-accent"
 >
+  {/*
+    Awalan hanya untuk pembaca layar, bukan aria-label statis: nama aksesibel
+    jadi "Ganti ke tema Terang" dan tetap memuat teks yang terlihat. Sebuah
+    aria-label tetap akan bentrok dengan label yang berubah-ubah dan memicu
+    temuan label-content-name-mismatch.
+  */}
+  <span class="sr-only">Ganti ke tema </span>
   <span data-theme-label="dark">Terang</span>
   <span data-theme-label="light">Gelap</span>
 </button>
