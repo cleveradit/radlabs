@@ -45,7 +45,7 @@ Skala:
 | lede | `1.08rem` | warna `--muted` |
 | mono utility | `11–13px` | tracking 0.05–0.14em, uppercase untuk label |
 
-Lebar container **1100px**, padding samping 24px.
+Lebar container **1420px**, padding samping 24px. Di layar 1920px ini menyisakan 250px per sisi.
 
 Container itu bingkai luar, bukan lebar teks. Di dalamnya ada dua lebar:
 
