@@ -39,21 +39,27 @@ Catatan: file case study ada di `content/id/`. Konfigurasikan koleksi Astro agar
 
 ## Landing — lima seksi, urut
 
-1. **Hero** — h1, lede, lalu blok manifest. Tanpa foto, tanpa tombol besar, tanpa animasi ketik.
-2. **Karya** — eyebrow "Karya", lalu kartu.
-3. **Cara saya bekerja** — 4 langkah. Penomoran `01–04` dibolehkan **hanya di seksi ini**, karena urutannya memang bermakna.
-4. **Tentang** — foto profil kecil + 3–4 kalimat.
-5. **Kontak** — tautan email, GitHub, LinkedIn dalam gaya manifest. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
+1. **Hero** — h1 berisi nama, lede, lalu blok manifest. Tanpa eyebrow, tanpa nomor, tanpa foto, tanpa tombol besar, tanpa animasi ketik. Latar hero memakai kisi milimeter (`DESIGN.md`, "Kerangka lembar lab").
+2. **Karya** — eyebrow `01 / KARYA`, lalu kartu.
+3. **Metode** — eyebrow `02 / METODE`, 4 langkah bernomor `01–04`.
+4. **Tentang** — eyebrow `03 / TENTANG`, foto profil kecil + 3–4 kalimat.
+5. **Kontak** — eyebrow `04 / KONTAK`, tautan email, GitHub, LinkedIn dalam gaya manifest. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
 
-Header: wordmark kiri, toggle tema kanan. Tanpa menu navigasi — halamannya cuma satu.
+Semua eyebrow bernomor. Nomornya mengikuti urutan seksi yang dirender, bukan angka yang ditulis tangan di `content/` — kalau ada seksi ditambah atau dihapus, penomoran ikut menyesuaikan sendiri. Hero tidak ikut dihitung karena tidak punya eyebrow. Penomoran `01–04` di dalam seksi Metode tetap ada dan tidak bentrok: yang satu menomori seksi, yang satu menomori langkah.
+
+Teks eyebrow tetap dibaca dari `content/id/site.md` (`karya.eyebrow`, `caraKerja.eyebrow`, `tentang.eyebrow`, `kontak.eyebrow`). Hanya nomor dan pemisah `/` yang digenerate.
+
+Header: wordmark kiri, toggle tema kanan. Tanpa menu navigasi — halamannya cuma satu. Wordmark `radlabs` diikuti kepanjangannya (`meta.siteNameExpansion`) dalam mono kecil warna `--muted`; kepanjangannya disembunyikan di bawah 480px.
 
 Footer: satu baris mono, tahun + nama.
 
 ## Anatomi kartu karya
 
-Urut dari atas: judul (h3) → satu kalimat `summary` → tag stack → garis 1px → baris bawah berisi semua `metrics` (kiri) dan status repo (kanan).
+Urut dari atas: baris notasi → judul (h3) → satu kalimat `summary` → tag stack → garis 1px → baris bawah berisi semua `metrics` (kiri) dan status repo (kanan).
 
-Render **semua** `metrics` yang ada di frontmatter — jangan potong ke jumlah tetap. Di layar sempit, baris metrics membungkus ke baris kedua. Batas atas 4 metric supaya kartu tidak melar; kalau ada file konten yang butuh lebih, itu keputusan desain baru, bukan hal yang diam-diam dipotong.
+**Baris notasi** ada di paling atas kartu, mono 11px: nomor katalog `K-` + `order` dua digit di kiri, `status` dari frontmatter di kanan didahului titik 5px warna `--accent`. Status yang panjang dipotong di layar sempit, teks penuhnya tetap tersedia lewat atribut `title`. Nomor katalog digenerate dari `order` — ini notasi struktural, bukan data yang perlu ditulis di `content/`.
+
+Nilai `metrics` dirender mono 13px warna `--accent`, bukan serif 1.15rem (`DESIGN.md`, tabel skala). Render **semua** `metrics` yang ada di frontmatter — jangan potong ke jumlah tetap. Di layar sempit, baris metrics membungkus ke baris kedua. Batas atas 4 metric supaya kartu tidak melar; kalau ada file konten yang butuh lebih, itu keputusan desain baru, bukan hal yang diam-diam dipotong.
 
 Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--accent`. Tidak ada transform, tidak ada shadow.
 
@@ -71,6 +77,8 @@ Jangan render placeholder "coming soon" untuk slot kosong.
 ## Halaman detail
 
 Urut: judul (h1) → `summary` sebagai lede → blok manifest (peran, tim, periode, status, stack, repo) → isi Markdown.
+
+Blok manifest di halaman ini diberi caption mono `LEMBAR DATA` di atasnya. Gaya blok manifestnya sendiri tidak berubah — ia elemen signature (`DESIGN.md`). Bagian atas halaman (judul + lede + manifest) memakai kisi milimeter yang sama seperti hero landing.
 
 Semua gambar dalam isi Markdown dibungkus komponen `Figure` secara otomatis — override `img` di konfigurasi Markdown, jangan tulis manual per gambar.
 
