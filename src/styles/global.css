@@ -569,6 +569,26 @@
 }
 
 /* ============================================================
+   Kolom teks selebar container — halaman detail karya
+   Studi kasus merender gambar dan tabel selebar container penuh.
+   Dengan batas baca 68ch/62ch, teksnya menumpuk di kiri dan
+   menyisakan ruang kosong besar di kanan pada layar landscape —
+   makin terasa setelah container dilebarkan ke 1280px. Di halaman
+   ini batas itu dilepas supaya teks sejajar dengan tepi gambar.
+
+   Sengaja TIDAK dibungkus @layer: batas lamanya sebagian datang
+   dari utility Tailwind, dan lapisan `utilities` selalu menang atas
+   `components`. CSS tanpa layer menang atas keduanya.
+   ============================================================ */
+
+.measure-wide p,
+.measure-wide .lede,
+.measure-wide .manifest,
+.measure-wide .prose :is(ul, ol) {
+  max-width: none;
+}
+
+/* ============================================================
    Toggle tema — label menyebut tema TUJUAN.
    Ditentukan lewat CSS, bukan JS, supaya tidak ada kedipan
    dan tetap benar saat JS mati.

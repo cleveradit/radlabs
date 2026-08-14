@@ -12,7 +12,7 @@ interface Props {
 const { rows, caption, class: className = "" } = Astro.props;
 ---
 
-<div class:list={["max-w-[62ch]", className]}>
+<div class:list={[className]}>
   {caption && <p class="u-label mb-2.5">{caption}</p>}
 
   <dl class="manifest">

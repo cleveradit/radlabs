@@ -33,7 +33,9 @@ const metrics = d.metrics.slice(0, 4);
 ---
 
 <Base title={d.title} description={d.summary} ogImage={d.cover}>
-  <article>
+  {/* `measure-wide`: di halaman ini gambar dirender selebar container,
+      jadi kolom teksnya ikut lebar itu. Lihat global.css. */}
+  <article class="measure-wide">
     {/* Kepala halaman memakai kisi yang sama seperti hero landing supaya
         kedua halaman terasa satu sistem. */}
     <div class="lab-grid">
@@ -51,7 +53,7 @@ const metrics = d.metrics.slice(0, 4);
 
         {
           metrics.length > 0 && (
-            <ul class="mt-8 flex max-w-[62ch] flex-wrap gap-x-10 gap-y-4">
+            <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
               {metrics.map((m) => (
                 <li>
                   <p class="font-mono text-[13px] leading-tight font-medium tracking-[0.02em] text-accent">

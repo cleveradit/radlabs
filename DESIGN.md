@@ -61,6 +61,8 @@ Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px** 
 
 Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per sisi. 1280px memangkasnya jadi 320px tanpa membuat kartu jadi gua. Kolom teks tetap dibatasi terpisah — paragraf 68ch, lede 62ch — jadi melebarkan container tidak memanjangkan baris bacaan.
 
+**Kecuali halaman detail karya.** Studi kasus merender tangkapan layar dan tabel selebar container penuh. Kalau teksnya tetap 68ch, paragraf menumpuk di kiri sementara gambar mencapai tepi kanan — di layar landscape sisanya terbaca sebagai lubang, bukan margin. Di halaman itu batas baca dilepas lewat kelas `.measure-wide` pada `<article>`, jadi teks, lede, manifest, dan daftar sejajar dengan tepi gambar. Kelas ini ditulis **di luar `@layer`** karena sebagian batas lama berasal dari utility Tailwind, dan lapisan `utilities` selalu menang atas `components`.
+
 ## Bentuk & jarak
 
 - Radius: **8px** untuk kartu, bingkai, dan tombol. **999px** untuk pill.
@@ -91,7 +93,7 @@ Tanpa tombol hamburger. Di bawah 768px, daftar tautan jatuh ke baris kedua dan b
 
 ## Blok manifest
 
-Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar kolom teks (62ch), bukan lebar container.
+Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar kolom teks (62ch), bukan lebar container — kecuali di halaman detail karya, yang memakai `.measure-wide` sehingga manifest ikut lebar container.
 
 ## Bingkai tangkapan layar
 
