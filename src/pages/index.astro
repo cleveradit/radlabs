@@ -20,15 +20,17 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
 ---
 
 <Base ogImage={ogImage}>
-  <!-- 1 — Hero -->
-  <div class="container-page pt-[64px] pb-[56px]">
-    <h1>{site.hero.heading}</h1>
-    <p class="lede mt-5">{site.hero.lede}</p>
-    <Manifest rows={site.manifest} class="mt-10" />
+  <!-- 1 — Hero (tanpa eyebrow, jadi tidak ikut penomoran seksi) -->
+  <div class="lab-grid">
+    <div class="container-page pt-[64px] pb-[56px]">
+      <h1>{site.hero.heading}</h1>
+      <p class="lede mt-5">{site.hero.lede}</p>
+      <Manifest rows={site.manifest} class="mt-10" />
+    </div>
   </div>
 
   <!-- 2 — Karya -->
-  <Section eyebrow={site.karya.eyebrow} id="karya">
+  <Section eyebrow={site.karya.eyebrow} index={1} id="karya">
     <div
       class:list={[
         "grid gap-5",
@@ -39,14 +41,18 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
     </div>
   </Section>
 
-  <!-- 3 — Cara saya bekerja -->
-  <Section eyebrow={site.caraKerja.eyebrow}>
+  <!-- 3 — Metode -->
+  <Section eyebrow={site.caraKerja.eyebrow} index={2}>
     <ol class="grid gap-8 min-[560px]:grid-cols-2">
       {
         site.caraKerja.steps.map(
           (step: { title: string; body: string }, i: number) => (
             <li>
-              <p class="u-mono text-[11px] tracking-[0.14em] text-accent">
+              {/* Muted, bukan aksen: nomor seksi tepat di atasnya sudah
+                  memakai aksen pada ukuran dan font yang sama persis.
+                  Dua sistem penomoran berwarna sama di kolom yang sama
+                  membuat pembaca mengira keduanya satu deret. */}
+              <p class="u-mono text-[11px] tracking-[0.14em] text-muted">
                 {String(i + 1).padStart(2, "0")}
               </p>
               <h3 class="mt-2">{step.title}</h3>
@@ -59,7 +65,7 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
   </Section>
 
   <!-- 4 — Tentang -->
-  <Section eyebrow={site.tentang.eyebrow}>
+  <Section eyebrow={site.tentang.eyebrow} index={3}>
     <div class="flex flex-col gap-6 min-[560px]:flex-row min-[560px]:items-start">
       {
         photo && (
@@ -79,7 +85,7 @@ const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefine
   </Section>
 
   <!-- 5 — Kontak -->
-  <Section eyebrow={site.kontak.eyebrow}>
+  <Section eyebrow={site.kontak.eyebrow} index={4}>
     {site.kontak.intro && <p class="lede">{site.kontak.intro}</p>}
 
     <Manifest rows={site.kontak.links} class="mt-6" />

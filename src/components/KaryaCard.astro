@@ -17,11 +17,30 @@ const METRICS_MAX = 4;
 const metrics = d.metrics.slice(0, METRICS_MAX);
 
 const href = `/karya/${d.slug}`;
+
+// Notasi katalog — struktural, diturunkan dari `order` di frontmatter.
+// Bukan data baru, jadi tidak perlu ditulis di content/.
+const catalog = `K-${String(d.order).padStart(2, "0")}`;
 ---
 
 <article
   class="group relative flex flex-col rounded-[var(--radius-card)] border border-line bg-surface p-6 transition-colors focus-within:border-accent hover:border-accent"
 >
+  {/* Baris notasi. Di layar sempit bertumpuk supaya status yang panjang
+      terbaca utuh — memotongnya di sana akan menyembunyikan teks di balik
+      tooltip `title`, yang tidak bisa dibuka di perangkat sentuh. */}
+  <div
+    class="u-mono mb-3 flex flex-col gap-1 text-[11px] tracking-[0.08em] text-muted min-[560px]:flex-row min-[560px]:items-center min-[560px]:gap-4"
+  >
+    <span class="shrink-0">{catalog}</span>
+    <span class="flex min-w-0 items-center gap-1.5 min-[560px]:ml-auto">
+      <span
+        aria-hidden="true"
+        class="size-[5px] shrink-0 rounded-full bg-accent"></span>
+      <span class="min-[560px]:truncate" title={d.status}>{d.status}</span>
+    </span>
+  </div>
+
   <h3>
     {/* Tautan meregang menutupi seluruh kartu lewat ::after — menghindari <a> bersarang. */}
     <a
@@ -70,7 +89,10 @@ const href = `/karya/${d.slug}`;
       {
         metrics.map((m) => (
           <li>
-            <p class="font-serif text-[1.15rem] leading-tight font-medium text-accent">
+            {/* Mono 13px, bukan serif 1.15rem — angka bukan judul, dan
+                nilai `TODO` di content/ tidak boleh jadi teks terbesar
+                di seksi ini (DESIGN.md, tabel skala). */}
+            <p class="font-mono text-[13px] leading-tight font-medium tracking-[0.02em] text-accent">
               {m.value}
             </p>
             <p class="u-label mt-1">{m.label}</p>

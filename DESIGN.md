@@ -82,6 +82,8 @@ Empat perangkat, semuanya struktural. Tidak ada yang kelima tanpa keputusan desa
 
 **3 — Nomor seksi.** Eyebrow jadi `01 / KARYA`: nomor dua digit warna `--accent`, garis miring dan nama seksi warna `--muted`, semuanya mono uppercase. Penomoran mengikuti urutan seksi yang benar-benar dirender, jadi tidak pernah ada nomor yang bolong.
 
+Konsekuensinya: **nomor langkah di dalam seksi Metode memakai `--muted`, bukan `--accent`.** Nomor seksi dan nomor langkah punya font, ukuran, dan tracking yang sama persis dan duduk di kolom yang sama — kalau warnanya juga sama, keduanya terbaca sebagai satu deret bernomor `01, 01, 02, 03, 04`. Aksen dipegang oleh penanda seksi; langkah menempel di bawahnya sebagai deret sekunder.
+
 **4 — Notasi katalog pada kartu karya.** Baris mono di atas judul kartu: nomor katalog `K-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`. Nomor katalog adalah notasi struktural, bukan klaim — sama statusnya dengan penomoran seksi.
 
 ## Elemen signature — blok manifest

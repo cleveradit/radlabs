@@ -64,11 +64,20 @@ const ogUrl = ogImage ? new URL(ogImage, canonical) : null;
       <div
         class="container-page flex items-center justify-between gap-4 py-4"
       >
-        <a
-          href="/"
-          class="font-mono text-[13px] font-medium tracking-[0.08em] text-ink no-underline hover:text-accent"
-          >{site.meta.siteName}</a
-        >
+        {/* Kepanjangan nama berada DI LUAR tautan supaya nama aksesibel
+            tautan tetap "radlabs" saja. Disembunyikan di bawah 480px
+            agar header tidak pecah di 360px. */}
+        <div class="flex min-w-0 items-baseline gap-2.5">
+          <a
+            href="/"
+            class="font-mono text-[13px] font-medium tracking-[0.08em] text-ink no-underline hover:text-accent"
+            >{site.meta.siteName}</a
+          >
+          <span
+            class="u-mono hidden shrink-0 text-[10px] tracking-[0.14em] text-muted min-[480px]:inline"
+            >{site.meta.siteNameExpansion}</span
+          >
+        </div>
         <ThemeToggle />
       </div>
     </header>
@@ -78,7 +87,7 @@ const ogUrl = ogImage ? new URL(ogImage, canonical) : null;
     </main>
 
     <footer class="mt-[var(--spacing-section)] border-t border-line">
-      <div class="container-page py-5">
+      <div class="container-page rule-ticks py-5">
         <p class="u-mono text-muted">{site.footer.text}</p>
       </div>
     </footer>

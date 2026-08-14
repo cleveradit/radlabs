@@ -2,29 +2,39 @@
 // Blok manifest — elemen signature (DESIGN.md).
 // Muncul di bawah hero landing dan di atas halaman detail.
 // `href` opsional: nilai jadi tautan (dipakai seksi Kontak dan baris Repo).
+// `caption` opsional: judul mono kecil di atas blok (halaman detail).
 interface Props {
   rows: { label: string; value: string; href?: string }[];
+  caption?: string;
   class?: string;
 }
 
-const { rows, class: className = "" } = Astro.props;
+const { rows, caption, class: className = "" } = Astro.props;
 ---
 
-<dl class:list={["manifest", className]}>
-  {
-    rows.map((row) => (
-      <div class="manifest-row">
-        <dt class="manifest-label">{row.label}</dt>
-        <dd class="manifest-value">
-          {row.href ? (
-            <a href={row.href} rel="noopener" class="no-underline hover:underline">
-              {row.value}
-            </a>
-          ) : (
-            row.value
-          )}
-        </dd>
-      </div>
-    ))
-  }
-</dl>
+<div class:list={["max-w-[62ch]", className]}>
+  {caption && <p class="u-label mb-2.5">{caption}</p>}
+
+  <dl class="manifest">
+    {
+      rows.map((row) => (
+        <div class="manifest-row">
+          <dt class="manifest-label">{row.label}</dt>
+          <dd class="manifest-value">
+            {row.href ? (
+              <a
+                href={row.href}
+                rel="noopener"
+                class="no-underline hover:underline"
+              >
+                {row.value}
+              </a>
+            ) : (
+              row.value
+            )}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>

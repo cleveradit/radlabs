@@ -39,6 +39,13 @@
   --accent: #b45309;
 }
 
+/* Token turunan, bukan warna baru: --line yang diredam ke arah --bg.
+   Ditulis sekali saja — var() disubstitusi saat dipakai, jadi nilainya
+   ikut berubah sendiri ketika --line dan --bg diganti per tema. */
+:root {
+  --grid: color-mix(in srgb, var(--line) 55%, var(--bg));
+}
+
 /* ============================================================
    Pemetaan ke Tailwind
    ============================================================ */
@@ -165,6 +172,71 @@
     max-width: var(--container-page);
     margin-inline: auto;
     padding-inline: 24px;
+  }
+
+  /* --- Kerangka lembar lab (DESIGN.md) --- */
+
+  /* Kisi milimeter. Digambar di ::before, bukan di elemennya sendiri:
+     `mask-image` membuat SELURUH elemen ikut memudar, termasuk teks
+     di dalamnya. Pseudo-element mengurung efeknya ke latar saja. */
+  .lab-grid {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .lab-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        var(--grid) 0 1px,
+        transparent 1px 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--grid) 0 1px,
+        transparent 1px 32px
+      );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+  }
+
+  /* Tanda ukur: tick 6px menggantung dari garis pemisah, di kedua tepi
+     kolom konten.
+     Tick harus jatuh di tepi KONTEN, bukan tepi kotak. Kalau dipasang
+     pada .container-page, tepi konten ada 24px ke dalam karena padding
+     container; kalau dipasang pada elemen yang sudah berada di dalam
+     container, tepi kotak sudah sama dengan tepi konten. */
+  .rule-ticks {
+    position: relative;
+    --tick-inset: 0px;
+  }
+
+  .rule-ticks.container-page {
+    --tick-inset: 24px;
+  }
+
+  .rule-ticks::before,
+  .rule-ticks::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 6px;
+    background-color: var(--line);
+    pointer-events: none;
+  }
+
+  .rule-ticks::before {
+    left: var(--tick-inset);
+  }
+
+  .rule-ticks::after {
+    right: var(--tick-inset);
   }
 
   /* Mono utility: label, eyebrow, tag, caption, footer */
