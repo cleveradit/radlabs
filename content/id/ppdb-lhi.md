@@ -12,7 +12,7 @@ stack:
 summary: "Membangun lapisan pengelolaan tahun ajaran dan kuota, kanal notifikasi resmi ke wali, serta batas data antar-unit untuk sistem pendaftaran lima unit sekolah."
 cover: "/images/ppdb/01-landing.png"
 featured: true
-order: 2
+order: 1
 confidential: true
 repo: null            # null = repositori privat
 metrics:

@@ -19,7 +19,7 @@ const karya = defineCollection({
     domain: z.string(),
     stack: z.array(z.string()),
     summary: z.string(),
-    cover: z.string(),
+    cover: z.string().optional(), // tanpa cover = kartu solo tanpa gambar, og:image dilewati
     featured: z.boolean(),
     order: z.number(),
     confidential: z.boolean(),
