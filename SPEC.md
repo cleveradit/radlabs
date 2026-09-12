@@ -51,7 +51,7 @@ Jangan render placeholder "coming soon" untuk slot kosong.
 
 ## Halaman detail
 
-Urut: eyebrow `Karya` (tautan balik) → judul (`h1`) → `summary` sebagai lede → blok manifest bercaption `LEMBAR DATA` → baris `metrics` → isi Markdown → tautan balik `← Semua karya`.
+Urut: eyebrow `Karya` (tautan balik) → judul (`h1`) → `summary` sebagai lede → tombol situs live bila `liveUrl` tersedia → blok manifest bercaption `LEMBAR DATA` → baris `metrics` → isi Markdown → tautan balik `← Semua karya`.
 
 Kepala halaman memakai kisi milimeter yang sama seperti hero landing.
 
@@ -98,6 +98,8 @@ Teks bertanda `[GANTI: ...]` adalah fakta yang belum tersedia. **Dirender apa ad
   order: number
   confidential: boolean
   repo: string | null          // null = repositori privat
+  liveUrl?: string             // situs live, bila tersedia
+  liveLabel?: string           // label tombol situs live
   metrics: { label: string, value: string }[]
 }
 ```

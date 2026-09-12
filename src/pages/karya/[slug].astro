@@ -47,6 +47,16 @@ const metrics = d.metrics.slice(0, 4);
         <h1 class="mt-3">{d.title}</h1>
         <p class="lede mt-5">{d.summary}</p>
 
+        {
+          d.liveUrl && d.liveLabel && (
+            <p class="mt-8">
+              <a href={d.liveUrl} rel="noopener" class="btn btn-primary">
+                {d.liveLabel}
+              </a>
+            </p>
+          )
+        }
+
         <Manifest rows={rows} caption="Lembar data" class="mt-10" />
 
         {

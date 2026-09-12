@@ -24,6 +24,8 @@ const karya = defineCollection({
     order: z.number(),
     confidential: z.boolean(),
     repo: z.string().nullable(), // null = repositori privat
+    liveUrl: z.string().url().optional(),
+    liveLabel: z.string().optional(),
     metrics: z.array(
       z.object({
         label: z.string(),
