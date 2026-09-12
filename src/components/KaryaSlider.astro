@@ -85,8 +85,15 @@ const { entries, label } = Astro.props;
     let startScrollLeft = 0;
     let dragged = false;
     let clickResetTimer = 0;
-    let manuallyPaused = false;
-    let focusPaused = slider.contains(document.activeElement);
+    const hasKeyboardFocusWithin = () => {
+      const activeElement = document.activeElement;
+      return (
+        activeElement instanceof HTMLElement &&
+        slider.contains(activeElement) &&
+        activeElement.matches(":focus-visible")
+      );
+    };
+    let focusPaused = hasKeyboardFocusWithin();
     const isInViewport = () => {
       const rect = slider.getBoundingClientRect();
       return rect.bottom > 0 && rect.top < window.innerHeight;
@@ -138,7 +145,6 @@ const { entries, label } = Astro.props;
     };
 
     const shouldAnimate = () =>
-      !manuallyPaused &&
       !reducedMotion.matches &&
       !document.hidden &&
       inViewport &&
@@ -175,12 +181,6 @@ const { entries, label } = Astro.props;
       if (!animationFrame) animationFrame = requestAnimationFrame(animate);
     };
 
-    const stopAfterDrag = () => {
-      if (manuallyPaused) return;
-      manuallyPaused = true;
-      stopAnimation();
-    };
-
     track.addEventListener(
       "pointerdown",
       (event) => {
@@ -206,7 +206,6 @@ const { entries, label } = Astro.props;
           dragged = true;
           track.classList.add("is-dragging");
           track.setPointerCapture(pointerId);
-          stopAfterDrag();
         }
         track.scrollLeft = startScrollLeft - distance;
         normalizePosition();
@@ -256,9 +255,11 @@ const { entries, label } = Astro.props;
     slider.addEventListener("mouseleave", syncAnimation, listenerOptions);
     slider.addEventListener(
       "focusin",
-      () => {
-        focusPaused = true;
-        stopAnimation();
+      (event) => {
+        focusPaused =
+          event.target instanceof HTMLElement &&
+          event.target.matches(":focus-visible");
+        if (focusPaused) stopAnimation();
       },
       listenerOptions,
     );
@@ -322,7 +323,7 @@ const { entries, label } = Astro.props;
       () => {
         pointerId = null;
         dragged = false;
-        focusPaused = slider.contains(document.activeElement);
+        focusPaused = hasKeyboardFocusWithin();
         inViewport = isInViewport();
         track.classList.remove("is-dragging");
         measure();

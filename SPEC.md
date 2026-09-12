@@ -48,8 +48,8 @@ Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--acce
 - Di bawah 720px → satu kartu dengan sedikit bagian kartu berikutnya tetap terlihat
 - Slider bergerak kontinu dalam satu arah memakai `requestAnimationFrame` dan delta waktu. Salinan kartu dibuat oleh JavaScript di kiri dan kanan daftar asli agar sambungannya tidak terlihat
 - Posisi dimulai pada salinan tengah dan dinormalisasi berdasarkan lebar lintasan yang diukur dari DOM. Ukuran dihitung ulang dengan `ResizeObserver`
-- Pengguna dapat menahan lalu menggeser dengan mouse atau sentuhan. Drag menghentikan autoplay dan tidak boleh membuka tautan kartu
-- Autoplay berhenti saat slider di-hover, fokus berada di dalamnya, slider di luar viewport, halaman tidak terlihat, atau setelah pengguna melakukan drag
+- Pengguna dapat menahan lalu menggeser dengan mouse atau sentuhan. Drag menghentikan autoplay selama interaksi dan tidak boleh membuka tautan kartu
+- Autoplay berhenti saat slider di-hover, fokus keyboard berada di dalamnya, slider di luar viewport, atau halaman tidak terlihat
 - `prefers-reduced-motion: reduce` menonaktifkan autoplay sepenuhnya
 - Salinan visual memakai `aria-hidden` dan `tabindex="-1"`; tautannya tetap bisa diklik dengan pointer, tetapi hanya tautan pada daftar asli yang masuk urutan fokus
 - Tanpa JavaScript seluruh kartu tetap tersedia melalui overflow horizontal native
