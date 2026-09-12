@@ -127,7 +127,7 @@ Dirender hanya kalau filenya ada, tanpa placeholder:
 
 - `public/images/profil.jpg` → foto hero
 - `public/images/og.png` → og:image landing
-- `public/favicon.png` → dirujuk `Base.astro`; selama belum ada, tiap halaman kena satu 404
+- `public/favicon.ico` → dirujuk `Base.astro`; selama belum ada, tiap halaman kena satu 404
 
 ## Deploy
 

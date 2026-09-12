@@ -5,7 +5,7 @@ client: "Proyek pribadi, terbuka untuk umum"
 role: "Perancang alur kerja"
 team: "Solo"
 period: "Februari 2026 – sekarang"
-status: "Dipakai di seluruh project yang saya kerjakan"
+status: "Dipakai di banyak project yang saya kerjakan"
 domain: "Perkakas pengembang"
 stack: ["Markdown", "Claude Code", "GitHub"]
 summary: "Menyusun alur kerja yang melarang AI agent menyentuh kode sebelum rencananya ditulis jadi tiket dan disetujui manusia, dengan konteks project yang ikut ter-commit di git."
