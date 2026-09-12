@@ -3,15 +3,12 @@ import { existsSync } from "node:fs";
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
-import KaryaCard from "../components/KaryaCard.astro";
+import KaryaSlider from "../components/KaryaSlider.astro";
 import { frontmatter as site } from "../../content/id/site.md";
 
 const karya = (await getCollection("karya")).sort(
   (a, b) => a.data.order - b.data.order,
 );
-
-// 1 item → kartu tunggal selebar container; 2+ → grid dua kolom.
-const variant = karya.length === 1 ? "solo" : "grid";
 
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
 const photo = existsSync(`public${site.hero.photo}`) ? site.hero.photo : null;
@@ -191,11 +188,7 @@ type Keahlian = { title: string; items: string[] };
   <Section title={site.karya.title} index={5} id="karya" alt>
     {site.karya.intro && <p class="lede -mt-4 mb-8">{site.karya.intro}</p>}
 
-    <div
-      class:list={["grid gap-5", variant === "grid" && "min-[720px]:grid-cols-2"]}
-    >
-      {karya.map((entry) => <KaryaCard entry={entry} variant={variant} />)}
-    </div>
+    <KaryaSlider entries={karya} label={site.karya.title} />
   </Section>
 
   <!-- 06 — Kontak -->

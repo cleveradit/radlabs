@@ -297,6 +297,47 @@
     padding: 28px;
   }
 
+  /* --- Slider karya --- */
+  .karya-track {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .karya-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .karya-track.is-dragging {
+    scroll-snap-type: none;
+    cursor: grabbing;
+  }
+
+  .karya-slide {
+    display: flex;
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .karya-slide > .card {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 719px) {
+    .karya-slide {
+      flex-basis: calc(100% - 40px);
+    }
+  }
+
   /* --- Pill: tag stack, daftar keahlian --- */
   .pill {
     display: inline-block;
