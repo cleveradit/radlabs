@@ -188,7 +188,12 @@ type Keahlian = { title: string; items: string[] };
   <Section title={site.karya.title} index={5} id="karya" alt>
     {site.karya.intro && <p class="lede -mt-4 mb-8">{site.karya.intro}</p>}
 
-    <KaryaSlider entries={karya} label={site.karya.title} />
+    <KaryaSlider
+      entries={karya}
+      label={site.karya.title}
+      pauseLabel={site.karya.controls.pause}
+      playLabel={site.karya.controls.play}
+    />
   </Section>
 
   <!-- 06 — Kontak -->

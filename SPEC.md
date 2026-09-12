@@ -46,9 +46,15 @@ Seluruh kartu adalah tautan ke `/karya/[slug]`. Hover: border berubah ke `--acce
 - 1 item → satu kartu selebar container, `cover` ditampilkan di dalam kartu
 - 2+ item → slider horizontal, dua kartu terlihat di ≥720px, `cover` tidak ditampilkan
 - Di bawah 720px → satu kartu dengan sedikit bagian kartu berikutnya tetap terlihat
-- Slider bergerak otomatis bolak-balik. Pengguna dapat menahan lalu menggeser dengan mouse atau sentuhan; tidak ada tombol panah
-- Autoplay berhenti selama interaksi dan dinonaktifkan saat `prefers-reduced-motion: reduce`
+- Slider bergerak kontinu dalam satu arah memakai `requestAnimationFrame` dan delta waktu. Salinan kartu dibuat oleh JavaScript di kiri dan kanan daftar asli agar sambungannya tidak terlihat
+- Posisi dimulai pada salinan tengah dan dinormalisasi berdasarkan lebar lintasan yang diukur dari DOM. Ukuran dihitung ulang dengan `ResizeObserver`
+- Pengguna dapat menahan lalu menggeser dengan mouse atau sentuhan. Drag menghentikan autoplay sampai tombol `Putar` digunakan dan tidak boleh membuka tautan kartu
+- Tombol `Jeda` / `Putar` dibaca dari `content/id/site.md` dan dapat dioperasikan lewat keyboard
+- Autoplay berhenti saat slider di-hover, fokus berada di dalamnya, slider di luar viewport, halaman tidak terlihat, atau pengguna menjedakannya
+- `prefers-reduced-motion: reduce` menonaktifkan autoplay sepenuhnya
+- Salinan visual memakai `aria-hidden` dan `tabindex="-1"`; tautannya tetap bisa diklik dengan pointer, tetapi hanya tautan pada daftar asli yang masuk urutan fokus
 - Tanpa JavaScript seluruh kartu tetap tersedia melalui overflow horizontal native
+- Koleksi kosong atau tunggal tidak mengaktifkan infinite autoplay
 
 Jangan render placeholder "coming soon" untuk slot kosong.
 
@@ -74,7 +80,7 @@ tentang   title, paragraphs[]
 pengalaman title, items[{ role, org, period, status, summary, points[] }]
 pendidikan title, items[{ title, org, period, note?, href? }]
 keahlian  title, groups[{ title, items[] }]
-karya     title, intro
+karya     title, intro, controls{ pause, play }
 kontak    title, intro, links[{ label, value, href }]
 notFound  heading, body, backLabel
 footer    text

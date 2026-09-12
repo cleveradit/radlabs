@@ -123,6 +123,9 @@ keahlian:
 karya:
   title: "Karya"
   intro: "Studi kasus sistem yang saya kerjakan."
+  controls:
+    pause: "Jeda"
+    play: "Putar"
 
 kontak:
   title: "Kontak"

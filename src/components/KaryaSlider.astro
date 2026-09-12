@@ -5,13 +5,15 @@ import KaryaCard from "./KaryaCard.astro";
 interface Props {
   entries: CollectionEntry<"karya">[];
   label: string;
+  pauseLabel: string;
+  playLabel: string;
 }
 
-const { entries, label } = Astro.props;
+const { entries, label, pauseLabel, playLabel } = Astro.props;
 ---
 
 {
-  entries.length === 1 ? (
+  entries.length === 0 ? null : entries.length === 1 ? (
     <KaryaCard entry={entries[0]} variant="solo" />
   ) : (
     <div
@@ -20,6 +22,18 @@ const { entries, label } = Astro.props;
       role="region"
       aria-label={label}
     >
+      <div class="karya-controls">
+        <button
+          type="button"
+          class="karya-control u-mono"
+          data-karya-control
+          hidden
+        >
+          <span data-karya-control-label="pause">{pauseLabel}</span>
+          <span data-karya-control-label="play" hidden>{playLabel}</span>
+        </button>
+      </div>
+
       <ul
         class="karya-track"
         data-karya-track
@@ -39,91 +53,202 @@ const { entries, label } = Astro.props;
 <script is:inline>
   document.querySelectorAll("[data-karya-slider]").forEach((slider) => {
     const track = slider.querySelector("[data-karya-track]");
-    if (!(track instanceof HTMLElement) || track.dataset.ready) return;
+    const control = slider.querySelector("[data-karya-control]");
+    if (
+      !(track instanceof HTMLElement) ||
+      !(control instanceof HTMLButtonElement) ||
+      track.dataset.ready
+    )
+      return;
+
+    const originalSlides = Array.from(track.children).filter(
+      (item) => item instanceof HTMLElement,
+    );
+    if (originalSlides.length < 2) return;
 
     track.dataset.ready = "true";
 
-    const slides = Array.from(track.children).filter(
-      (item) => item instanceof HTMLElement,
-    );
+    const cloneSlide = (slide) => {
+      const clone = slide.cloneNode(true);
+      clone.dataset.karyaClone = "";
+      clone.setAttribute("aria-hidden", "true");
+      clone.querySelectorAll("a, button, [tabindex]").forEach((element) => {
+        element.setAttribute("tabindex", "-1");
+      });
+      return clone;
+    };
+
+    const beforeClones = originalSlides.map(cloneSlide);
+    const afterClones = originalSlides.map(cloneSlide);
+    const beforeFragment = document.createDocumentFragment();
+    const afterFragment = document.createDocumentFragment();
+
+    beforeClones.forEach((slide) => beforeFragment.append(slide));
+    afterClones.forEach((slide) => afterFragment.append(slide));
+    track.prepend(beforeFragment);
+    track.append(afterFragment);
+
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
+    const abortController = new AbortController();
+    const listenerOptions = { signal: abortController.signal };
+    const speed = 28;
 
-    let direction = 1;
-    let timer;
-    let resumeTimer;
+    let setWidth = 0;
+    let originalStart = 0;
+    let afterStart = 0;
+    let animationFrame = 0;
+    let previousTime = 0;
     let pointerId = null;
     let startX = 0;
     let startScrollLeft = 0;
     let dragged = false;
+    let clickResetTimer = 0;
+    let manuallyPaused = false;
+    let focusPaused = slider.contains(document.activeElement);
+    let inViewport = (() => {
+      const rect = slider.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < window.innerHeight;
+    })();
+    let normalizing = false;
 
-    const clearTimers = () => {
-      window.clearInterval(timer);
-      window.clearTimeout(resumeTimer);
+    const pauseLabelElement = control.querySelector(
+      '[data-karya-control-label="pause"]',
+    );
+    const playLabelElement = control.querySelector(
+      '[data-karya-control-label="play"]',
+    );
+
+    const updateControl = () => {
+      const stopped = manuallyPaused || reducedMotion.matches;
+      if (pauseLabelElement instanceof HTMLElement)
+        pauseLabelElement.hidden = stopped;
+      if (playLabelElement instanceof HTMLElement)
+        playLabelElement.hidden = !stopped;
+      control.setAttribute("aria-disabled", String(reducedMotion.matches));
     };
 
-    const stepSize = () => {
-      if (slides.length < 2) return track.clientWidth;
-      return (
-        slides[1].getBoundingClientRect().left -
-        slides[0].getBoundingClientRect().left
-      );
+    const measure = (preservePosition = true) => {
+      const previousWidth = setWidth;
+      const previousOffset = previousWidth
+        ? (track.scrollLeft - originalStart) / previousWidth
+        : 0;
+
+      const positionInTrack = (element) =>
+        element.getBoundingClientRect().left -
+        track.getBoundingClientRect().left +
+        track.scrollLeft;
+
+      originalStart = positionInTrack(originalSlides[0]);
+      afterStart = positionInTrack(afterClones[0]);
+      setWidth = afterStart - originalStart;
+
+      if (setWidth <= 0) return;
+      track.scrollLeft = preservePosition
+        ? originalStart + previousOffset * setWidth
+        : originalStart;
     };
 
-    const advance = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      if (max <= 1) return;
+    const normalizePosition = () => {
+      if (normalizing || setWidth <= 0) return;
 
-      if (track.scrollLeft >= max - 2) direction = -1;
-      if (track.scrollLeft <= 2) direction = 1;
+      let next = track.scrollLeft;
+      let shift = 0;
 
-      track.scrollTo({
-        left: Math.max(
-          0,
-          Math.min(max, track.scrollLeft + direction * stepSize()),
-        ),
-        behavior: "smooth",
-      });
+      while (next < originalStart) {
+        next += setWidth;
+        shift += setWidth;
+      }
+      while (next >= afterStart) {
+        next -= setWidth;
+        shift -= setWidth;
+      }
+
+      if (shift === 0) return;
+      normalizing = true;
+      track.scrollLeft = next;
+      if (pointerId !== null) startScrollLeft += shift;
+      normalizing = false;
     };
 
-    const startAutoplay = () => {
-      clearTimers();
-      if (
-        reducedMotion.matches ||
-        document.hidden ||
-        slides.length < 2 ||
-        slider.matches(":hover") ||
-        slider.contains(document.activeElement)
-      )
+    const shouldAnimate = () =>
+      !manuallyPaused &&
+      !reducedMotion.matches &&
+      !document.hidden &&
+      inViewport &&
+      pointerId === null &&
+      !slider.matches(":hover") &&
+      !focusPaused;
+
+    const stopAnimation = () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      previousTime = 0;
+    };
+
+    const animate = (time) => {
+      if (!shouldAnimate()) {
+        stopAnimation();
         return;
-      timer = window.setInterval(advance, 4500);
+      }
+
+      if (previousTime) {
+        const elapsed = Math.min(time - previousTime, 64);
+        track.scrollLeft += (speed * elapsed) / 1000;
+        normalizePosition();
+      }
+      previousTime = time;
+      animationFrame = requestAnimationFrame(animate);
     };
 
-    const resumeAutoplay = () => {
-      clearTimers();
-      resumeTimer = window.setTimeout(startAutoplay, 3500);
+    const syncAnimation = () => {
+      if (!shouldAnimate()) {
+        stopAnimation();
+        return;
+      }
+      if (!animationFrame) animationFrame = requestAnimationFrame(animate);
     };
 
-    track.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0) return;
+    const stopAfterDrag = () => {
+      if (manuallyPaused) return;
+      manuallyPaused = true;
+      updateControl();
+      stopAnimation();
+    };
 
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startScrollLeft = track.scrollLeft;
-      dragged = false;
-      track.classList.add("is-dragging");
-      track.setPointerCapture(pointerId);
-      clearTimers();
-    });
+    track.addEventListener(
+      "pointerdown",
+      (event) => {
+        if (event.button !== 0 || pointerId !== null) return;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startScrollLeft = track.scrollLeft;
+        dragged = false;
+        stopAnimation();
+      },
+      listenerOptions,
+    );
 
-    track.addEventListener("pointermove", (event) => {
-      if (pointerId !== event.pointerId) return;
+    track.addEventListener(
+      "pointermove",
+      (event) => {
+        if (pointerId !== event.pointerId) return;
 
-      const distance = event.clientX - startX;
-      if (Math.abs(distance) > 5) dragged = true;
-      track.scrollLeft = startScrollLeft - distance;
-    });
+        const distance = event.clientX - startX;
+        if (Math.abs(distance) <= 5) return;
+
+        if (!dragged) {
+          dragged = true;
+          track.classList.add("is-dragging");
+          track.setPointerCapture(pointerId);
+          stopAfterDrag();
+        }
+        track.scrollLeft = startScrollLeft - distance;
+        normalizePosition();
+      },
+      listenerOptions,
+    );
 
     const finishDrag = (event) => {
       if (pointerId !== event.pointerId) return;
@@ -133,15 +258,26 @@ const { entries, label } = Astro.props;
       }
       pointerId = null;
       track.classList.remove("is-dragging");
-      resumeAutoplay();
-      window.setTimeout(() => {
+      normalizePosition();
+      syncAnimation();
+      window.clearTimeout(clickResetTimer);
+      clickResetTimer = window.setTimeout(() => {
         dragged = false;
       });
     };
 
-    track.addEventListener("pointerup", finishDrag);
-    track.addEventListener("pointercancel", finishDrag);
-    track.addEventListener("dragstart", (event) => event.preventDefault());
+    window.addEventListener("pointerup", finishDrag, listenerOptions);
+    window.addEventListener("pointercancel", finishDrag, listenerOptions);
+    track.addEventListener(
+      "scroll",
+      normalizePosition,
+      { ...listenerOptions, passive: true },
+    );
+    track.addEventListener(
+      "dragstart",
+      (event) => event.preventDefault(),
+      listenerOptions,
+    );
     track.addEventListener(
       "click",
       (event) => {
@@ -149,23 +285,85 @@ const { entries, label } = Astro.props;
         event.preventDefault();
         event.stopPropagation();
       },
-      true,
+      { ...listenerOptions, capture: true },
     );
 
-    slider.addEventListener("mouseenter", clearTimers);
-    slider.addEventListener("mouseleave", resumeAutoplay);
-    slider.addEventListener("focusin", clearTimers);
-    slider.addEventListener("focusout", (event) => {
-      if (
-        event.relatedTarget instanceof Node &&
-        slider.contains(event.relatedTarget)
-      )
-        return;
-      resumeAutoplay();
-    });
-    reducedMotion.addEventListener("change", startAutoplay);
-    document.addEventListener("visibilitychange", startAutoplay);
+    control.addEventListener(
+      "click",
+      () => {
+        if (reducedMotion.matches) return;
+        manuallyPaused = !manuallyPaused;
+        updateControl();
+        syncAnimation();
+      },
+      listenerOptions,
+    );
 
-    startAutoplay();
+    slider.addEventListener("mouseenter", stopAnimation, listenerOptions);
+    slider.addEventListener("mouseleave", syncAnimation, listenerOptions);
+    slider.addEventListener(
+      "focusin",
+      () => {
+        focusPaused = true;
+        stopAnimation();
+      },
+      listenerOptions,
+    );
+    slider.addEventListener(
+      "focusout",
+      (event) => {
+        if (
+          event.relatedTarget instanceof Node &&
+          slider.contains(event.relatedTarget)
+        )
+          return;
+        focusPaused = false;
+        syncAnimation();
+      },
+      listenerOptions,
+    );
+    reducedMotion.addEventListener(
+      "change",
+      () => {
+        updateControl();
+        syncAnimation();
+      },
+      listenerOptions,
+    );
+    document.addEventListener(
+      "visibilitychange",
+      syncAnimation,
+      listenerOptions,
+    );
+
+    const resizeObserver = new ResizeObserver(() => measure());
+    resizeObserver.observe(track);
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        inViewport = entry.isIntersecting;
+        syncAnimation();
+      },
+      { threshold: 0.1 },
+    );
+    intersectionObserver.observe(slider);
+
+    const cleanup = () => {
+      stopAnimation();
+      window.clearTimeout(clickResetTimer);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      abortController.abort();
+    };
+    window.addEventListener("beforeunload", cleanup, {
+      ...listenerOptions,
+      once: true,
+    });
+
+    measure(false);
+    updateControl();
+    control.hidden = false;
+    slider.classList.add("is-enhanced");
+    syncAnimation();
   });
 </script>

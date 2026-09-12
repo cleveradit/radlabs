@@ -298,6 +298,36 @@
   }
 
   /* --- Slider karya --- */
+  .karya-controls {
+    display: flex;
+    min-height: 31px;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+
+  .karya-control {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    padding: 5px 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .karya-control:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .karya-control[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
   .karya-track {
     display: flex;
     align-items: stretch;
@@ -309,6 +339,10 @@
     cursor: grab;
     touch-action: pan-y;
     user-select: none;
+  }
+
+  .karya-slider.is-enhanced .karya-track {
+    scroll-snap-type: none;
   }
 
   .karya-track::-webkit-scrollbar {
