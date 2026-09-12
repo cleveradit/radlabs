@@ -20,7 +20,8 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 
 ## Aset
 
-- Sumber ada di `assets/`. Salin ke `public/images/` — jangan referensikan `assets/` langsung dari komponen.
+- Semua gambar final disimpan langsung di `public/images/` dan disajikan apa adanya tanpa pipeline optimasi atau salinan sumber terpisah.
+- Saat mengganti gambar, ubah file yang bersangkutan langsung di `public/images/` agar versi pengembangan dan hasil build selalu memakai berkas yang sama.
 - Path gambar di Markdown sudah memakai bentuk final `/images/...`. Jangan diubah.
 - Tidak ada gambar? Jangan bikin SVG placeholder. Tanya.
 
