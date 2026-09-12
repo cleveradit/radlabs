@@ -5,11 +5,9 @@ import KaryaCard from "./KaryaCard.astro";
 interface Props {
   entries: CollectionEntry<"karya">[];
   label: string;
-  pauseLabel: string;
-  playLabel: string;
 }
 
-const { entries, label, pauseLabel, playLabel } = Astro.props;
+const { entries, label } = Astro.props;
 ---
 
 {
@@ -22,18 +20,6 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
       role="region"
       aria-label={label}
     >
-      <div class="karya-controls">
-        <button
-          type="button"
-          class="karya-control u-mono"
-          data-karya-control
-          hidden
-        >
-          <span data-karya-control-label="pause">{pauseLabel}</span>
-          <span data-karya-control-label="play" hidden>{playLabel}</span>
-        </button>
-      </div>
-
       <ul
         class="karya-track"
         data-karya-track
@@ -53,13 +39,7 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
 <script is:inline>
   document.querySelectorAll("[data-karya-slider]").forEach((slider) => {
     const track = slider.querySelector("[data-karya-track]");
-    const control = slider.querySelector("[data-karya-control]");
-    if (
-      !(track instanceof HTMLElement) ||
-      !(control instanceof HTMLButtonElement) ||
-      track.dataset.ready
-    )
-      return;
+    if (!(track instanceof HTMLElement) || track.dataset.ready) return;
 
     const originalSlides = Array.from(track.children).filter(
       (item) => item instanceof HTMLElement,
@@ -93,7 +73,7 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
     );
     const abortController = new AbortController();
     const listenerOptions = { signal: abortController.signal };
-    const speed = 28;
+    const speed = 42;
 
     let setWidth = 0;
     let originalStart = 0;
@@ -107,27 +87,12 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
     let clickResetTimer = 0;
     let manuallyPaused = false;
     let focusPaused = slider.contains(document.activeElement);
-    let inViewport = (() => {
+    const isInViewport = () => {
       const rect = slider.getBoundingClientRect();
       return rect.bottom > 0 && rect.top < window.innerHeight;
-    })();
-    let normalizing = false;
-
-    const pauseLabelElement = control.querySelector(
-      '[data-karya-control-label="pause"]',
-    );
-    const playLabelElement = control.querySelector(
-      '[data-karya-control-label="play"]',
-    );
-
-    const updateControl = () => {
-      const stopped = manuallyPaused || reducedMotion.matches;
-      if (pauseLabelElement instanceof HTMLElement)
-        pauseLabelElement.hidden = stopped;
-      if (playLabelElement instanceof HTMLElement)
-        playLabelElement.hidden = !stopped;
-      control.setAttribute("aria-disabled", String(reducedMotion.matches));
     };
+    let inViewport = isInViewport();
+    let normalizing = false;
 
     const measure = (preservePosition = true) => {
       const previousWidth = setWidth;
@@ -213,7 +178,6 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
     const stopAfterDrag = () => {
       if (manuallyPaused) return;
       manuallyPaused = true;
-      updateControl();
       stopAnimation();
     };
 
@@ -288,17 +252,6 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
       { ...listenerOptions, capture: true },
     );
 
-    control.addEventListener(
-      "click",
-      () => {
-        if (reducedMotion.matches) return;
-        manuallyPaused = !manuallyPaused;
-        updateControl();
-        syncAnimation();
-      },
-      listenerOptions,
-    );
-
     slider.addEventListener("mouseenter", stopAnimation, listenerOptions);
     slider.addEventListener("mouseleave", syncAnimation, listenerOptions);
     slider.addEventListener(
@@ -324,10 +277,7 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
     );
     reducedMotion.addEventListener(
       "change",
-      () => {
-        updateControl();
-        syncAnimation();
-      },
+      syncAnimation,
       listenerOptions,
     );
     document.addEventListener(
@@ -355,14 +305,33 @@ const { entries, label, pauseLabel, playLabel } = Astro.props;
       intersectionObserver.disconnect();
       abortController.abort();
     };
-    window.addEventListener("beforeunload", cleanup, {
-      ...listenerOptions,
-      once: true,
-    });
+
+    window.addEventListener(
+      "pagehide",
+      (event) => {
+        if (event.persisted) {
+          stopAnimation();
+          return;
+        }
+        cleanup();
+      },
+      listenerOptions,
+    );
+    window.addEventListener(
+      "pageshow",
+      () => {
+        pointerId = null;
+        dragged = false;
+        focusPaused = slider.contains(document.activeElement);
+        inViewport = isInViewport();
+        track.classList.remove("is-dragging");
+        measure();
+        syncAnimation();
+      },
+      listenerOptions,
+    );
 
     measure(false);
-    updateControl();
-    control.hidden = false;
     slider.classList.add("is-enhanced");
     syncAnimation();
   });
