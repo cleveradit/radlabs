@@ -50,7 +50,12 @@ const metrics = d.metrics.slice(0, 4);
         {
           d.liveUrl && d.liveLabel && (
             <p class="mt-8">
-              <a href={d.liveUrl} rel="noopener" class="btn btn-primary">
+              <a
+                href={d.liveUrl}
+                target="_blank"
+                rel="noopener"
+                class="btn btn-primary"
+              >
                 {d.liveLabel}
               </a>
             </p>
