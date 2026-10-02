@@ -168,7 +168,7 @@ type Keahlian = { title: string; items: string[] };
 
   <!-- 04 — Keahlian -->
   <Section title={site.keahlian.title} index={4} id="keahlian">
-    <ul class="grid gap-5 min-[560px]:grid-cols-2 min-[900px]:grid-cols-4">
+    <ul class="grid gap-5 min-[560px]:grid-cols-2 min-[900px]:grid-cols-3">
       {
         (site.keahlian.groups as Keahlian[]).map((group) => (
           <li class="card">

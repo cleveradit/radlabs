@@ -2,10 +2,10 @@
 title: "Sistem Penerimaan Peserta Didik Baru (PPDB)"
 slug: "ppdb-lhi"
 client: "Sekolah Islam Terpadu LHI"
-role: "Pengembang aplikasi — melanjutkan aplikasi yang sudah berjalan"
+role: "Analis & pengembang aplikasi — melanjutkan aplikasi yang sudah berjalan"
 team: "Tim IT SIT LHI (2 orang)"
 period: "Februari 2026 – Agustus 2026"
-status: "Live — dipakai seluruh unit sekolah yayasan"
+status: "Live — dipakai seluruh unit sekolah yayasan, dirawat hingga sekarang"
 domain: "Teknologi pendidikan"
 stack:
   ["Laravel", "Filament", "Livewire", "Tailwind CSS", "Redis", "Docker", "WhatsApp Cloud API"]
@@ -76,6 +76,19 @@ Beberapa fitur pada aplikasi ini dikerjakan rekan setim dan bukan kontribusi say
 
 ![Pengelolaan data pendaftar untuk admin](/images/ppdb/04-daftar-pendaftaran.png)
 
+## Cara kebutuhan ditemukan
+
+Tidak ada SOP tertulis maupun dokumen kebutuhan formal. Rapat dengan manajemen saya jadikan titik awal, lalu saya cek langsung ke admin pendaftaran di tiap unit — karena yang disampaikan di rapat tidak selalu sama dengan yang terjadi di lapangan.
+
+Dari situ ada dua jenis pekerjaan yang saya bedakan dengan sengaja:
+
+- **Aturan yang sudah berjalan di lapangan, saya formalkan ke sistem.** Kapan kursi dianggap terpakai, jalur beasiswa yang mengambil kursi Reguler, porsi Inden 30% dan Reguler 70%, serta rekening per unit — semuanya sudah dipraktikkan admin. Tugas saya menggali, menyamakan pemahaman, lalu membuatnya konsisten di aplikasi.
+- **Yang saya usulkan sendiri.** Model tahun ajaran dan kuota beserta alur pembukaan tahun ajaran, serta kanal notifikasi resmi lewat email dan WhatsApp Business.
+
+Untuk notifikasi, permintaan awalnya adalah mengirim WhatsApp sesaat setelah formulir dikirim. Saya mengusulkan alternatif: setiap pesan WhatsApp resmi berbiaya, dan banyak pendaftar berhenti sebelum membayar. Hasil diskusi dengan tim Humas: pendaftaran terkirim cukup dikonfirmasi lewat email, sedangkan WhatsApp baru dipakai mulai tahap pembayaran.
+
+Ada juga alasan operasional: cara lama mengirim pesan massal lewat tautan WhatsApp manual pernah membuat akun pengirim milik admin diblokir. Kanal resmi menutup risiko itu.
+
 ## Alur pembukaan tahun ajaran
 
 Setelah fitur tahun ajaran dan kuota ditambahkan, muncul tantangan baru: membukanya untuk tahun berikutnya menuntut admin mengatur kuota, tahun ajaran, dan peleburan sisa kursi inden satu per satu di beberapa menu terpisah. Admin merasa kewalahan.
@@ -102,7 +115,7 @@ Email saja tidak cukup: di lingkungan sekolah, orang tua jauh lebih responsif di
 
 Saya membangun integrasi penuh dengan WhatsApp Business Cloud API resmi dari Meta — dari pengiriman sampai pengelolaan templatenya, semuanya dari dalam aplikasi.
 
-**Pengiriman.** Tujuh momen penting memicu pesan otomatis: pendaftaran terkirim, pembayaran diverifikasi, wawancara dijadwalkan, hasil wawancara lulus/tidak lulus, daftar ulang, dan penerimaan akhir. Pesan dikirim di latar belakang lewat antrean, sejajar dengan email dan saling bebas — satu kanal gagal tidak menjatuhkan yang lain.
+**Pengiriman.** Tujuh momen penting memicu pesan otomatis: pendaftaran terkirim (email saja), pembayaran diverifikasi, wawancara dijadwalkan, hasil wawancara lulus/tidak lulus, daftar ulang, dan penerimaan akhir (email dan WhatsApp). Pesan dikirim di latar belakang lewat antrean, sejajar dengan email dan saling bebas — satu kanal gagal tidak menjatuhkan yang lain.
 
 **Riwayat & status baca.** Setiap pesan tercatat lengkap dengan perjalanannya: `pending` → `sent` → `delivered` → `read`, atau `failed`. Status `delivered` dan `read` datang dari webhook Meta, jadi admin bisa tahu apakah pesannya benar-benar dibaca — bukan sekadar terkirim.
 
@@ -199,6 +212,8 @@ Saya juga membiasakan mendokumentasikan alasan di balik setiap keputusan teknis,
 **Pembelajaran pertama — kenyamanan admin sama pentingnya dengan kenyamanan pengguna akhir.** Fitur yang secara teknis benar tetap gagal kalau alurnya membuat admin kewalahan; butuh tiga iterasi sampai alur pembukaan tahun ajaran benar-benar terasa ringkas.
 
 **Pembelajaran kedua — kegagalan yang senyap jauh lebih mahal daripada kegagalan yang berisik.** Hak akses yang hilang tanpa pesan apa pun baru ketahuan setelah admin kehilangan tombol kerjanya di production. Sejak itu, setiap kali saya dihadapkan pada pilihan antara "diam-diam pakai nilai cadangan" dan "berhenti sambil menjelaskan apa yang kurang", saya memilih yang kedua.
+
+**Pembelajaran ketiga — permintaan pertama jarang merupakan kebutuhan sebenarnya.** Rapat memberi arah, tapi admin di lapangan yang tahu masalahnya. Validasi langsung ke pengguna berulang kali mengubah rancangan saya sebelum satu baris kode pun ditulis.
 
 ---
 

@@ -12,7 +12,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratorium"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas IT Specialist di LHI International Islamic School, Surabaya. Sistem internal sekolah: kepegawaian, data akademik, dan penerimaan siswa baru. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas — Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan siswa baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
 
 # Tautan navigasi. Urutannya = urutan seksi di halaman, dan nomor seksi
 # digenerate dari urutan ini.
@@ -34,7 +34,7 @@ hero:
   eyebrow: "Surabaya, Indonesia"
   name: "Radityo Dwiki Putra Hamas"
   role: "IT Specialist"
-  lede: "Web Developer · IT Specialist | Google-Certified Project Manager | Laravel · PHP · Docker · Agile"
+  lede: "Web Developer & System Analyst | Laravel · Filament · PHP · Docker"
   photo: "/images/profil.jpg"
   actions:
     - label: "Lihat karya"
@@ -47,9 +47,10 @@ hero:
 tentang:
   title: "Tentang"
   paragraphs:
-    - "Berlatar Sistem Informasi, dengan pengalaman langsung di pengembangan web full-stack dan manajemen proyek. Sekarang IT Specialist di LHI International Islamic School, memimpin pengembangan beberapa sistem informasi internal sekolah: kepegawaian (HRIS), data akademik, dan penerimaan siswa baru (PPDB) dibangun dengan Laravel, Filament, Docker, dan GitHub Actions."
-    - "Telah menyelesaikan Google Project Management Professional Certificate, program enam kursus yang mencakup inisiasi proyek, perencanaan, eksekusi, manajemen risiko, komunikasi dengan pemangku kepentingan, serta metodologi Agile dan Scrum."
-    - "Dua latar itu membuat saya terbiasa berpindah antara eksekusi teknis dan koordinasi proyek: membaca kodenya, sekaligus melihat gambaran besarnya proyek selesai tepat waktu, sesuai ruang lingkup, dan dengan hasil yang jelas."
+    - "Berlatar Sistem Informasi, saya bekerja di dua sisi sebuah sistem: memahami masalah operasionalnya, lalu membangun perangkat lunak yang menyelesaikannya."
+    - "Sekarang saya IT Specialist di LHI International Islamic School, yayasan dengan lima unit sekolah. Saya menganalisis dan mengembangkan sistem internal sekolah, termasuk sistem penerimaan siswa baru (PPDB) yang kini dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
+    - "Saya paling berguna saat kebutuhannya belum jelas: alih-alih bertanya \"halaman apa yang dibutuhkan\", saya bertanya \"masalah apa yang ingin diselesaikan\", lalu mengusulkan solusi yang masuk akal secara teknis."
+    - "Saya juga memegang Google Project Management Professional Certificate, yang memperkuat cara saya merencanakan pekerjaan dan berkomunikasi dengan pemangku kepentingan."
 
 pengalaman:
   title: "Pengalaman"
@@ -57,21 +58,32 @@ pengalaman:
     - role: "IT Specialist"
       org: "LHI International Islamic School"
       period: "Januari 2026 - Sekarang"
-      summary: "Membangun dan merawat sistem internal sekolah."
+      summary: "Menganalisis, membangun, dan merawat sistem internal sekolah untuk yayasan dengan lima unit sekolah."
       points:
-        - "Modul kepegawaian, data akademik, dan penerimaan siswa baru dibangun sebagai bagian terpisah dari satu sistem."
-        - "Arsitektur disusun dengan prinsip Domain-Driven Design supaya tetap terbaca saat sistem tumbuh."
-        - "Deploy Docker di VPS, dengan rilis otomatis lewat GitHub Actions."
+        - "Mengembangkan lanjutan sistem penerimaan siswa baru (PPDB) yang kini dipakai seluruh unit, dan tetap merawatnya di production."
+        - "Menggali kebutuhan langsung ke admin di lapangan dan merumuskan aturan yang berlaku menjadi perilaku sistem."
+        - "Mengusulkan kanal notifikasi resmi ke wali lewat email dan WhatsApp Business; usulan diterima."
+        - "Menerapkan prinsip Domain-Driven Design, deploy Docker di VPS, dan rilis otomatis lewat GitHub Actions."
+    - role: "Pengembang web - Freelance"
+      org: "Klien sektor kesehatan"
+      period: "Mei 2025 - Desember 2025"
+      status: ""
+      summary: "Membangun aplikasi web rekam medis bersama satu developer lain."
+      points:
+        - "Memegang sebagian besar pertemuan dengan klien, penggalian, dan klarifikasi kebutuhan."
+        - "Saat revisi terus berulang, menggeser fokus dari mengerjakan permintaan ke memahami masalah operasional klien, lalu mengusulkan solusi sebelum implementasi dilanjutkan."
+        - "Ikut mengembangkan aplikasi bersama rekan."
     - role: "Pengembang web - Freelance"
       org: "Bumi Lestari Perkasa"
       period: "September 2023 - November 2023"
       status: ""
-      summary: "Membangun aplikasi kasir berbasis web."
-      points: 
-        - "Menganalisis kebutuhan pengguna dan merancang sistem untuk manajemen data serta kontrol keuangan."
-        - "Berkomunikasi dengan stakeholder guna memastikan aplikasi sesuai dengan kebutuhan bisnis."
-        - "Mengembangkan dan mengimplementasikan website menggunakan PHP, JavaScript, dan framework CodeIgniter."
-        - "Berhasil menyelesaikan dan menerapkan sistem yang digunakan untuk operasional bisnis."
+      summary: "Aplikasi kasir dan pengolahan data penjualan berbasis web, dikerjakan tim dua orang."
+      points:
+        - "Bergabung saat proyek sudah berjalan sebulan dan klien terus menambah permintaan halaman baru setiap minggu."
+        - "Mengganti pendekatan: bukan menanyakan halaman apa yang diinginkan, melainkan masalah apa yang ingin diselesaikan klien."
+        - "Menerjemahkan masalah klien menjadi usulan solusi untuk developer, disesuaikan dengan kemampuan tim."
+        - "Menjadi penghubung dengan klien sekaligus mengerjakan fitur ringan; rekan mengerjakan fitur besar. PHP, JavaScript, CodeIgniter."
+        - "Permintaan baru di tiap pertemuan berkurang, timeline lebih terkontrol, dan aplikasi dipakai untuk operasional bisnis."
     - role: "Magang"
       org: "Pemerintah Provinsi Jawa Timur"
       period: "Januari 2023 - Februari 2023"
@@ -81,8 +93,7 @@ pengalaman:
         - "Mengembangkan dan memelihara website untuk mendukung operasional instansi."
         - "Mendata dan mencatat informasi aset yang dimiliki oleh Pemerintah Provinsi Jawa Timur."
         - "Melakukan rekapitulasi data aset untuk memastikan kelengkapan dan keteraturan administrasi."
-        - "Meningkatkan keterampilan pemrograman web serta pencatatan dan pengelolaan data dalam lingkungan pemerintahan."
-    - role: "Peserta Studi Independen Kampus Merdeka"
+    - role: "Peserta Studi Independen AI/ML — Kampus Merdeka"
       org: "PT Orbit Ventura Indonesia"
       period: "Februari 2022 - Juli 2022"
       status: ""
@@ -104,8 +115,16 @@ pendidikan:
 keahlian:
   title: "Keahlian"
   groups:
+    - title: "Analisis sistem"
+      items:
+        [
+          "Analisis kebutuhan",
+          "Analisis proses bisnis",
+          "Perumusan aturan bisnis",
+          "Penerjemahan kebutuhan ke tiket",
+        ]
     - title: "Backend"
-      items: ["Laravel", "Filament", "Livewire", "MySQL"]
+      items: ["PHP", "Laravel", "Filament", "Livewire", "MySQL", "Redis"]
     - title: "Arsitektur & kualitas"
       items:
         [
@@ -116,9 +135,21 @@ keahlian:
         ]
     - title: "Infrastruktur & rilis"
       items: ["Docker", "VPS", "GitHub Actions", "CI/CD"]
+    - title: "Integrasi & frontend"
+      items:
+        [
+          "WhatsApp Business Cloud API",
+          "Tailwind CSS",
+          "JavaScript",
+          "React & TypeScript",
+        ]
     - title: "Lainnya"
       items:
-        ["Tailwind CSS", "Machine learning", "Forecasting", "Manajemen proyek"]
+        [
+          "Python",
+          "Machine learning & forecasting",
+          "Manajemen proyek (sertifikasi Google)",
+        ]
 
 karya:
   title: "Karya"
