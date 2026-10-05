@@ -297,8 +297,8 @@
     padding: 28px;
   }
 
-  /* --- Slider karya --- */
-  .karya-track {
+  /* --- Slider penelitian --- */
+  .penelitian-track {
     display: flex;
     align-items: stretch;
     gap: 20px;
@@ -311,33 +311,33 @@
     user-select: none;
   }
 
-  .karya-slider.is-enhanced .karya-track {
+  .penelitian-slider.is-enhanced .penelitian-track {
     scroll-snap-type: none;
   }
 
-  .karya-track::-webkit-scrollbar {
+  .penelitian-track::-webkit-scrollbar {
     display: none;
   }
 
-  .karya-track.is-dragging {
+  .penelitian-track.is-dragging {
     scroll-snap-type: none;
     cursor: grabbing;
   }
 
-  .karya-slide {
+  .penelitian-slide {
     display: flex;
     flex: 0 0 calc((100% - 20px) / 2);
     min-width: 0;
     scroll-snap-align: start;
   }
 
-  .karya-slide > .card {
+  .penelitian-slide > .card {
     width: 100%;
     height: 100%;
   }
 
   @media (max-width: 719px) {
-    .karya-slide {
+    .penelitian-slide {
       flex-basis: calc(100% - 40px);
     }
   }
@@ -429,7 +429,7 @@
     color: var(--muted);
   }
 
-  /* --- Blok manifest — dipakai di halaman detail karya --- */
+  /* --- Blok manifest — dipakai di halaman detail penelitian --- */
   .manifest {
     border-top: 1px solid var(--line);
   }

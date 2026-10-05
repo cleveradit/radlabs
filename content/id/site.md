@@ -25,8 +25,8 @@ nav:
     href: "#pendidikan"
   - label: "Keahlian"
     href: "#keahlian"
-  - label: "Karya"
-    href: "#karya"
+  - label: "Penelitian"
+    href: "#penelitian"
   - label: "Kontak"
     href: "#kontak"
 
@@ -37,8 +37,8 @@ hero:
   lede: "Web Developer & System Analyst | Laravel · Filament · PHP · Docker"
   photo: "/images/profil.jpg"
   actions:
-    - label: "Lihat karya"
-      href: "#karya"
+    - label: "Lihat penelitian"
+      href: "#penelitian"
       variant: "primary"
     - label: "Kontak"
       href: "#kontak"
@@ -151,9 +151,11 @@ keahlian:
           "Manajemen proyek (sertifikasi Google)",
         ]
 
-karya:
-  title: "Karya"
+penelitian:
+  title: "Penelitian"
   intro: "Studi kasus sistem yang saya kerjakan."
+  backLabel: "← Semua penelitian"
+  catalogPrefix: "P-"
 
 kontak:
   title: "Kontak"

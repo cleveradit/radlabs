@@ -61,7 +61,7 @@ Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px** 
 
 Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per sisi. 1280px memangkasnya jadi 320px tanpa membuat kartu jadi gua.
 
-**Container adalah satu-satunya pembatas lebar teks.** Tidak ada batas baca terpisah di paragraf, lede, manifest, atau daftar. Alasannya: semua media di situs ini — tangkapan layar studi kasus, tabel, grid kartu pendidikan/keahlian/karya — dirender selebar container. Kolom teks yang lebih sempit dari itu akan menumpuk di kiri sementara gambar mencapai tepi kanan, dan di layar landscape sisanya terbaca sebagai lubang, bukan margin. Kalau suatu saat kolom baca yang sempit memang diinginkan, medianya harus ikut dipersempit di halaman yang sama.
+**Container adalah satu-satunya pembatas lebar teks.** Tidak ada batas baca terpisah di paragraf, lede, manifest, atau daftar. Alasannya: semua media di situs ini — tangkapan layar studi kasus, tabel, grid kartu pendidikan/keahlian/penelitian — dirender selebar container. Kolom teks yang lebih sempit dari itu akan menumpuk di kiri sementara gambar mencapai tepi kanan, dan di layar landscape sisanya terbaca sebagai lubang, bukan margin. Kalau suatu saat kolom baca yang sempit memang diinginkan, medianya harus ikut dipersempit di halaman yang sama.
 
 ## Bentuk & jarak
 
@@ -81,7 +81,7 @@ Empat perangkat, semuanya struktural.
 
 **3 — Garis aksen judul seksi.** Batang 48×3px `--accent` di bawah tiap judul seksi, radius 2px.
 
-**4 — Notasi katalog pada kartu karya.** Baris mono di atas judul kartu: nomor katalog `K-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`.
+**4 — Notasi katalog pada kartu penelitian.** Baris mono di atas judul kartu: nomor katalog `P-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`.
 
 ## Navigasi
 
@@ -93,7 +93,7 @@ Tanpa tombol hamburger. Di bawah 768px, daftar tautan jatuh ke baris kedua dan b
 
 ## Blok manifest
 
-Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail karya dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar container.
+Daftar key/value bergaris tipis dalam mono, dipakai di halaman detail penelitian dengan caption `LEMBAR DATA`. Grid dua kolom: label 128px, nilai fleksibel; di bawah 520px jadi satu kolom bertumpuk. Ikut lebar container.
 
 ## Bingkai tangkapan layar
 

@@ -2,8 +2,8 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 // Sumber koleksi ada di content/id/ (di luar src/), sesuai SPEC.md.
-// site.md dikecualikan — itu teks landing, bukan karya.
-const karya = defineCollection({
+// site.md dikecualikan — itu teks landing, bukan penelitian.
+const penelitian = defineCollection({
   loader: glob({
     pattern: ["*.md", "!site.md"],
     base: "./content/id",
@@ -35,4 +35,4 @@ const karya = defineCollection({
   }),
 });
 
-export const collections = { karya };
+export const collections = { penelitian };

@@ -1,11 +1,12 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { frontmatter as site } from "../../content/id/site.md";
 
 // Kartu proyek: notasi katalog → judul + panah → ringkasan → tag stack.
 // Angka `metrics` tidak ikut di sini — tempatnya di halaman detail, di
 // bawah lembar data, supaya kartu tetap ringkas seperti referensi.
 interface Props {
-  entry: CollectionEntry<"karya">;
+  entry: CollectionEntry<"penelitian">;
   /* solo → kartu tunggal selebar container, cover ditampilkan di dalamnya
      grid → kartu ringkas dalam grid dua kolom, cover tidak ditampilkan */
   variant: "solo" | "grid";
@@ -14,10 +15,10 @@ interface Props {
 const { entry, variant } = Astro.props;
 const d = entry.data;
 
-const href = `/karya/${d.slug}`;
+const href = `/penelitian/${d.slug}`;
 
 // Notasi katalog — struktural, diturunkan dari `order` di frontmatter.
-const catalog = `K-${String(d.order).padStart(2, "0")}`;
+const catalog = `${site.penelitian.catalogPrefix}${String(d.order).padStart(2, "0")}`;
 ---
 
 <article

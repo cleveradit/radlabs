@@ -3,10 +3,10 @@ import { existsSync } from "node:fs";
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
-import KaryaSlider from "../components/KaryaSlider.astro";
+import PenelitianSlider from "../components/PenelitianSlider.astro";
 import { frontmatter as site } from "../../content/id/site.md";
 
-const karya = (await getCollection("karya")).sort(
+const penelitian = (await getCollection("penelitian")).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
@@ -184,11 +184,11 @@ type Keahlian = { title: string; items: string[] };
     </ul>
   </Section>
 
-  <!-- 05 — Karya -->
-  <Section title={site.karya.title} index={5} id="karya" alt>
-    {site.karya.intro && <p class="lede -mt-4 mb-8">{site.karya.intro}</p>}
+  <!-- 05 — Penelitian -->
+  <Section title={site.penelitian.title} index={5} id="penelitian" alt>
+    {site.penelitian.intro && <p class="lede -mt-4 mb-8">{site.penelitian.intro}</p>}
 
-    <KaryaSlider entries={karya} label={site.karya.title} />
+    <PenelitianSlider entries={penelitian} label={site.penelitian.title} />
   </Section>
 
   <!-- 06 — Kontak -->

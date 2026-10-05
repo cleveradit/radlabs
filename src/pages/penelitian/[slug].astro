@@ -3,10 +3,11 @@ import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import Manifest from "../../components/Manifest.astro";
+import { frontmatter as site } from "../../../content/id/site.md";
 
 export const getStaticPaths = (async () => {
-  const karya = await getCollection("karya");
-  return karya.map((entry) => ({
+  const penelitian = await getCollection("penelitian");
+  return penelitian.map((entry) => ({
     params: { slug: entry.data.slug },
     props: { entry },
   }));
@@ -39,8 +40,8 @@ const metrics = d.metrics.slice(0, 4);
     <div class="lab-grid">
       <div class="container-page pt-[64px] pb-[64px]">
         <p class="u-eyebrow">
-          <a href="/#karya" class="text-muted no-underline hover:text-accent"
-            >Karya</a
+          <a href="/#penelitian" class="text-muted no-underline hover:text-accent"
+            >{site.penelitian.title}</a
           >
         </p>
 
@@ -88,9 +89,9 @@ const metrics = d.metrics.slice(0, 4);
 
       <div class="mt-[var(--spacing-section)] border-t border-line pt-6">
         <a
-          href="/#karya"
+          href="/#penelitian"
           class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"
-          >← Semua karya</a
+          >{site.penelitian.backLabel}</a
         >
       </div>
     </div>

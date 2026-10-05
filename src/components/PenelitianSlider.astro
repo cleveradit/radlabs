@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import KaryaCard from "./KaryaCard.astro";
+import PenelitianCard from "./PenelitianCard.astro";
 
 interface Props {
-  entries: CollectionEntry<"karya">[];
+  entries: CollectionEntry<"penelitian">[];
   label: string;
 }
 
@@ -12,23 +12,23 @@ const { entries, label } = Astro.props;
 
 {
   entries.length === 0 ? null : entries.length === 1 ? (
-    <KaryaCard entry={entries[0]} variant="solo" />
+    <PenelitianCard entry={entries[0]} variant="solo" />
   ) : (
     <div
-      class="karya-slider"
-      data-karya-slider
+      class="penelitian-slider"
+      data-penelitian-slider
       role="region"
       aria-label={label}
     >
       <ul
-        class="karya-track"
-        data-karya-track
+        class="penelitian-track"
+        data-penelitian-track
         tabindex="0"
         aria-live="off"
       >
         {entries.map((entry) => (
-          <li class="karya-slide">
-            <KaryaCard entry={entry} variant="grid" />
+          <li class="penelitian-slide">
+            <PenelitianCard entry={entry} variant="grid" />
           </li>
         ))}
       </ul>
@@ -37,8 +37,8 @@ const { entries, label } = Astro.props;
 }
 
 <script is:inline>
-  document.querySelectorAll("[data-karya-slider]").forEach((slider) => {
-    const track = slider.querySelector("[data-karya-track]");
+  document.querySelectorAll("[data-penelitian-slider]").forEach((slider) => {
+    const track = slider.querySelector("[data-penelitian-track]");
     if (!(track instanceof HTMLElement) || track.dataset.ready) return;
 
     const originalSlides = Array.from(track.children).filter(
@@ -50,7 +50,7 @@ const { entries, label } = Astro.props;
 
     const cloneSlide = (slide) => {
       const clone = slide.cloneNode(true);
-      clone.dataset.karyaClone = "";
+      clone.dataset.penelitianClone = "";
       clone.setAttribute("aria-hidden", "true");
       clone.querySelectorAll("a, button, [tabindex]").forEach((element) => {
         element.setAttribute("tabindex", "-1");
