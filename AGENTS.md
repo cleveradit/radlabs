@@ -39,10 +39,10 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 - Focus ring terlihat pada semua elemen interaktif.
 - `prefers-reduced-motion` dihormati.
 - Lighthouse ≥ 95 di keempat kategori.
-- Tanpa JavaScript, halaman tetap terbaca penuh. JS hanya untuk toggle tema.
+- Tanpa JavaScript, halaman tetap terbaca penuh. JS hanya untuk peningkatan: toggle tema, rotasi peran hero, slider penelitian.
 
 ## Cara kerja
 
 - Kerjakan satu tahap, lalu berhenti dan laporkan. Jangan lanjut ke tahap berikutnya tanpa diminta.
-- Commit per tahap, pesan bahasa Inggris, format conventional commits.
+- Commit per tahap setelah diminta, pesan bahasa Inggris, format conventional commits.
 - Jangan jalankan `git push` tanpa diminta.

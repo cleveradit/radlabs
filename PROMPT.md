@@ -1,5 +1,7 @@
 # Prompt untuk Claude Code
 
+> **ARSIP — jangan dijalankan lagi.** Ini prompt tiga tahap awal saat situs pertama kali dibangun. Sebagian isinya sudah usang: koleksi `karya` kini bernama `penelitian`, `components/Figure.astro` digantikan `src/plugins/satteri-figure.mjs`, dan hero tidak lagi memakai foto profil. Acuan yang berlaku adalah `CLAUDE.md`, `SPEC.md`, dan `DESIGN.md`.
+
 Jalankan **satu tahap per sesi**. Setelah tiap tahap, jalankan `npm run dev` dan lihat hasilnya sebelum lanjut. Jangan gabung ketiganya.
 
 ---
