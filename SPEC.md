@@ -17,7 +17,7 @@ Penempatan kontennya mengikuti https://zairussalam.id/.
 0. **Hero** — tanpa nomor, tanpa judul seksi, tanpa foto. Setinggi layar, isi di empat sudut: eyebrow mono (kiri atas) → peran berganti-ganti + penghitung (kanan atas) → nama `h1` + lede (kiri bawah) → dua tombol (kanan bawah). Latar memakai kisi milimeter dan kata raksasa `hero.backdrop`. Detail visual di `DESIGN.md`, "Hero landing".
 1. **Tentang** — beberapa paragraf, lalu label `Pendidikan` dan kartu pendidikan (grid dua kolom di ≥720px). Latar `--sunken`. Setinggi layar seperti hero (`fullscreen`): judul di atas, isi di tengah secara vertikal di sisa ruang. Latar berisi beberapa erlenmeyer kecil bergaris samar (lihat `DESIGN.md`, "Erlenmeyer di latar seksi").
 2. **Pengalaman** — timeline vertikal dengan marker aksen. Tiap entri: peran (`h3`) → organisasi → periode + status → ringkasan → poin. Timeline di bawah judul seperti seksi lain; di ≥768px nomor + judul menempel di bawah nav selama timeline di-scroll, lalu ikut naik saat seksi habis (`Section stickyTitle`, murni CSS sticky). Di bawah 768px judul tidak menempel. Latar berisi erlenmeyer di tepi kiri dan kanan.
-3. **Keahlian** — kartu per kelompok, tiap kelompok berisi pill. Grid 1 / 2 / 4 kolom di 0 / 560px / 900px. Latar `--sunken`.
+3. **Keahlian** — kartu per kelompok, tiap kelompok berisi pill rata atas di bawah judul kartu. Grid 1 / 2 / 3 kolom di 0 / 560px / 900px. Latar `--sunken` dengan erlenmeyer. Setinggi layar (`fullscreen`): grid mengisi sisa tinggi di bawah judul seksi dengan baris sama tinggi.
 4. **Penelitian** — kartu proyek.
 5. **Kontak** — kartu tautan email, GitHub, LinkedIn. Latar `--sunken`. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
 

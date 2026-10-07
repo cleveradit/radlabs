@@ -4,7 +4,7 @@ Arah desain: **portofolio bertingkat seksi** dengan kerangka *lembar laboratoriu
 
 Yang membedakannya dari referensi: paletnya netral hangat dengan satu aksen ochre (bukan biru), tipografinya IBM Plex Serif/Sans/Mono (bukan Inter), dan nama situs dibaca lewat struktur — **radlabs = radityo laboratorium**.
 
-Kiasan lab diwujudkan terutama lewat *struktur*: kisi milimeter, penomoran seksi, notasi katalog, lembar data. Satu-satunya motif alat lab yang diizinkan adalah erlenmeyer kecil di latar seksi Tentang dan Pengalaman (lihat di bawah); di luar itu tidak ada ikon alat lab dan tidak ada tabung reaksi.
+Kiasan lab diwujudkan terutama lewat *struktur*: kisi milimeter, penomoran seksi, notasi katalog, lembar data. Satu-satunya motif alat lab yang diizinkan adalah erlenmeyer kecil di latar seksi Tentang, Pengalaman, dan Keahlian (lihat di bawah); di luar itu tidak ada ikon alat lab dan tidak ada tabung reaksi.
 
 ## Warna
 
@@ -70,7 +70,7 @@ Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per si
 
 - Radius: **8px** untuk kartu, bingkai, dan tombol. **999px** untuk pill.
 - Border: selalu 1px `--line`. Tidak ada shadow di mana pun.
-- Padding kartu: 28px.
+- Padding kartu: 28px (kartu keahlian 24px, supaya grid 3×2 muat satu layar).
 - Jarak antar-seksi: 80px atas dan bawah.
 - Seksi dengan judul menempel (`stickyTitle` di `Section.astro`): isi tetap di bawah judul. Di ≥768px blok nomor + judul `position: sticky` pada `--nav-h`, latar sewarna seksi (`--bg` / `--sunken`) supaya isi yang lewat di bawahnya tertutup, padding 20px atas / 16px bawah. Di layar sempit tidak menempel — judul besar yang menempel memakan terlalu banyak ruang baca.
 - Seksi setinggi layar (`fullscreen` di `Section.astro`): minimal `100svh` dikurangi `--nav-h`. Judul tetap di atas; isinya ditengahkan secara vertikal di sisa ruang. Isi yang lebih tinggi dari layar tetap memanjang. Hanya ukurannya yang mengikuti hero — gaya visual seksi tetap seperti seksi lain.
@@ -105,10 +105,10 @@ Empat perangkat, semuanya struktural.
 
 ## Erlenmeyer di latar seksi
 
-Beberapa erlenmeyer kecil (24–46px) tersebar di latar seksi Tentang dan Pengalaman, lewat komponen `Flasks.astro` di slot `backdrop` milik `Section.astro`. Digambar sebagai path SVG inline — bukan icon pack, bukan emoji, bukan file gambar.
+Beberapa erlenmeyer kecil (24–46px) tersebar di latar seksi Tentang, Pengalaman, dan Keahlian, lewat komponen `Flasks.astro` di slot `backdrop` milik `Section.astro`. Digambar sebagai path SVG inline — bukan icon pack, bukan emoji, bukan file gambar.
 
 - Garis saja, tanpa isian: stroke 1.1, warna `color-mix(in srgb, var(--muted) 30%, var(--sunken))`. Samar di kedua tema, tidak bersaing dengan teks.
-- Posisi, ukuran, dan rotasi (±15°) ditulis sebagai data di `index.astro`. Tentang: sebagian besar di pita kosong atas dan bawah. Pengalaman: di tepi kiri dan kanan, di luar lebar timeline.
+- Posisi, ukuran, dan rotasi (±15°) ditulis sebagai data di `index.astro`. Tentang: sebagian besar di pita kosong atas dan bawah. Pengalaman: di tepi kiri dan kanan, di luar lebar timeline. Keahlian: di pita samping judul dan di tepi kiri-kanan, karena kartu memenuhi container.
 - Di bawah 768px hanya tiga di sudut yang tampil (yang tidak bertanda `wide`).
 - `aria-hidden`, `pointer-events: none`, statis — tanpa animasi.
 
@@ -155,4 +155,4 @@ Tombol toggle di kanan atas: tombol bundar 28px berisi simbol SVG inline yang me
 
 Gradien sebagai isian warna · shadow · animasi scroll-reveal · skill bar persentase · grid logo teknologi · font Inter · aksen biru atau ungu · emoji sebagai ikon · teks "passionate" atau sejenisnya.
 
-Khusus untuk nuansa lab: ikon alat laboratorium selain erlenmeyer di latar Tentang dan Pengalaman · tabung reaksi · molekul · latar kisi di seluruh halaman · label bergaya stiker botol spesimen · font monospace kedua "biar terlihat teknis".
+Khusus untuk nuansa lab: ikon alat laboratorium selain erlenmeyer di latar Tentang, Pengalaman, dan Keahlian · tabung reaksi · molekul · latar kisi di seluruh halaman · label bergaya stiker botol spesimen · font monospace kedua "biar terlihat teknis".

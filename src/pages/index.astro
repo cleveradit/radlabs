@@ -36,6 +36,18 @@ const pengalamanFlasks = [
   { x: 96, y: 80, size: 36, rot: -6 },
 ];
 
+// Keahlian: kartu memenuhi lebar container, jadi erlenmeyer hanya di
+// pita kosong samping judul dan di tepi kiri-kanan.
+const keahlianFlasks = [
+  { x: 55, y: 9, size: 38, rot: -10 },
+  { x: 71, y: 15, size: 24, rot: 12, wide: true },
+  { x: 88, y: 8, size: 44, rot: -4 },
+  { x: 4, y: 42, size: 30, rot: 8, wide: true },
+  { x: 96, y: 56, size: 34, rot: -12, wide: true },
+  { x: 3, y: 84, size: 40, rot: 6, wide: true },
+  { x: 97, y: 90, size: 26, rot: -8, wide: true },
+];
+
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
 const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefined;
 
@@ -259,13 +271,21 @@ type Keahlian = { title: string; items: string[] };
   </Section>
 
   <!-- 03 — Keahlian -->
-  <Section title={site.keahlian.title} index={3} id="keahlian" alt>
-    <ul class="grid gap-5 min-[560px]:grid-cols-2 min-[900px]:grid-cols-3">
+  <Section
+    title={site.keahlian.title}
+    index={3}
+    id="keahlian"
+    alt
+    fullscreen
+  >
+    <Flasks slot="backdrop" items={keahlianFlasks} />
+
+    <ul class="keahlian-grid">
       {
         (site.keahlian.groups as Keahlian[]).map((group) => (
-          <li class="card">
-            <h3 class="text-[1.05rem]">{group.title}</h3>
-            <ul class="mt-4 flex flex-wrap gap-2">
+          <li class="card keahlian-card">
+            <h3>{group.title}</h3>
+            <ul class="keahlian-pills">
               {group.items.map((item) => (
                 <li class="pill">{item}</li>
               ))}
