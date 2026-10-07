@@ -5,14 +5,19 @@
 # jangan dihapus dan jangan ditebak isi sendiri lalu tandanya hilang.
 #
 # Nada: netral dan ringkas. Halaman ini memperkenalkan orang, bukan
-# menawarkan jasa. Hindari klausa pembanding ("bukan X"), superlatif,
-# dan janji hasil.
+# menawarkan jasa. Hindari superlatif dan janji hasil. Klausa pembanding
+# ("bukan X", "bukan hanya X") boleh dipakai seperlunya.
+#
+# Gaya kalimat: kurangi kata "saya". Di Tentang cukup satu, sebagai
+# jangkar di paragraf pertama; paragraf berikutnya tanpa subjek atau
+# memakai pekerjaan/benda sebagai subjek. Hindari titik dua di dalam
+# kalimat; pecah jadi kalimat baru atau sambung dengan koma.
 
 meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratorium"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas — Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan siswa baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas — Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
 
 # Tautan navigasi. Urutannya = urutan seksi di halaman, dan nomor seksi
 # digenerate dari urutan ini.
@@ -51,10 +56,10 @@ hero:
 tentang:
   title: "Tentang"
   paragraphs:
-    - "Berlatar Sistem Informasi, saya bekerja di dua sisi sebuah sistem: memahami masalah operasionalnya, lalu membangun perangkat lunak yang menyelesaikannya."
-    - "Sekarang bekerja sebagai IT Specialist di LHI International Islamic School, yayasan dengan lima unit sekolah. Saya menganalisis dan mengembangkan sistem internal sekolah, termasuk sistem penerimaan siswa baru (SPMB) yang kini dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
-    - "Saya paling berguna saat kebutuhannya belum jelas: alih-alih bertanya \"halaman apa yang dibutuhkan\", saya bertanya \"masalah apa yang idihadapi\", lalu mengusulkan solusi yang masuk akal secara teknis."
-    - "Saya juga memegang Google Project Management Professional Certificate, yang memperkuat cara saya merencanakan pekerjaan dan berkomunikasi dengan pemangku kepentingan."
+    - "Sebagai lulusan Sistem Informasi, saya bekerja di dua sisi sebuah sistem, memahami masalah operasionalnya sekaligus membangun perangkat lunak yang menyelesaikannya."
+    - "Kini menjabat sebagai IT Specialist di LHI International Islamic School, yayasan dengan lima unit sekolah, dengan fokus pengembangan web. Sehari-hari menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru (SPMB) yang sudah dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
+    - "Saat kebutuhan belum jelas, langkah pertama yang diambil adalah menanyakan \"masalah apa yang dihadapi\" sebelum \"halaman apa yang dibutuhkan\". Dari situ, solusi yang diusulkan berangkat dari masalah nyata dan tetap realistis untuk dibangun."
+    - "Google Project Management Professional Certificate memperkuat cara merencanakan pekerjaan dan berkomunikasi dengan pemangku kepentingan."
   pendidikan:
     title: "Pendidikan"
     items:
@@ -75,7 +80,7 @@ pengalaman:
       period: "Januari 2026 - Sekarang"
       summary: "Menganalisis, membangun, dan merawat sistem internal sekolah untuk yayasan dengan lima unit sekolah."
       points:
-        - "Mengembangkan lanjutan sistem penerimaan siswa baru (PPDB) yang kini dipakai seluruh unit, dan tetap merawatnya di production."
+        - "Mengembangkan lanjutan sistem penerimaan murid baru (SPMB) yang kini dipakai seluruh unit, dan tetap merawatnya di production."
         - "Menggali kebutuhan langsung ke admin di lapangan dan merumuskan aturan yang berlaku menjadi perilaku sistem."
         - "Mengusulkan kanal notifikasi resmi ke wali lewat email dan WhatsApp Business; usulan diterima."
         - "Menerapkan prinsip Domain-Driven Design, deploy Docker di VPS, dan rilis otomatis lewat GitHub Actions."
@@ -95,7 +100,7 @@ pengalaman:
       summary: "Aplikasi kasir dan pengolahan data penjualan berbasis web, dikerjakan tim dua orang."
       points:
         - "Bergabung saat proyek sudah berjalan sebulan dan klien terus menambah permintaan halaman baru setiap minggu."
-        - "Mengganti pendekatan: bukan menanyakan halaman apa yang diinginkan, melainkan masalah apa yang ingin diselesaikan klien."
+        - "Mengganti pendekatan dengan menanyakan masalah apa yang ingin diselesaikan klien, bukan hanya halaman apa yang diinginkan."
         - "Menerjemahkan masalah klien menjadi usulan solusi untuk developer, disesuaikan dengan kemampuan tim."
         - "Menjadi penghubung dengan klien sekaligus mengerjakan fitur ringan; rekan mengerjakan fitur besar. PHP, JavaScript, CodeIgniter."
         - "Permintaan baru di tiap pertemuan berkurang, timeline lebih terkontrol, dan aplikasi dipakai untuk operasional bisnis."

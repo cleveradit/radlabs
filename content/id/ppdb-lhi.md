@@ -1,5 +1,5 @@
 ---
-title: "Sistem Penerimaan Peserta Didik Baru (PPDB)"
+title: "Sistem Penerimaan Murid Baru (SPMB)"
 slug: "ppdb-lhi"
 client: "Sekolah Islam Terpadu LHI"
 role: "Analis & pengembang aplikasi — melanjutkan aplikasi yang sudah berjalan"
@@ -36,7 +36,7 @@ Saya bergabung melanjutkan pengembangan aplikasi penggantinya. Di atas fondasi y
 - **Kanal notifikasi resmi ke wali** lewat email dan WhatsApp Business, lengkap dengan riwayat pengiriman dan status baca.
 - **Hak akses berjenjang dan isolasi data antar-unit**, sehingga tiap unit sekolah hanya melihat dan mengubah datanya sendiri.
 
-Aplikasinya kini melayani PPDB seluruh unit yayasan.
+Aplikasinya kini melayani SPMB seluruh unit yayasan.
 
 ![Halaman pendaftaran online — sisi orang tua/wali](/images/ppdb/01-landing.png)
 
@@ -207,7 +207,7 @@ Saya juga membiasakan mendokumentasikan alasan di balik setiap keputusan teknis,
 - Menghadirkan kemampuan inti yang sebelumnya tidak ada: pelacakan tahun inden, pengelolaan tahun ajaran dan kuota, serta kanal notifikasi resmi ke wali.
 - Menyederhanakan proses tahunan yang paling membebani admin menjadi satu alur terpandu.
 - Menegakkan batas data antar-unit, sehingga satu panel bisa dipakai bersama lima unit tanpa saling mengintip.
-- Aplikasinya kini melayani PPDB seluruh unit sekolah di bawah yayasan.
+- Aplikasinya kini melayani SPMB seluruh unit sekolah di bawah yayasan.
 
 **Pembelajaran pertama — kenyamanan admin sama pentingnya dengan kenyamanan pengguna akhir.** Fitur yang secara teknis benar tetap gagal kalau alurnya membuat admin kewalahan; butuh tiga iterasi sampai alur pembukaan tahun ajaran benar-benar terasa ringkas.
 
