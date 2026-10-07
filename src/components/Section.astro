@@ -7,24 +7,34 @@
 //
 // `alt` menyalakan latar --sunken. Seksi diselang-seling supaya batas
 // antar-bagian terbaca tanpa perlu garis pemisah.
+//
+// `fullscreen` membuat seksi minimal setinggi layar (dikurangi nav).
+// Judul tetap di atas; isinya ditengahkan secara vertikal di sisa ruang.
+//
+// Slot `backdrop` untuk hiasan latar: dirender di belakang isi dan
+// dipotong di tepi seksi.
 interface Props {
   title: string;
   index?: number;
   id?: string;
   alt?: boolean;
+  fullscreen?: boolean;
 }
 
-const { title, index, id, alt = false } = Astro.props;
+const { title, index, id, alt = false, fullscreen = false } = Astro.props;
 const num = index === undefined ? null : String(index).padStart(2, "0");
 ---
 
 <section
   id={id}
   class:list={[
-    "py-[var(--spacing-section)]",
+    "relative isolate overflow-clip py-[var(--spacing-section)]",
     alt && "section-alt bg-sunken",
+    fullscreen && "section-full",
   ]}
 >
+  <slot name="backdrop" />
+
   <div class="container-page">
     {/* Hanya nomornya. Judulnya sudah ada di h2 tepat di bawah — menulis
         ulang di sini membuat pembaca layar mengumumkannya dua kali. */}
@@ -32,7 +42,7 @@ const num = index === undefined ? null : String(index).padStart(2, "0");
 
     <h2 class="section-title">{title}</h2>
 
-    <div class="mt-10">
+    <div class="section-body mt-10">
       <slot />
     </div>
   </div>

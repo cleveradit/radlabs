@@ -10,17 +10,16 @@
 
 Bahasa: Indonesia saja untuk sekarang. Folder `content/id/` sudah menyiapkan i18n nanti — **jangan bangun routing i18n sekarang.**
 
-## Landing — hero + enam seksi, urut
+## Landing — hero + lima seksi, urut
 
 Penempatan kontennya mengikuti https://zairussalam.id/.
 
 0. **Hero** — tanpa nomor, tanpa judul seksi, tanpa foto. Setinggi layar, isi di empat sudut: eyebrow mono (kiri atas) → peran berganti-ganti + penghitung (kanan atas) → nama `h1` + lede (kiri bawah) → dua tombol (kanan bawah). Latar memakai kisi milimeter dan kata raksasa `hero.backdrop`. Detail visual di `DESIGN.md`, "Hero landing".
-1. **Tentang** — beberapa paragraf, latar `--sunken`.
+1. **Tentang** — beberapa paragraf, lalu label `Pendidikan` dan kartu pendidikan (grid dua kolom di ≥720px). Latar `--sunken`. Setinggi layar seperti hero (`fullscreen`): judul di atas, isi di tengah secara vertikal di sisa ruang. Latar berisi beberapa erlenmeyer kecil bergaris samar (lihat `DESIGN.md`, "Erlenmeyer di latar Tentang").
 2. **Pengalaman** — timeline dengan marker aksen. Tiap entri: peran (`h3`) → organisasi → periode + status → ringkasan → poin.
-3. **Pendidikan** — kartu, grid dua kolom di ≥720px. Latar `--sunken`.
-4. **Keahlian** — kartu per kelompok, tiap kelompok berisi pill. Grid 1 / 2 / 4 kolom di 0 / 560px / 900px.
-5. **Penelitian** — kartu proyek. Latar `--sunken`.
-6. **Kontak** — kartu tautan email, GitHub, LinkedIn. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
+3. **Keahlian** — kartu per kelompok, tiap kelompok berisi pill. Grid 1 / 2 / 4 kolom di 0 / 560px / 900px. Latar `--sunken`.
+4. **Penelitian** — kartu proyek.
+5. **Kontak** — kartu tautan email, GitHub, LinkedIn. Latar `--sunken`. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
 
 Latar seksi berselang-seling `--sunken` / `--bg`. Nomor seksi digenerate dari urutan seksi yang dirender, bukan ditulis di `content/` — kalau ada seksi ditambah atau dihapus, penomoran ikut menyesuaikan sendiri. Hero tidak ikut dihitung.
 
@@ -75,9 +74,8 @@ Semua teks yang tampil wajib berasal dari sini. Kunci tingkat atas:
 meta      siteName, siteNameExpansion, url, description
 nav       [{ label, href }]          ← urutannya = urutan seksi
 hero      eyebrow, name, roles[], lede, backdrop, actions[{ label, href, variant }]
-tentang   title, paragraphs[]
+tentang   title, paragraphs[], pendidikan{ title, items[{ title, org, period, note?, href? }] }
 pengalaman title, items[{ role, org, period, status, summary, points[] }]
-pendidikan title, items[{ title, org, period, note?, href? }]
 keahlian  title, groups[{ title, items[] }]
 penelitian title, intro, backLabel, catalogPrefix
 kontak    title, intro, links[{ label, value, href }]

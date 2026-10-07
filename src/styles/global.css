@@ -39,6 +39,21 @@
   --accent: #b45309;
 }
 
+/* Tinggi nav yang menempel. Dipakai untuk scroll-padding jangkar dan
+   untuk seksi setinggi layar, supaya tepi bawahnya kira-kira tepat di
+   lipatan. Nav dua baris di bawah 768px; tingginya bergeser beberapa px
+   tergantung scrollbar daftar tautan, jadi nilai ini perkiraan —
+   meleset sedikit tidak merusak apa pun. */
+:root {
+  --nav-h: 88px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-h: 54px;
+  }
+}
+
 /* Token turunan, bukan warna baru: --line yang diredam ke arah --bg.
    Ditulis sekali saja — var() disubstitusi saat dipakai, jadi nilainya
    ikut berubah sendiri ketika --line dan --bg diganti per tema. */
@@ -83,15 +98,11 @@
        prefers-reduced-motion di bawah mengembalikannya ke `auto`, jadi
        pengunjung yang sensitif gerakan tetap dapat lompatan instan. */
     scroll-behavior: smooth;
-    /* Nav menempel di atas; jangkar seksi harus berhenti di bawahnya.
-       Di layar sempit nav memakai dua baris, jadi ruangnya lebih besar. */
-    scroll-padding-top: 124px;
-  }
-
-  @media (min-width: 768px) {
-    html {
-      scroll-padding-top: 88px;
-    }
+    /* Nav menempel di atas; jangkar seksi berhenti tepat di bawahnya.
+       Tepat, bukan diberi jarak lebih: seksi setinggi layar harus mengisi
+       viewport tanpa menyisakan potongan seksi sebelumnya di atasnya.
+       Seksi lain sudah punya padding atas 80px sebagai jarak napas. */
+    scroll-padding-top: var(--nav-h);
   }
 
   html,
@@ -232,20 +243,9 @@
     mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
   }
 
-  /* --- Hero landing: setinggi layar, isi di empat sudut ---
-     Tinggi = viewport dikurangi nav yang menempel, supaya tepi bawah
-     hero kira-kira di lipatan. Nav dua baris di bawah 768px; tingginya
-     bergeser beberapa px tergantung scrollbar daftar tautan, jadi nilai
-     ini perkiraan — meleset sedikit tidak merusak apa pun. */
+  /* --- Hero landing: setinggi layar, isi di empat sudut --- */
   .hero {
-    --hero-nav-h: 88px;
     overflow: clip;
-  }
-
-  @media (min-width: 768px) {
-    .hero {
-      --hero-nav-h: 54px;
-    }
   }
 
   .hero-inner {
@@ -253,8 +253,8 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 56px;
-    min-height: calc(100vh - var(--hero-nav-h));
-    min-height: calc(100svh - var(--hero-nav-h));
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
     padding-block: 40px 56px;
   }
 
@@ -364,10 +364,64 @@
     color: var(--muted);
   }
 
+  /* --- Seksi setinggi layar: satu seksi mengisi satu layar. Isi yang
+     lebih tinggi dari layar tetap memanjang — ini batas bawah, bukan
+     tinggi tetap. --- */
+  .section-full {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
+  }
+
+  /* Judul tetap di atas; hanya isinya yang ditengahkan di sisa ruang. */
+  .section-full > .container-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-full .section-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* --- Erlenmeyer di latar Tentang ---
+     Garis saja, tanpa isian. Warnanya --muted yang diredam ke arah
+     --sunken supaya samar di kedua tema dan tidak bersaing dengan teks. */
+  .flasks {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .flask {
+    position: absolute;
+    fill: none;
+    stroke: color-mix(in srgb, var(--muted) 30%, var(--sunken));
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Di layar sempit isi seksi memenuhi tinggi seksi; sisakan yang di
+     sudut saja supaya latarnya tidak ramai di balik paragraf. */
+  @media (max-width: 767px) {
+    .flask-wide {
+      display: none;
+    }
+  }
+
   /* --- Judul seksi: serif + garis aksen 48px di bawahnya --- */
   .section-title {
     position: relative;
-    padding-bottom: 14px;
+    padding-bottom: 18px;
+    font-size: clamp(2.2rem, 5vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 
   .section-title::after {

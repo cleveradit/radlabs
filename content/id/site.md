@@ -21,8 +21,6 @@ nav:
     href: "#tentang"
   - label: "Pengalaman"
     href: "#pengalaman"
-  - label: "Pendidikan"
-    href: "#pendidikan"
   - label: "Keahlian"
     href: "#keahlian"
   - label: "Penelitian"
@@ -54,9 +52,20 @@ tentang:
   title: "Tentang"
   paragraphs:
     - "Berlatar Sistem Informasi, saya bekerja di dua sisi sebuah sistem: memahami masalah operasionalnya, lalu membangun perangkat lunak yang menyelesaikannya."
-    - "Sekarang saya IT Specialist di LHI International Islamic School, yayasan dengan lima unit sekolah. Saya menganalisis dan mengembangkan sistem internal sekolah, termasuk sistem penerimaan siswa baru (PPDB) yang kini dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
-    - "Saya paling berguna saat kebutuhannya belum jelas: alih-alih bertanya \"halaman apa yang dibutuhkan\", saya bertanya \"masalah apa yang ingin diselesaikan\", lalu mengusulkan solusi yang masuk akal secara teknis."
+    - "Sekarang bekerja sebagai IT Specialist di LHI International Islamic School, yayasan dengan lima unit sekolah. Saya menganalisis dan mengembangkan sistem internal sekolah, termasuk sistem penerimaan siswa baru (SPMB) yang kini dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
+    - "Saya paling berguna saat kebutuhannya belum jelas: alih-alih bertanya \"halaman apa yang dibutuhkan\", saya bertanya \"masalah apa yang idihadapi\", lalu mengusulkan solusi yang masuk akal secara teknis."
     - "Saya juga memegang Google Project Management Professional Certificate, yang memperkuat cara saya merencanakan pekerjaan dan berkomunikasi dengan pemangku kepentingan."
+  pendidikan:
+    title: "Pendidikan"
+    items:
+      - title: "Sarjana Sistem Informasi"
+        org: "Universitas Brawijaya"
+        period: "Agustus 2018 - Januari 2025"
+      - title: "Google Project Management Professional Certificate"
+        org: "Coursera"
+        period: "2026"
+        note: "Sertifikat terverifikasi."
+        href: "https://www.coursera.org/verify/professional-cert/1N9BWR1AQS1D"
 
 pengalaman:
   title: "Pengalaman"
@@ -105,18 +114,6 @@ pengalaman:
       status: ""
       summary: "Mempelajari machine learning model, deep learning, dan membuat proyek akhir berupa forecasting"
       points: []
-
-pendidikan:
-  title: "Pendidikan"
-  items:
-    - title: "Sarjana Sistem Informasi"
-      org: "Universitas Brawijaya"
-      period: "Agustus 2018 - Januari 2025"
-    - title: "Google Project Management Professional Certificate"
-      org: "Coursera"
-      period: "2026"
-      note: "Sertifikat terverifikasi."
-      href: "https://www.coursera.org/verify/professional-cert/1N9BWR1AQS1D"
 
 keahlian:
   title: "Keahlian"

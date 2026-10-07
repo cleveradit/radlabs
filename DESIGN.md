@@ -4,7 +4,7 @@ Arah desain: **portofolio bertingkat seksi** dengan kerangka *lembar laboratoriu
 
 Yang membedakannya dari referensi: paletnya netral hangat dengan satu aksen ochre (bukan biru), tipografinya IBM Plex Serif/Sans/Mono (bukan Inter), dan nama situs dibaca lewat struktur — **radlabs = radityo laboratorium**.
 
-Kiasan lab diwujudkan lewat *struktur*, bukan motif: kisi milimeter, penomoran seksi, notasi katalog, lembar data. Tidak ada ikon alat lab, tidak ada tabung reaksi. Kalau sebuah elemen lab hanya menghias dan tidak menandai apa pun, elemen itu tidak dipakai.
+Kiasan lab diwujudkan terutama lewat *struktur*: kisi milimeter, penomoran seksi, notasi katalog, lembar data. Satu-satunya motif alat lab yang diizinkan adalah erlenmeyer kecil di latar seksi Tentang (lihat di bawah); di luar itu tidak ada ikon alat lab dan tidak ada tabung reaksi.
 
 ## Warna
 
@@ -53,7 +53,7 @@ Skala:
 | h1 | `clamp(2.1rem, 6vw, 3.1rem)` | line-height 1.1, tracking -0.02em |
 | h1 hero landing | `clamp(2.4rem, 7.2vw, 6.5rem)` | Plex Sans 700, line-height 0.95, tracking -0.04em |
 | peran hero | `clamp(2.4rem, 7vw, 5.5rem)` | Plex Sans 700 uppercase, line-height 0.92, tracking -0.035em |
-| h2 (judul seksi) | `clamp(1.6rem, 4vw, 1.95rem)` | line-height 1.2, tracking -0.014em |
+| h2 (judul seksi) | `clamp(2.2rem, 5vw, 3.25rem)` | line-height 1.1, tracking -0.02em; h2 lain (isi Markdown) tetap `clamp(1.6rem, 4vw, 1.95rem)` |
 | h3 | `1.2rem` | line-height 1.35 |
 | h4 | `1rem` | line-height 1.4 |
 | body | `16px` | line-height 1.65, lebar ikut container |
@@ -72,7 +72,8 @@ Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per si
 - Border: selalu 1px `--line`. Tidak ada shadow di mana pun.
 - Padding kartu: 28px.
 - Jarak antar-seksi: 80px atas dan bawah.
-- Hero landing: tinggi minimum `100svh` dikurangi tinggi nav (88px di bawah 768px, 54px di atasnya), padding 40px atas, 56px bawah. Kepala halaman detail dan 404 tetap padding 72px atas, 80px bawah.
+- Seksi setinggi layar (`fullscreen` di `Section.astro`): minimal `100svh` dikurangi `--nav-h`. Judul tetap di atas; isinya ditengahkan secara vertikal di sisa ruang. Isi yang lebih tinggi dari layar tetap memanjang. Hanya ukurannya yang mengikuti hero — gaya visual seksi tetap seperti seksi lain.
+- Hero landing: tinggi minimum `100svh` dikurangi `--nav-h`, padding 40px atas, 56px bawah. Kepala halaman detail dan 404 tetap padding 72px atas, 80px bawah.
 
 ## Hero landing
 
@@ -101,13 +102,22 @@ Empat perangkat, semuanya struktural.
 
 **4 — Notasi katalog pada kartu penelitian.** Baris mono di atas judul kartu: nomor katalog `P-02` di kiri (diturunkan dari field `order` di frontmatter), status dari frontmatter di kanan, didahului titik 5px warna `--accent`.
 
+## Erlenmeyer di latar Tentang
+
+Beberapa erlenmeyer kecil (24–46px) tersebar di latar seksi Tentang, di slot `backdrop` milik `Section.astro`. Digambar sebagai satu `<symbol>` SVG inline yang dipakai ulang lewat `<use>` — bukan icon pack, bukan emoji, bukan file gambar.
+
+- Garis saja, tanpa isian: stroke 1.1, warna `color-mix(in srgb, var(--muted) 30%, var(--sunken))`. Samar di kedua tema, tidak bersaing dengan teks.
+- Posisi, ukuran, dan rotasi (±15°) ditulis sebagai data di `index.astro`. Sebagian besar di pita kosong atas dan bawah seksi, karena isinya berada di tengah secara vertikal.
+- Di bawah 768px hanya tiga di sudut yang tampil (yang tidak bertanda `wide`).
+- `aria-hidden`, `pointer-events: none`, statis — tanpa animasi.
+
 ## Navigasi
 
 Nav **`sticky`, bukan `fixed`.** Nav ini setinggi dua baris di layar sempit dan satu baris di layar lebar; kalau `fixed`, body butuh padding atas yang harus ditebak per breakpoint. Sticky tetap ikut alur dokumen.
 
 Tanpa tombol hamburger. Di bawah 768px, daftar tautan jatuh ke baris kedua dan bisa digeser horizontal — **tidak ada navigasi yang bergantung pada JavaScript.**
 
-`scroll-padding-top` wajib diset supaya jangkar seksi berhenti di bawah nav: 124px di layar sempit (nav dua baris), 88px di 768px ke atas.
+`scroll-padding-top` wajib diset supaya jangkar seksi berhenti tepat di bawah nav, memakai token `--nav-h`: 88px di layar sempit (nav dua baris), 54px di 768px ke atas. Tepat, tanpa jarak tambahan — seksi setinggi layar harus mengisi viewport tanpa menyisakan potongan seksi sebelumnya. Seksi biasa sudah punya padding atas 80px sebagai jarak napas.
 
 ## Blok manifest
 
@@ -144,4 +154,4 @@ Tombol toggle di kanan atas: tombol bundar 28px berisi simbol SVG inline yang me
 
 Gradien sebagai isian warna · shadow · animasi scroll-reveal · skill bar persentase · grid logo teknologi · font Inter · aksen biru atau ungu · emoji sebagai ikon · teks "passionate" atau sejenisnya.
 
-Khusus untuk nuansa lab: ikon alat laboratorium · tabung reaksi · molekul · latar kisi di seluruh halaman · label bergaya stiker botol spesimen · font monospace kedua "biar terlihat teknis".
+Khusus untuk nuansa lab: ikon alat laboratorium selain erlenmeyer di latar Tentang · tabung reaksi · molekul · latar kisi di seluruh halaman · label bergaya stiker botol spesimen · font monospace kedua "biar terlihat teknis".

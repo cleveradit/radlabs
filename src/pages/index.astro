@@ -13,6 +13,21 @@ const penelitian = (await getCollection("penelitian")).sort(
 const roles = site.hero.roles as string[];
 const pad = (n: number) => String(n).padStart(2, "0");
 
+// Posisi erlenmeyer di latar Tentang: x/y dalam persen seksi, ukuran
+// dalam px, rotasi dalam derajat. Sebagian besar di pita kosong atas
+// dan bawah, karena isi seksi berada di tengah secara vertikal.
+// `wide`: hanya tampil di ≥768px; di layar sempit isi memenuhi seksi
+// dan tiga erlenmeyer di sudut sudah cukup.
+const flasks = [
+  { x: 62, y: 9, size: 40, rot: -12, wide: true },
+  { x: 77, y: 17, size: 26, rot: 8, wide: true },
+  { x: 90, y: 7, size: 46, rot: -4, wide: false },
+  { x: 5, y: 86, size: 32, rot: 10, wide: false },
+  { x: 21, y: 92, size: 24, rot: -8, wide: true },
+  { x: 47, y: 85, size: 42, rot: 4, wide: true },
+  { x: 84, y: 88, size: 34, rot: -14, wide: false },
+];
+
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
 const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefined;
 
@@ -141,7 +156,27 @@ type Keahlian = { title: string; items: string[] };
   </script>
 
   <!-- 01 — Tentang -->
-  <Section title={site.tentang.title} index={1} id="tentang" alt>
+  <Section title={site.tentang.title} index={1} id="tentang" alt fullscreen>
+    <div slot="backdrop" class="flasks" aria-hidden="true">
+      <svg width="0" height="0" class="absolute">
+        <symbol id="flask" viewBox="0 0 24 32">
+          <path d="M8 2h8M10 2v9L3.6 26.2A2 2 0 0 0 5.3 29h13.4a2 2 0 0 0 1.7-2.8L14 11V2M6.1 20h11.8" />
+        </symbol>
+      </svg>
+      {
+        flasks.map((f) => (
+          <svg
+            class:list={["flask", f.wide && "flask-wide"]}
+            width={f.size}
+            height={Math.round((f.size * 32) / 24)}
+            style={`left:${f.x}%;top:${f.y}%;transform:translate(-50%,-50%) rotate(${f.rot}deg)`}
+          >
+            <use href="#flask" />
+          </svg>
+        ))
+      }
+    </div>
+
     <div class="space-y-4">
       {
         (site.tentang.paragraphs as string[]).map((text) => (
@@ -149,6 +184,34 @@ type Keahlian = { title: string; items: string[] };
         ))
       }
     </div>
+
+    <h3 class="u-label mt-9 mb-3">{site.tentang.pendidikan.title}</h3>
+    <ul class="grid gap-5 min-[720px]:grid-cols-2">
+      {
+        (site.tentang.pendidikan.items as Pendidikan[]).map((item) => (
+          <li class="card">
+            <h3>{item.title}</h3>
+            <p class="mt-1 text-[0.98rem] text-ink">{item.org}</p>
+            <p class="u-mono mt-1.5 text-[11px] tracking-[0.08em] text-muted">
+              {item.period}
+            </p>
+            {item.note && <p class="mt-3 text-muted">{item.note}</p>}
+            {item.href && (
+              <p class="mt-3">
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="u-mono text-[11px] tracking-[0.08em] no-underline hover:underline"
+                >
+                  ↗ Verifikasi
+                </a>
+              </p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
   </Section>
 
   <!-- 02 — Pengalaman -->
@@ -198,37 +261,8 @@ type Keahlian = { title: string; items: string[] };
     </ol>
   </Section>
 
-  <!-- 03 — Pendidikan -->
-  <Section title={site.pendidikan.title} index={3} id="pendidikan" alt>
-    <ul class="grid gap-5 min-[720px]:grid-cols-2">
-      {
-        (site.pendidikan.items as Pendidikan[]).map((item) => (
-          <li class="card">
-            <h3>{item.title}</h3>
-            <p class="mt-1 text-[0.98rem] text-ink">{item.org}</p>
-            <p class="u-mono mt-1.5 text-[11px] tracking-[0.08em] text-muted">
-              {item.period}
-            </p>
-            {item.note && <p class="mt-3 text-muted">{item.note}</p>}
-            {item.href && (
-              <p class="mt-3">
-                <a
-                  href={item.href}
-                  rel="noopener"
-                  class="u-mono text-[11px] tracking-[0.08em] no-underline hover:underline"
-                >
-                  ↗ Verifikasi
-                </a>
-              </p>
-            )}
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
-
-  <!-- 04 — Keahlian -->
-  <Section title={site.keahlian.title} index={4} id="keahlian">
+  <!-- 03 — Keahlian -->
+  <Section title={site.keahlian.title} index={3} id="keahlian" alt>
     <ul class="grid gap-5 min-[560px]:grid-cols-2 min-[900px]:grid-cols-3">
       {
         (site.keahlian.groups as Keahlian[]).map((group) => (
@@ -245,15 +279,15 @@ type Keahlian = { title: string; items: string[] };
     </ul>
   </Section>
 
-  <!-- 05 — Penelitian -->
-  <Section title={site.penelitian.title} index={5} id="penelitian" alt>
+  <!-- 04 — Penelitian -->
+  <Section title={site.penelitian.title} index={4} id="penelitian">
     {site.penelitian.intro && <p class="lede -mt-4 mb-8">{site.penelitian.intro}</p>}
 
     <PenelitianSlider entries={penelitian} label={site.penelitian.title} />
   </Section>
 
-  <!-- 06 — Kontak -->
-  <Section title={site.kontak.title} index={6} id="kontak">
+  <!-- 05 — Kontak -->
+  <Section title={site.kontak.title} index={5} id="kontak" alt>
     {site.kontak.intro && <p class="lede -mt-4 mb-8">{site.kontak.intro}</p>}
 
     <ul class="flex flex-wrap gap-4">
