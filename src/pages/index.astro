@@ -10,8 +10,10 @@ const penelitian = (await getCollection("penelitian")).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
+const roles = site.hero.roles as string[];
+const pad = (n: number) => String(n).padStart(2, "0");
+
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
-const photo = existsSync(`public${site.hero.photo}`) ? site.hero.photo : null;
 const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefined;
 
 type Action = { label: string; href: string; variant: "primary" | "outline" };
@@ -35,19 +37,46 @@ type Keahlian = { title: string; items: string[] };
 
 <Base ogImage={ogImage} showNavLinks>
   <!-- Hero -->
-  <div class="lab-grid">
-    <div
-      class="container-page flex flex-col-reverse items-start gap-10 pt-[72px] pb-[80px] min-[860px]:flex-row min-[860px]:items-center min-[860px]:gap-14"
-    >
-      <div class="min-w-0 flex-1">
-        <p class="u-eyebrow">{site.hero.eyebrow}</p>
-        <h1 class="mt-3">{site.hero.name}</h1>
-        <p class="mt-3 font-serif text-[1.4rem] leading-snug text-accent">
-          {site.hero.role}
-        </p>
-        <p class="lede mt-5">{site.hero.lede}</p>
+  <div class="hero lab-grid">
+    <p class="hero-backdrop" aria-hidden="true">{site.hero.backdrop}</p>
 
-        <div class="mt-9 flex flex-wrap gap-3">
+    <div class="container-page hero-inner">
+      <div class="hero-top">
+        <p class="u-eyebrow">{site.hero.eyebrow}</p>
+
+        {/*
+          Semua peran dirender di server dan ditumpuk di satu sel grid;
+          tanpa JS yang terlihat peran pertama. Pembaca layar membaca
+          daftar lengkap dari teks sr-only, bukan dari animasinya.
+        */}
+        <div class="hero-roles" data-hero-roles>
+          <p class="sr-only">{roles.join(" · ")}</p>
+          <ul class="hero-roles-list" aria-hidden="true">
+            {
+              roles.map((role, i) => {
+                const [head, ...rest] = role.split(" ");
+                return (
+                  <li class:list={["hero-role", i === 0 && "is-active"]}>
+                    <span class="block text-ink">{head}</span>
+                    <span class="block text-accent">{rest.join(" ")}</span>
+                  </li>
+                );
+              })
+            }
+          </ul>
+          <p class="hero-roles-count u-mono" aria-hidden="true">
+            <span data-hero-roles-index>{pad(1)}</span> / {pad(roles.length)}
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="min-w-0">
+          <h1 class="hero-name">{site.hero.name}</h1>
+          <p class="hero-lede u-mono">{site.hero.lede}</p>
+        </div>
+
+        <div class="flex shrink-0 flex-wrap gap-3">
           {
             (site.hero.actions as Action[]).map((action) => (
               <a
@@ -63,21 +92,53 @@ type Keahlian = { title: string; items: string[] };
           }
         </div>
       </div>
-
-      {
-        photo && (
-          <img
-            src={photo}
-            alt=""
-            width="240"
-            height="240"
-            decoding="async"
-            class="size-[180px] shrink-0 rounded-full border border-line object-cover min-[860px]:size-[240px]"
-          />
-        )
-      }
     </div>
   </div>
+
+  <script is:inline>
+    (function () {
+      var root = document.querySelector("[data-hero-roles]");
+      if (!root) return;
+      var items = root.querySelectorAll(".hero-role");
+      if (items.length < 2) return;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      var index = root.querySelector("[data-hero-roles-index]");
+      var current = 0;
+      var timer = null;
+
+      function show(next) {
+        items[current].classList.remove("is-active");
+        current = next;
+        items[current].classList.add("is-active");
+        if (index) index.textContent = String(current + 1).padStart(2, "0");
+      }
+
+      function start() {
+        if (timer) return;
+        timer = setInterval(function () {
+          show((current + 1) % items.length);
+        }, 3000);
+      }
+
+      function stop() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      // Berhenti saat ditunjuk kursor dan saat tab tidak terlihat.
+      root.addEventListener("mouseenter", stop);
+      root.addEventListener("mouseleave", function () {
+        if (!document.hidden) start();
+      });
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stop();
+        else start();
+      });
+
+      start();
+    })();
+  </script>
 
   <!-- 01 — Tentang -->
   <Section title={site.tentang.title} index={1} id="tentang" alt>

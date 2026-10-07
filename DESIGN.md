@@ -1,6 +1,6 @@
 # DESIGN.md — token visual
 
-Arah desain: **portofolio bertingkat seksi** dengan kerangka *lembar laboratorium*. Struktur penempatan kontennya mengikuti https://zairussalam.id/ — nav menempel, hero dua kolom, timeline pengalaman, kartu pendidikan/keahlian/proyek, kontak berbentuk kartu.
+Arah desain: **portofolio bertingkat seksi** dengan kerangka *lembar laboratorium*. Struktur penempatan kontennya mengikuti https://zairussalam.id/ — nav menempel, timeline pengalaman, kartu pendidikan/keahlian/proyek, kontak berbentuk kartu. Hero landing mengikuti komposisi https://muhamad-rusdiana.vercel.app/ — setinggi layar, isi di empat sudut, tipografi raksasa — tapi tetap memakai palet, font, dan larangan di dokumen ini.
 
 Yang membedakannya dari referensi: paletnya netral hangat dengan satu aksen ochre (bukan biru), tipografinya IBM Plex Serif/Sans/Mono (bukan Inter), dan nama situs dibaca lewat struktur — **radlabs = radityo laboratorium**.
 
@@ -41,7 +41,8 @@ Satu keluarga, tiga peran — IBM Plex, dari Google Fonts.
 
 | Peran | Font | Pemakaian |
 |---|---|---|
-| Display | IBM Plex Serif 500/600 | h1, h2, h3, h4, peran di hero |
+| Display | IBM Plex Serif 500/600 | h1, h2, h3, h4 |
+| Hero | IBM Plex Sans 700 | nama dan peran di hero landing saja |
 | Body | IBM Plex Sans 400/500 | paragraf, tombol, poin timeline |
 | Utility | IBM Plex Mono 400/500 | nav, eyebrow, label, pill, periode, nomor katalog, nilai metrics, footer |
 
@@ -50,6 +51,8 @@ Skala:
 | Elemen | Ukuran | Detail |
 |---|---|---|
 | h1 | `clamp(2.1rem, 6vw, 3.1rem)` | line-height 1.1, tracking -0.02em |
+| h1 hero landing | `clamp(2.4rem, 7.2vw, 6.5rem)` | Plex Sans 700, line-height 0.95, tracking -0.04em |
+| peran hero | `clamp(2.4rem, 7vw, 5.5rem)` | Plex Sans 700 uppercase, line-height 0.92, tracking -0.035em |
 | h2 (judul seksi) | `clamp(1.6rem, 4vw, 1.95rem)` | line-height 1.2, tracking -0.014em |
 | h3 | `1.2rem` | line-height 1.35 |
 | h4 | `1rem` | line-height 1.4 |
@@ -69,7 +72,22 @@ Referensi memakai 960px, tapi di layar 1920px itu menyisakan 480px kosong per si
 - Border: selalu 1px `--line`. Tidak ada shadow di mana pun.
 - Padding kartu: 28px.
 - Jarak antar-seksi: 80px atas dan bawah.
-- Hero: padding 72px atas, 80px bawah.
+- Hero landing: tinggi minimum `100svh` dikurangi tinggi nav (88px di bawah 768px, 54px di atasnya), padding 40px atas, 56px bawah. Kepala halaman detail dan 404 tetap padding 72px atas, 80px bawah.
+
+## Hero landing
+
+Empat sudut, tanpa foto:
+
+- **Kiri atas:** eyebrow mono (lokasi).
+- **Kanan atas:** peran yang berganti-ganti. Kata pertama tiap peran di baris pertama warna `--ink`, sisanya di baris kedua warna `--accent`. Di bawahnya penghitung mono (`01 / 02`), angka aktif berwarna `--accent`.
+- **Kiri bawah:** nama (`h1`) lalu lede mono (stack).
+- **Kanan bawah:** dua tombol.
+
+Di bawah 860px keempatnya menumpuk satu kolom rata kiri, urut seperti di atas.
+
+**Kata raksasa** dari `hero.backdrop` di tengah latar: Plex Sans 700, `25vw`, warna `color-mix(in srgb, var(--line) 80%, var(--bg))`, `aria-hidden`. Lapisannya di atas kisi milimeter, di bawah teks. Hero memakai `overflow: clip` supaya kata ini tidak memicu scroll horizontal.
+
+**Rotasi peran:** semua peran dirender di server dan ditumpuk di satu sel grid; tanpa JS yang terlihat peran pertama, dan pembaca layar membaca daftar lengkap lewat teks `sr-only`. JS mengganti peran tiap 3 detik: peran lama memudar 0.3s, lalu peran baru masuk 0.4s — keduanya tidak pernah bertumpuk. Rotasi berhenti saat ditunjuk kursor dan saat tab tidak terlihat, dan tidak berjalan sama sekali bila `prefers-reduced-motion: reduce`.
 
 ## Kerangka lembar lab
 
@@ -120,7 +138,7 @@ Semua screenshot berlatar putih. Tanpa bingkai, gambar menyilaukan di tema gelap
 </script>
 ```
 
-Tombol toggle di kanan atas: teks mono uppercase yang menyebut tema **tujuan** ("Terang" saat sedang gelap), border 1px, hover berubah ke `--accent`. Label dipilih lewat CSS, bukan JS, supaya tidak ada kedipan dan tetap benar saat JS mati.
+Tombol toggle di kanan atas: tombol bundar 28px berisi simbol SVG inline yang menyebut tema **tujuan** — matahari saat sedang gelap, bulan saat sedang terang. Garis 1.4px `currentColor`, border 1px, hover berubah ke `--accent`. Simbol digambar langsung di komponen, bukan dari icon pack atau emoji. Nama aksesibelnya teks `sr-only` ("Ganti ke tema terang"). Simbol dipilih lewat CSS, bukan JS, supaya tidak ada kedipan dan tetap benar saat JS mati.
 
 ## Yang dilarang
 

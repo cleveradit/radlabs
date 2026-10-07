@@ -33,9 +33,15 @@ nav:
 hero:
   eyebrow: "Surabaya, Indonesia"
   name: "Radityo Dwiki Putra Hamas"
-  role: "IT Specialist"
-  lede: "Web Developer & System Analyst | Laravel · Filament · PHP · Docker"
-  photo: "/images/profil.jpg"
+  # Ditampilkan bergantian. Kata pertama tiap peran = baris pertama,
+  # sisanya = baris kedua berwarna aksen.
+  roles:
+    - "Web Developer"
+    - "System Analyst"
+  lede: "Laravel · Filament · PHP · Docker"
+  # Kata raksasa samar di latar hero. Dekoratif, disembunyikan dari
+  # pembaca layar.
+  backdrop: "radLabs"
   actions:
     - label: "Lihat penelitian"
       href: "#penelitian"

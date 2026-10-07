@@ -14,7 +14,7 @@ Bahasa: Indonesia saja untuk sekarang. Folder `content/id/` sudah menyiapkan i18
 
 Penempatan kontennya mengikuti https://zairussalam.id/.
 
-0. **Hero** — tanpa nomor, tanpa judul seksi. Eyebrow mono → nama (`h1`) → peran (serif, aksen) → lede → dua tombol. Foto profil bundar di kanan pada ≥860px, di atas teks pada layar sempit. Latar memakai kisi milimeter.
+0. **Hero** — tanpa nomor, tanpa judul seksi, tanpa foto. Setinggi layar, isi di empat sudut: eyebrow mono (kiri atas) → peran berganti-ganti + penghitung (kanan atas) → nama `h1` + lede (kiri bawah) → dua tombol (kanan bawah). Latar memakai kisi milimeter dan kata raksasa `hero.backdrop`. Detail visual di `DESIGN.md`, "Hero landing".
 1. **Tentang** — beberapa paragraf, latar `--sunken`.
 2. **Pengalaman** — timeline dengan marker aksen. Tiap entri: peran (`h3`) → organisasi → periode + status → ringkasan → poin.
 3. **Pendidikan** — kartu, grid dua kolom di ≥720px. Latar `--sunken`.
@@ -74,7 +74,7 @@ Semua teks yang tampil wajib berasal dari sini. Kunci tingkat atas:
 ```
 meta      siteName, siteNameExpansion, url, description
 nav       [{ label, href }]          ← urutannya = urutan seksi
-hero      eyebrow, name, role, lede, photo, actions[{ label, href, variant }]
+hero      eyebrow, name, roles[], lede, backdrop, actions[{ label, href, variant }]
 tentang   title, paragraphs[]
 pengalaman title, items[{ role, org, period, status, summary, points[] }]
 pendidikan title, items[{ title, org, period, note?, href? }]
@@ -125,7 +125,6 @@ Urutkan kartu berdasarkan `order` menaik.
 
 Dirender hanya kalau filenya ada, tanpa placeholder:
 
-- `public/images/profil.jpg` → foto hero
 - `public/images/og.png` → og:image landing
 - `public/favicon.ico` → dirujuk `Base.astro`; selama belum ada, tiap halaman kena satu 404
 

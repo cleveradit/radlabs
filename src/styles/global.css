@@ -232,6 +232,138 @@
     mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
   }
 
+  /* --- Hero landing: setinggi layar, isi di empat sudut ---
+     Tinggi = viewport dikurangi nav yang menempel, supaya tepi bawah
+     hero kira-kira di lipatan. Nav dua baris di bawah 768px; tingginya
+     bergeser beberapa px tergantung scrollbar daftar tautan, jadi nilai
+     ini perkiraan — meleset sedikit tidak merusak apa pun. */
+  .hero {
+    --hero-nav-h: 88px;
+    overflow: clip;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      --hero-nav-h: 54px;
+    }
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 56px;
+    min-height: calc(100vh - var(--hero-nav-h));
+    min-height: calc(100svh - var(--hero-nav-h));
+    padding-block: 40px 56px;
+  }
+
+  /* Kata raksasa: tekstur, bukan teks. Warnanya turunan --line yang
+     sedikit lebih kuat dari kisi, jadi tetap samar di kedua tema. */
+  .hero-backdrop {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    z-index: -1;
+    transform: translateY(-50%);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 25vw;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    text-align: center;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--line) 80%, var(--bg));
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-top,
+  .hero-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  @media (min-width: 860px) {
+    .hero-top {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .hero-bottom {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 48px;
+    }
+
+    .hero-roles {
+      text-align: right;
+    }
+  }
+
+  /* Semua peran menumpuk di satu sel; hanya .is-active yang terlihat. */
+  .hero-roles-list {
+    display: grid;
+  }
+
+  .hero-role {
+    grid-area: 1 / 1;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.25em);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  /* Masuk setelah peran lama selesai keluar, supaya dua kata tidak
+     pernah bertumpuk di tengah transisi. */
+  .hero-role.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 0.4s ease 0.3s,
+      transform 0.4s ease 0.3s,
+      visibility 0s linear 0.3s;
+  }
+
+  .hero-roles-count {
+    margin-top: 14px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  .hero-roles-count [data-hero-roles-index] {
+    color: var(--accent);
+  }
+
+  .hero-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7.2vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-lede {
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
   /* --- Judul seksi: serif + garis aksen 48px di bawahnya --- */
   .section-title {
     position: relative;
