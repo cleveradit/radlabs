@@ -11,6 +11,10 @@
 // `fullscreen` membuat seksi minimal setinggi layar (dikurangi nav).
 // Judul tetap di atas; isinya ditengahkan secara vertikal di sisa ruang.
 //
+// `stickyTitle`: di ≥768px nomor + judul menempel di bawah nav selama
+// isi di bawahnya di-scroll, lalu ikut naik saat seksi habis. Murni CSS
+// sticky, tanpa JS.
+//
 // Slot `backdrop` untuk hiasan latar: dirender di belakang isi dan
 // dipotong di tepi seksi.
 interface Props {
@@ -19,9 +23,17 @@ interface Props {
   id?: string;
   alt?: boolean;
   fullscreen?: boolean;
+  stickyTitle?: boolean;
 }
 
-const { title, index, id, alt = false, fullscreen = false } = Astro.props;
+const {
+  title,
+  index,
+  id,
+  alt = false,
+  fullscreen = false,
+  stickyTitle = false,
+} = Astro.props;
 const num = index === undefined ? null : String(index).padStart(2, "0");
 ---
 
@@ -31,16 +43,19 @@ const num = index === undefined ? null : String(index).padStart(2, "0");
     "relative isolate overflow-clip py-[var(--spacing-section)]",
     alt && "section-alt bg-sunken",
     fullscreen && "section-full",
+    stickyTitle && "section-sticky-title",
   ]}
 >
   <slot name="backdrop" />
 
   <div class="container-page">
-    {/* Hanya nomornya. Judulnya sudah ada di h2 tepat di bawah — menulis
-        ulang di sini membuat pembaca layar mengumumkannya dua kali. */}
-    {num && <p class="u-eyebrow mb-2.5 text-accent">{num}</p>}
+    <div class="section-head">
+      {/* Hanya nomornya. Judulnya sudah ada di h2 tepat di bawah — menulis
+          ulang di sini membuat pembaca layar mengumumkannya dua kali. */}
+      {num && <p class="u-eyebrow mb-2.5 text-accent">{num}</p>}
 
-    <h2 class="section-title">{title}</h2>
+      <h2 class="section-title">{title}</h2>
+    </div>
 
     <div class="section-body mt-10">
       <slot />

@@ -388,6 +388,59 @@
     justify-content: center;
   }
 
+  /* --- Seksi dengan judul menempel: nomor + judul menempel di bawah
+     nav selama isi di bawahnya di-scroll. Latarnya sewarna seksi supaya
+     isi yang lewat di bawahnya tertutup, bukan bertumpuk. Hanya di
+     ≥768px — di layar sempit judul besar yang menempel memakan terlalu
+     banyak ruang baca. */
+  @media (min-width: 768px) {
+    .section-sticky-title .section-head {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 1;
+      padding-block: 20px 16px;
+      margin-top: -20px;
+      background-color: var(--bg);
+    }
+
+    .section-alt.section-sticky-title .section-head {
+      background-color: var(--sunken);
+    }
+  }
+
+  /* --- Timeline pengalaman --- */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background-color: var(--line);
+  }
+
+  .timeline-marker {
+    position: absolute;
+    left: -32px;
+    top: 7px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  /* Seksi berlatar --sunken: markernya harus ikut latar itu supaya
+     garis timeline tidak terlihat menembus lubang markernya. */
+  .section-alt .timeline-marker {
+    background-color: var(--sunken);
+  }
+
   /* --- Erlenmeyer di latar Tentang ---
      Garis saja, tanpa isian. Warnanya --muted yang diredam ke arah
      --sunken supaya samar di kedua tema dan tidak bersaing dengan teks. */
@@ -540,39 +593,6 @@
     border-radius: var(--radius-tag);
     background-color: var(--sunken);
     color: var(--muted);
-  }
-
-  /* --- Timeline pengalaman --- */
-  .timeline {
-    position: relative;
-    padding-left: 32px;
-  }
-
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background-color: var(--line);
-  }
-
-  .timeline-marker {
-    position: absolute;
-    left: -32px;
-    top: 7px;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background-color: var(--bg);
-    border: 2px solid var(--accent);
-  }
-
-  /* Seksi berlatar --sunken: markernya harus ikut latar itu supaya
-     garis timeline tidak terlihat menembus lubang markernya. */
-  .section-alt .timeline-marker {
-    background-color: var(--sunken);
   }
 
   /* --- Mono utility: label, eyebrow, caption, footer --- */

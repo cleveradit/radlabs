@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
 import PenelitianSlider from "../components/PenelitianSlider.astro";
+import Flasks from "../components/Flasks.astro";
 import { frontmatter as site } from "../../content/id/site.md";
 
 const penelitian = (await getCollection("penelitian")).sort(
@@ -13,19 +14,26 @@ const penelitian = (await getCollection("penelitian")).sort(
 const roles = site.hero.roles as string[];
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Posisi erlenmeyer di latar Tentang: x/y dalam persen seksi, ukuran
-// dalam px, rotasi dalam derajat. Sebagian besar di pita kosong atas
-// dan bawah, karena isi seksi berada di tengah secara vertikal.
-// `wide`: hanya tampil di ≥768px; di layar sempit isi memenuhi seksi
-// dan tiga erlenmeyer di sudut sudah cukup.
-const flasks = [
+// Erlenmeyer di latar seksi (lihat Flasks.astro). Tentang: sebagian
+// besar di pita kosong atas dan bawah, karena isinya di tengah secara
+// vertikal. Pengalaman: di tepi kiri dan kanan, di luar lebar timeline.
+const tentangFlasks = [
   { x: 62, y: 9, size: 40, rot: -12, wide: true },
   { x: 77, y: 17, size: 26, rot: 8, wide: true },
-  { x: 90, y: 7, size: 46, rot: -4, wide: false },
-  { x: 5, y: 86, size: 32, rot: 10, wide: false },
+  { x: 90, y: 7, size: 46, rot: -4 },
+  { x: 5, y: 86, size: 32, rot: 10 },
   { x: 21, y: 92, size: 24, rot: -8, wide: true },
   { x: 47, y: 85, size: 42, rot: 4, wide: true },
-  { x: 84, y: 88, size: 34, rot: -14, wide: false },
+  { x: 84, y: 88, size: 34, rot: -14 },
+];
+
+const pengalamanFlasks = [
+  { x: 4, y: 18, size: 34, rot: -10 },
+  { x: 8, y: 52, size: 24, rot: 12, wide: true },
+  { x: 3, y: 84, size: 42, rot: 6, wide: true },
+  { x: 96, y: 14, size: 40, rot: 8, wide: true },
+  { x: 92, y: 46, size: 26, rot: -14, wide: true },
+  { x: 96, y: 80, size: 36, rot: -6 },
 ];
 
 // Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
@@ -157,25 +165,7 @@ type Keahlian = { title: string; items: string[] };
 
   <!-- 01 — Tentang -->
   <Section title={site.tentang.title} index={1} id="tentang" alt fullscreen>
-    <div slot="backdrop" class="flasks" aria-hidden="true">
-      <svg width="0" height="0" class="absolute">
-        <symbol id="flask" viewBox="0 0 24 32">
-          <path d="M8 2h8M10 2v9L3.6 26.2A2 2 0 0 0 5.3 29h13.4a2 2 0 0 0 1.7-2.8L14 11V2M6.1 20h11.8" />
-        </symbol>
-      </svg>
-      {
-        flasks.map((f) => (
-          <svg
-            class:list={["flask", f.wide && "flask-wide"]}
-            width={f.size}
-            height={Math.round((f.size * 32) / 24)}
-            style={`left:${f.x}%;top:${f.y}%;transform:translate(-50%,-50%) rotate(${f.rot}deg)`}
-          >
-            <use href="#flask" />
-          </svg>
-        ))
-      }
-    </div>
+    <Flasks slot="backdrop" items={tentangFlasks} />
 
     <div class="space-y-4">
       {
@@ -215,7 +205,14 @@ type Keahlian = { title: string; items: string[] };
   </Section>
 
   <!-- 02 — Pengalaman -->
-  <Section title={site.pengalaman.title} index={2} id="pengalaman">
+  <Section
+    title={site.pengalaman.title}
+    index={2}
+    id="pengalaman"
+    stickyTitle
+  >
+    <Flasks slot="backdrop" items={pengalamanFlasks} />
+
     <ol class="timeline space-y-10">
       {
         (site.pengalaman.items as Pengalaman[]).map((job) => (
