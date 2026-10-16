@@ -141,6 +141,12 @@ Daftar key/value bergaris tipis dalam mono, di halaman detail penelitian dengan 
 
 Semua screenshot berlatar putih. Setiap gambar dibungkus: latar `--sunken`, border 1px `--line`, radius 12px, padding 14px. Caption di bawahnya mono 11.5px `--muted`.
 
+## Blok kode
+
+Blok kode di isi Markdown diwarnai Shiki dengan tema `css-variables` (`astro.config.mjs`), yang menulis warna sebagai `var(--astro-code-*)`. Variabel itu dipetakan ke token situs di `global.css`: latar `--sunken`, teks `--ink`, komentar dan tanda baca `--muted`, keyword/konstanta/tautan `--accent`. Jangan memakai tema Shiki biasa (mis. `github-dark`): warnanya ditulis sebagai hex di inline style dan tidak ikut tema terang/gelap.
+
+Bingkai: border 1px `--line`, radius 8px, padding 14px 16px, mono 12.5px, bisa di-scroll horizontal.
+
 ## Tema
 
 - Default kunjungan pertama: **gelap**. Kalau sistem pengunjung menyatakan `prefers-color-scheme: light`, ikuti itu.

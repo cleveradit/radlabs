@@ -70,6 +70,23 @@
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+/* Warna blok kode. Shiki memakai tema `css-variables` (astro.config.mjs)
+   dan menulis warna sebagai var(--astro-code-*); di sini semuanya
+   dipetakan ke token situs, jadi blok kode ikut tema terang/gelap. */
+:root {
+  --astro-code-foreground: var(--ink);
+  --astro-code-background: var(--sunken);
+  --astro-code-token-comment: var(--muted);
+  --astro-code-token-punctuation: var(--muted);
+  --astro-code-token-keyword: var(--accent);
+  --astro-code-token-constant: var(--accent);
+  --astro-code-token-link: var(--accent);
+  --astro-code-token-string: var(--ink);
+  --astro-code-token-string-expression: var(--ink);
+  --astro-code-token-function: var(--ink);
+  --astro-code-token-parameter: var(--ink);
+}
+
 /* ============================================================
    Pemetaan ke Tailwind
    ============================================================ */
@@ -1481,6 +1498,25 @@ html:has(dialog[open]) {
     border: 1px solid var(--line);
     border-radius: 4px;
     padding: 0.1em 0.35em;
+  }
+
+  /* --- Blok kode: bingkai seperti tangkapan layar, isi mono --- */
+  .prose pre {
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  /* Kode di dalam blok tidak memakai kotak kode inline. */
+  .prose pre code {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
   }
 
   /* --- Tabel: header mono uppercase, garis 1px, tanpa zebra --- */
