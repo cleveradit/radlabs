@@ -15,7 +15,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratory"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst at LHI International Islamic School, Surabaya. Analyses and builds the school's internal systems, including a student admission system used by five school units. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst at LHI School - Yogyakarta. Analyses and builds the school's internal systems, including a student admission system used by five school units. Laravel, Filament, Docker."
 
 ui:
   navLabel: "Main navigation"
@@ -85,7 +85,7 @@ tentang:
     text: "Ask **what problem is being faced** before asking **which page is needed**."
   paragraphs:
     - "As an Information Systems graduate, I work on both sides of a system, understanding its operational problems and building the software that solves them."
-    - "Currently an **IT Specialist at LHI International Islamic School**, a foundation with five school units, focused on web development. Day to day the work is analysing and building the school's internal systems, including the **student admission system (SPMB)** now used by every unit. It covers gathering requirements directly from admins in the field, turning the rules in practice into system behaviour, and implementation with Laravel, Filament, Docker, and GitHub Actions."
+    - "Currently **IT Staff at LHI School - Yogyakarta**, a foundation with five school units, focused on web development. Day to day the work is analysing and building the school's internal systems, including the **student admission system (SPMB)** now used by every unit. It covers gathering requirements directly from admins in the field, turning the rules in practice into system behaviour, and implementation with Laravel, Filament, Docker, and GitHub Actions."
     - "When requirements are unclear, the first step is asking \"what problem is being faced\" before \"which page is needed\". From there, the proposed solution starts from a real problem and stays realistic to build."
     - "The **Google Project Management Professional Certificate** strengthened how work is planned and how stakeholders are kept informed."
   pendidikan:
@@ -111,8 +111,8 @@ pengalaman:
   logLabel: "Assignment log"
   codePrefix: "EXP-"
   items:
-    - role: "IT Specialist"
-      org: "LHI International Islamic School"
+    - role: "IT Staff"
+      org: "LHI School - Yogyakarta"
       period: "January 2026 - Present"
       tabPeriod: "2026 – Now"
       current: true

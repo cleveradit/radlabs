@@ -23,7 +23,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratorium"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst di LHI School - Yogyakarta. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
 
 # Label antarmuka: nama aksesibel tombol, label navigasi, dsb.
 ui:
@@ -101,7 +101,7 @@ tentang:
     text: "Tanyakan **masalah apa yang dihadapi** sebelum menanyakan **halaman apa yang dibutuhkan**."
   paragraphs:
     - "Sebagai lulusan Sistem Informasi, saya bekerja di dua sisi sebuah sistem, memahami masalah operasionalnya sekaligus membangun perangkat lunak yang menyelesaikannya."
-    - "Kini menjabat sebagai **IT Specialist di LHI International Islamic School**, yayasan dengan lima unit sekolah, dengan fokus pengembangan web. Sehari-hari menganalisis dan membangun sistem internal sekolah, termasuk **sistem penerimaan murid baru (SPMB)** yang sudah dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
+    - "Kini menjabat sebagai **staff IT di LHI School - Yogyakarta**, yayasan dengan lima unit sekolah, dengan fokus pengembangan web. Sehari-hari menganalisis dan membangun sistem internal sekolah, termasuk **sistem penerimaan murid baru (SPMB)** yang sudah dipakai seluruh unit. Pekerjaannya mencakup menggali kebutuhan langsung ke admin di lapangan, merumuskan aturan yang berlaku menjadi perilaku sistem, sampai implementasi dengan Laravel, Filament, Docker, dan GitHub Actions."
     - "Saat kebutuhan belum jelas, langkah pertama yang diambil adalah menanyakan \"masalah apa yang dihadapi\" sebelum \"halaman apa yang dibutuhkan\". Dari situ, solusi yang diusulkan berangkat dari masalah nyata dan tetap realistis untuk dibangun."
     - "**Google Project Management Professional Certificate** memperkuat cara merencanakan pekerjaan dan berkomunikasi dengan pemangku kepentingan."
   pendidikan:
@@ -129,8 +129,8 @@ pengalaman:
   # tabRole / tabPeriod: versi ringkas untuk tombol tab (opsional).
   # current: true → periode diberi warna aksen (posisi yang sedang berjalan).
   items:
-    - role: "IT Specialist"
-      org: "LHI International Islamic School"
+    - role: "Staff IT"
+      org: "LHI School - Yogyakarta"
       period: "Januari 2026 - Sekarang"
       tabPeriod: "2026 – Kini"
       current: true
