@@ -2,7 +2,10 @@
 // Erlenmeyer kecil bergaris di latar seksi. Dipakai lewat slot `backdrop`
 // milik Section: <Flasks slot="backdrop" items={...} />.
 //
-// x/y dalam persen bidang latar, ukuran dalam px, rotasi dalam derajat.
+// x dalam persen lebar bidang latar, ukuran dalam px, rotasi dalam
+// derajat. y dalam persen tinggi bidang latar, atau dalam px bila
+// `yUnit="px"` (halaman yang panjangnya berbeda-beda, seperti detail
+// penelitian, supaya kerapatannya tetap sama per layar).
 // `wide`: hanya tampil di ≥768px, supaya layar sempit tidak ramai.
 interface Flask {
   x: number;
@@ -14,9 +17,10 @@ interface Flask {
 
 interface Props {
   items: Flask[];
+  yUnit?: "%" | "px";
 }
 
-const { items } = Astro.props;
+const { items, yUnit = "%" } = Astro.props;
 ---
 
 <div class="flasks" aria-hidden="true">
@@ -27,7 +31,7 @@ const { items } = Astro.props;
         width={f.size}
         height={Math.round((f.size * 32) / 24)}
         viewBox="0 0 24 32"
-        style={`left:${f.x}%;top:${f.y}%;transform:translate(-50%,-50%) rotate(${f.rot}deg)`}
+        style={`left:${f.x}%;top:${f.y}${yUnit};transform:translate(-50%,-50%) rotate(${f.rot}deg)`}
       >
         <path d="M8 2h8M10 2v9L3.6 26.2A2 2 0 0 0 5.3 29h13.4a2 2 0 0 0 1.7-2.8L14 11V2M6.1 20h11.8" />
       </svg>

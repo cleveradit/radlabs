@@ -1296,6 +1296,15 @@ html:has(dialog[open]) {
     background-color: var(--accent-soft);
   }
 
+  /* Halaman detail penelitian: bidang latar erlenmeyer. overflow: clip
+     memotong erlenmeyer yang melewati akhir halaman tanpa membuat
+     halaman ikut memanjang. */
+  .detail-page {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+
   /* --- Erlenmeyer di latar seksi ---
      Garis saja, tanpa isian. Warnanya --muted yang diredam ke arah
      --sunken supaya samar di kedua tema dan tidak bersaing dengan teks. */

@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Manifest from "./Manifest.astro";
+import Flasks from "./Flasks.astro";
 import { getSite, localePath, otherLang, type Lang } from "../i18n";
 
 // Halaman detail penelitian, dipakai rute semua bahasa.
@@ -32,6 +33,30 @@ const rows = [
 // tidak melar melewati lebar kolom teks.
 const metrics = d.metrics.slice(0, 4);
 const back = localePath(lang, "/#penelitian");
+
+// Erlenmeyer di latar, dengan kerapatan yang sama seperti seksi landing:
+// satu tiap ±460px, bergantian di pita kosong kiri dan kanan teks.
+// Panjang artikel berbeda-beda, jadi posisinya dalam px, bukan persen.
+// Jumlahnya dari perkiraan tinggi halaman yang sengaja dilebihkan
+// (teks diukur di layar sempit, gambar di layar lebar, masing-masing
+// kondisi terpanjangnya); yang
+// melewati akhir halaman terpotong oleh overflow: clip.
+// Di bawah 768px hanya tiap baris ketiga yang tampil (bukan `wide`).
+const STEP = 460;
+const pattern = [
+  { x: 3, size: 40, rot: -10 },
+  { x: 97, size: 30, rot: 12 },
+  { x: 5, size: 26, rot: 8 },
+  { x: 95, size: 44, rot: -6 },
+];
+const body = entry.body ?? "";
+const images = (body.match(/!\[/g) ?? []).length;
+const estimatedHeight = 900 + body.length * 1.2 + images * 1400;
+const flasks = Array.from({ length: Math.ceil(estimatedHeight / STEP) }, (_, i) => ({
+  ...pattern[i % pattern.length],
+  y: 160 + i * STEP,
+  wide: i % 3 !== 0,
+}));
 ---
 
 <Base
@@ -41,7 +66,9 @@ const back = localePath(lang, "/#penelitian");
   description={d.summary}
   ogImage={d.cover}
 >
-  <article>
+  <article class="detail-page">
+    <Flasks items={flasks} yUnit="px" />
+
     {/* Kepala halaman memakai kisi yang sama seperti hero landing supaya
         kedua halaman terasa satu sistem. */}
     <div class="lab-grid">

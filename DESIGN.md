@@ -111,6 +111,7 @@ Beberapa erlenmeyer kecil (24–46px) di latar hero dan seksi Tentang, Pengalama
 - Garis saja: stroke 1.1, warna `color-mix(in srgb, var(--muted) 30%, var(--sunken))`.
 - Posisi, ukuran, dan rotasi (±15°) ditulis sebagai data di `Landing.astro`, di pita kosong: tepi kiri-kanan di luar isi dan pita atas/bawah seksi.
 - Di bawah 768px hanya yang tidak bertanda `wide` yang tampil.
+- **Halaman detail penelitian** memakai komponen yang sama di seluruh artikel (`PenelitianDetail.astro`), dengan kerapatan yang sama seperti landing: satu erlenmeyer tiap ±460px, bergantian di pita kosong kiri dan kanan teks. Karena panjang artikel berbeda-beda, posisi y ditulis dalam px (`Flasks yUnit="px"`), bukan persen. Jumlahnya dihitung dari perkiraan tinggi halaman yang sengaja dilebihkan; yang melewati akhir halaman dipotong oleh `overflow: clip` pada `.detail-page`. Di bawah 768px hanya tiap baris ketiga yang tampil.
 - `aria-hidden`, `pointer-events: none`, statis.
 
 ## Navigasi
