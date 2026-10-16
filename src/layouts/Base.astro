@@ -26,7 +26,7 @@ const ui = site.ui;
 const alt = otherLang(lang);
 const altHref = altPath ?? localePath(alt, "/");
 
-const pageTitle = title ? `${site.meta.siteName} — ${title}` : site.meta.siteName;
+const pageTitle = title ? `${site.meta.siteName} · ${title}` : site.meta.siteName;
 const pageDescription = description ?? site.meta.description;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.meta.url);
 const altUrl = new URL(altHref, canonical);
@@ -45,7 +45,7 @@ const home = localePath(lang, "/");
 
         View Transitions menukar <html> dengan milik halaman baru tanpa
         reload, jadi atribut yang sama dipasang lagi ke dokumen baru
-        sebelum ditukar — tanpa ini tema berkedip ke default. */}
+        sebelum ditukar. Tanpa ini tema berkedip ke default. */}
     <script is:inline>
       (function () {
         function apply(doc) {

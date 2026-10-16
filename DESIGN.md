@@ -1,12 +1,12 @@
-# DESIGN.md — token visual
+# DESIGN.md: token visual
 
-Arah desain: **portofolio bertingkat seksi** dengan kerangka *laboratorium*. Nama situs dibaca lewat struktur — **radlabs = radityo laboratorium** — jadi setiap seksi diperlakukan sebagai satu "stasiun" lab: nomor seksi, label mono bergaya log (`01 // PROFIL PENELITI`), kartu catatan lab, nomor katalog, dan lembar data.
+Arah desain: **portofolio bertingkat seksi** dengan kerangka *laboratorium*. Nama situs dibaca lewat struktur (**radlabs = radityo laboratorium**), jadi setiap seksi diperlakukan sebagai satu "stasiun" lab: nomor seksi, label mono bergaya log (`01 // PROFIL PENELITI`), kartu catatan lab, nomor katalog, dan lembar data.
 
-Landing terdiri dari hero + lima seksi. Di layar lebar tiap seksi minimal setinggi satu layar, dengan kepala seksi di kolom kiri dan isi di kolom kanan. Halaman digulir bebas — **tidak ada scroll snap**.
+Landing terdiri dari hero + lima seksi. Di layar lebar tiap seksi minimal setinggi satu layar, dengan kepala seksi di kolom kiri dan isi di kolom kanan. Halaman digulir bebas, **tanpa scroll snap**.
 
 ## Warna
 
-**Palet belum final** — pemilik situs akan memilih warna setelah melihat hasilnya langsung. Sampai ada keputusan, token di bawah dipakai apa adanya. Saat warna diganti, ganti nilainya di sini dan di `global.css` saja; komponen tidak boleh menyimpan warna sendiri.
+**Palet belum final.** Pemilik situs akan memilih warna setelah melihat hasilnya langsung. Sampai ada keputusan, token di bawah dipakai apa adanya. Saat warna diganti, ganti nilainya di sini dan di `global.css` saja; komponen tidak boleh menyimpan warna sendiri.
 
 Definisikan sebagai CSS custom property di `:root[data-theme="..."]`, lalu petakan ke Tailwind lewat `@theme` memakai `var(--...)`.
 
@@ -20,7 +20,7 @@ Definisikan sebagai CSS custom property di `:root[data-theme="..."]`, lalu petak
 | `--muted` | `#A19C93` | `#6B665E` |
 | `--accent` | `#E0913C` | `#B45309` |
 
-Token turunan, bukan warna baru — wajib diturunkan lewat `color-mix`, bukan ditulis sebagai hex:
+Token turunan, bukan warna baru, wajib diturunkan lewat `color-mix`, bukan ditulis sebagai hex:
 
 | Token | Nilai | Dipakai untuk |
 |---|---|---|
@@ -57,9 +57,9 @@ Skala:
 | deskripsi seksi | `14px` | warna `--muted` |
 | mono utility | `10–13px` | tracking 0.04–0.16em, uppercase untuk label |
 
-Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px**. Jangan dipersempit — di laptop 1440px container yang lebih sempit menyisakan pita kosong besar di kiri-kanan.
+Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px**. Jangan dipersempit: di laptop 1440px container yang lebih sempit menyisakan pita kosong besar di kiri-kanan.
 
-**Container adalah satu-satunya pembatas lebar teks.** Tidak ada batas baca terpisah di paragraf, lede, manifest, atau daftar. Di landing, teks mengikuti lebar kolomnya (kolom kepala atau kolom isi) — kartu dan grid di kolom yang sama selebar teksnya. Di halaman detail, tangkapan layar dan tabel dirender selebar container, jadi paragrafnya juga.
+**Container adalah satu-satunya pembatas lebar teks.** Tidak ada batas baca terpisah di paragraf, lede, manifest, atau daftar. Di landing, teks mengikuti lebar kolomnya (kolom kepala atau kolom isi), dan kartu serta grid di kolom yang sama selebar teksnya. Di halaman detail, tangkapan layar dan tabel dirender selebar container, jadi paragrafnya juga.
 
 ## Bentuk & jarak
 
@@ -78,10 +78,10 @@ Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px**.
 - **≥1024px:** grid 12 kolom. Kepala seksi 4 kolom (Pengalaman 5, karena tab ada di sana), isi 8 kolom (Pengalaman 7). Kepala `position: sticky` pada `calc(var(--nav-h) + 28px)`, kecuali seksi dengan `stickyTitle` (Pengalaman) yang hanya menempelkan blok judulnya.
 - **<1024px:** satu kolom, kepala di atas isi, tidak menempel. Grid memakai `minmax(0, 1fr)` supaya isi yang tidak membungkus tidak melebarkan kolom.
 
-## Pengalaman — tab
+## Pengalaman: tab
 
 - **Tab** di kolom kepala, panel di kolom isi. Kolom kiri (judul + tab) tidak boleh bergerak saat tab diganti.
-- **≥1024px:** isi seksi ditengahkan vertikal, jadi tinggi kolom kanan harus tetap. Semua panel ditumpuk di satu sel grid — tinggi sel = panel tertinggi — dan panel tidak aktif disembunyikan dengan `visibility`, bukan `display: none`, supaya tetap ikut mengukur. Tiap kartu tetap **setinggi isinya** (`align-self: start`); sisa ruang ada di bawah kartu, bukan di dalamnya. Yang menempel hanya **blok judul** (nomor, judul, deskripsi — `Section stickyTitle`), bukan daftar tab: di layar pendek judul menempel tepat di bawah nav selama kartu yang panjang digulir, sementara tab ikut tergulir dan lewat di bawah judul. Blok judul diberi latar sewarna seksi yang membentang sampai bawah nav, dengan margin negatif supaya jaraknya ke elemen sekitar tidak berubah.
+- **≥1024px:** isi seksi ditengahkan vertikal, jadi tinggi kolom kanan harus tetap. Semua panel ditumpuk di satu sel grid (tinggi sel = panel tertinggi), dan panel tidak aktif disembunyikan dengan `visibility`, bukan `display: none`, supaya tetap ikut mengukur. Tiap kartu tetap **setinggi isinya** (`align-self: start`); sisa ruang ada di bawah kartu, bukan di dalamnya. Yang menempel hanya **blok judul** (nomor, judul, deskripsi; `Section stickyTitle`), bukan daftar tab: di layar pendek judul menempel tepat di bawah nav selama kartu yang panjang digulir, sementara tab ikut tergulir dan lewat di bawah judul. Blok judul diberi latar sewarna seksi yang membentang sampai bawah nav, dengan margin negatif supaya jaraknya ke elemen sekitar tidak berubah.
 - **<1024px:** panel memakai tinggi alaminya (tab ada di atas panel, jadi tidak ikut bergeser). Tab menjadi carousel satu tab penuh di antara dua tombol panah (`icon-btn`), bisa di-swipe dengan snap horizontal di dalam daftar tab. Panah mati di ujung daftar. Di bawah 640px periode turun ke bawah judul tab.
 - Ganti pengalaman lewat klik tab, tombol panah, atau panah keyboard/Home/End. Pergantian panel memudar 0.25s.
 
@@ -89,7 +89,7 @@ Lebar container **1280px**. Padding samping 24px, naik ke **40px di ≥1024px**.
 
 Tiga baris, tanpa foto:
 
-- **Bar atas** (garis bawah 1px): chip status (titik berdenyut + `hero.status`) dan lokasi di kiri. Di kanan peran bergantian dalam huruf besar — kata pertama di baris pertama warna `--ink`, sisanya di baris kedua warna `--accent` — dengan penghitung mono `01 / 02` di bawahnya (angka aktif `--accent`). Di bawah 860px keduanya menumpuk rata kiri.
+- **Bar atas** (garis bawah 1px): chip status (titik berdenyut + `hero.status`) dan lokasi di kiri. Di kanan peran bergantian dalam huruf besar: kata pertama di baris pertama warna `--ink`, sisanya di baris kedua warna `--accent`, dengan penghitung mono `01 / 02` di bawahnya (angka aktif `--accent`). Di bawah 860px keduanya menumpuk rata kiri.
 - **Tengah** (grid 12 kolom di ≥1024px, 8 + 4): sambutan mono aksen, nama `h1`, intro dengan penekanan, lede stack mono aksen. Di kanan kartu **catatan lab**: kode modul, judul, deskripsi, dan dua angka (jumlah seksi, rentang katalog penelitian) yang dihitung dari data.
 - **Bar bawah** (garis atas 1px): dua tombol di kiri, petunjuk gulir `↓` di kanan.
 
@@ -99,14 +99,14 @@ Tiga baris, tanpa foto:
 
 ## Kerangka lab
 
-- **Kisi milimeter.** Hanya di blok hero (landing, kepala halaman detail, 404). Kotak 32px, garis 1px `--grid`, dua `repeating-linear-gradient` pada `::before`, dipudarkan ke bawah dengan `mask-image`. **Wajib di pseudo-element** — `mask-image` memudarkan seluruh elemen termasuk teksnya.
+- **Kisi milimeter.** Hanya di blok hero (landing, kepala halaman detail, 404). Kotak 32px, garis 1px `--grid`, dua `repeating-linear-gradient` pada `::before`, dipudarkan ke bawah dengan `mask-image`. **Wajib di pseudo-element**, karena `mask-image` memudarkan seluruh elemen termasuk teksnya.
 - **Label seksi.** `NN // EYEBROW` di atas judul. Nomor digenerate dari urutan seksi, eyebrow dari `content/`.
-- **Kode item.** `EXP-NN` di panel pengalaman, `LAB-NN` di kartu keahlian, `P-NN` di kartu penelitian — semua digenerate dari urutan/`order`, prefiksnya dari `content/`.
+- **Kode item.** `EXP-NN` di panel pengalaman, `LAB-NN` di kartu keahlian, `P-NN` di kartu penelitian. Semua digenerate dari urutan/`order`, prefiksnya dari `content/`.
 - **Rel indikator** di tepi kanan (≥1024px): satu titik per seksi + hero, label muncul saat hover/fokus, titik aktif berwarna aksen.
 
 ## Erlenmeyer di latar seksi
 
-Beberapa erlenmeyer kecil (24–46px) di latar hero dan seksi Tentang, Pengalaman, Keahlian, Penelitian, lewat `Flasks.astro`. Path SVG inline — bukan icon pack, bukan emoji, bukan file gambar.
+Beberapa erlenmeyer kecil (24–46px) di latar hero dan seksi Tentang, Pengalaman, Keahlian, Penelitian, lewat `Flasks.astro`. Path SVG inline, bukan icon pack, bukan emoji, bukan file gambar.
 
 - Garis saja: stroke 1.1, warna `color-mix(in srgb, var(--muted) 30%, var(--sunken))`.
 - Posisi, ukuran, dan rotasi (±15°) ditulis sebagai data di `Landing.astro`, di pita kosong: tepi kiri-kanan di luar isi dan pita atas/bawah seksi.
@@ -148,7 +148,7 @@ Semua screenshot berlatar putih. Setiap gambar dibungkus: latar `--sunken`, bord
 - Tema diterapkan lewat atribut `data-theme` pada `<html>`.
 - Transisi warna 0.25s ease pada `background-color` dan `color` saja.
 
-**Script anti-kedip — wajib inline di `<head>`, sebelum stylesheet.** Script yang sama memasang kelas `.js` pada `<html>`, dipakai CSS untuk menyembunyikan elemen yang hanya bermakna dengan JS (`.js-only`) tanpa lompatan tata letak, dan memasang ulang keduanya ke dokumen baru saat View Transitions menukar halaman:
+**Script anti-kedip wajib inline di `<head>`, sebelum stylesheet.** Script yang sama memasang kelas `.js` pada `<html>`, dipakai CSS untuk menyembunyikan elemen yang hanya bermakna dengan JS (`.js-only`) tanpa lompatan tata letak, dan memasang ulang keduanya ke dokumen baru saat View Transitions menukar halaman:
 
 ```html
 <script>
@@ -168,13 +168,13 @@ Semua screenshot berlatar putih. Setiap gambar dibungkus: latar `--sunken`, bord
 </script>
 ```
 
-Toggle tema: tombol bundar berisi simbol SVG inline yang menyebut tema **tujuan** — matahari saat gelap, bulan saat terang. Garis 1.4px `currentColor`. Nama aksesibel dari teks `sr-only` (dari `content/`). Simbol dipilih lewat CSS, bukan JS.
+Toggle tema: tombol bundar berisi simbol SVG inline yang menyebut tema **tujuan**: matahari saat gelap, bulan saat terang. Garis 1.4px `currentColor`. Nama aksesibel dari teks `sr-only` (dari `content/`). Simbol dipilih lewat CSS, bukan JS.
 
 ## Bahasa
 
 Tombol bahasa di kiri toggle tema: tombol bundar berisi kode bahasa **tujuan** (`EN` di halaman Indonesia, `ID` di halaman Inggris), mono 11px 600. Tautan biasa ke halaman padanan, jadi berfungsi tanpa JS. Nama aksesibel dari `ui.langSwitch.srLabel`, ditandai atribut `lang` bahasa tujuan.
 
-Pindah halaman — termasuk ganti bahasa — memakai **View Transitions** bawaan Astro (`<ClientRouter />` di `Base.astro`): halaman baru diambil di latar dan ditukar dengan transisi pudar, tanpa memuat ulang dokumen. Di landing, scroll spy menambahkan `#seksi` yang sedang dibaca ke tautan bahasa, jadi setelah ganti bahasa pengunjung tetap di seksi yang sama.
+Pindah halaman (termasuk ganti bahasa) memakai **View Transitions** bawaan Astro (`<ClientRouter />` di `Base.astro`): halaman baru diambil di latar dan ditukar dengan transisi pudar, tanpa memuat ulang dokumen. Di landing, scroll spy menambahkan `#seksi` yang sedang dibaca ke tautan bahasa, jadi setelah ganti bahasa pengunjung tetap di seksi yang sama.
 
 Konsekuensi untuk script:
 - Script modul hanya berjalan sekali. Inisialisasi ditaruh di `document.addEventListener("astro:page-load", …)`, yang berjalan di muatan awal dan setelah setiap pindah halaman.
@@ -183,7 +183,7 @@ Konsekuensi untuk script:
 
 ## Gerak
 
-- Animasi yang ada: denyut titik wordmark (`ping`), denyut titik status (`pulse`), pudar silang rotasi peran dan panel pengalaman, transisi warna hover, transisi pudar antarhalaman (View Transitions). Semuanya mati di bawah `prefers-reduced-motion: reduce` — lewat aturan global, atau otomatis oleh Astro untuk View Transitions.
+- Animasi yang ada: denyut titik wordmark (`ping`), denyut titik status (`pulse`), pudar silang rotasi peran dan panel pengalaman, transisi warna hover, transisi pudar antarhalaman (View Transitions). Semuanya mati di bawah `prefers-reduced-motion: reduce`, lewat aturan global, atau otomatis oleh Astro untuk View Transitions.
 - `scroll-behavior: smooth`, kembali ke `auto` di bawah reduced motion.
 
 ## Yang dilarang

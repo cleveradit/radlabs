@@ -2,7 +2,7 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 // Sumber koleksi ada di content/<bahasa>/ (di luar src/), sesuai SPEC.md.
-// site.md dikecualikan — itu teks landing, bukan penelitian.
+// site.md dikecualikan karena itu teks landing, bukan penelitian.
 //
 // id entri = path relatif tanpa ekstensi ("id/ppdb-lhi", "en/ppdb-lhi").
 // generateId wajib: tanpa itu glob memakai field `slug` sebagai id, dan

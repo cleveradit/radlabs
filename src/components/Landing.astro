@@ -207,7 +207,7 @@ const others = links.filter((l) => l !== email);
     </div>
   </section>
 
-  <!-- 01 — Tentang -->
+  <!-- 01 Tentang -->
   <Section
     id="tentang"
     index={1}
@@ -260,7 +260,7 @@ const others = links.filter((l) => l !== email);
     </ul>
   </Section>
 
-  <!-- 02 — Pengalaman -->
+  <!-- 02 Pengalaman -->
   <Section
     id="pengalaman"
     index={2}
@@ -351,7 +351,7 @@ const others = links.filter((l) => l !== email);
               <ul class="mt-4 space-y-2.5 text-sm text-muted">
                 {job.points.map((point) => (
                   <li class="flex items-start gap-2.5">
-                    <span class="u-mono mt-px text-accent" aria-hidden="true">—</span>
+                    <span class="u-mono mt-px text-accent" aria-hidden="true">-</span>
                     <span set:html={inline(point)} />
                   </li>
                 ))}
@@ -373,7 +373,7 @@ const others = links.filter((l) => l !== email);
     </div>
   </Section>
 
-  <!-- 03 — Keahlian -->
+  <!-- 03 Keahlian -->
   <Section
     id="keahlian"
     index={3}
@@ -415,7 +415,7 @@ const others = links.filter((l) => l !== email);
     </ul>
   </Section>
 
-  <!-- 04 — Penelitian -->
+  <!-- 04 Penelitian -->
   <Section
     id="penelitian"
     index={4}
@@ -446,7 +446,7 @@ const others = links.filter((l) => l !== email);
     {penelitian.map((entry) => <PenelitianDialog entry={entry} lang={lang} />)}
   </Section>
 
-  <!-- 05 — Kontak -->
+  <!-- 05 Kontak -->
   <Section
     id="kontak"
     index={5}

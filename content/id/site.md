@@ -1,6 +1,6 @@
 ---
 # Teks landing page. SEMUA teks yang tampil di halaman dibaca dari sini.
-# Padanan bahasa Inggrisnya ada di content/en/site.md — kunci keduanya
+# Padanan bahasa Inggrisnya ada di content/en/site.md. Kunci keduanya
 # wajib sama.
 #
 # Bertanda [GANTI: ...] = fakta yang belum saya punya. Dirender apa adanya,
@@ -23,7 +23,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratorium"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas — Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst di LHI International Islamic School, Surabaya. Menganalisis dan membangun sistem internal sekolah, termasuk sistem penerimaan murid baru yang dipakai lima unit sekolah. Laravel, Filament, Docker."
 
 # Label antarmuka: nama aksesibel tombol, label navigasi, dsb.
 ui:
@@ -173,7 +173,7 @@ pengalaman:
         - "Mendata dan mencatat informasi aset yang dimiliki oleh Pemerintah Provinsi Jawa Timur."
         - "Melakukan rekapitulasi data aset untuk memastikan kelengkapan dan keteraturan administrasi."
       tags: ["Pemeliharaan Web", "Manajemen Data Aset", "Rekapitulasi Administrasi"]
-    - role: "Peserta Studi Independen AI/ML — Kampus Merdeka"
+    - role: "Peserta Studi Independen AI/ML, Kampus Merdeka"
       tabRole: "Studi Independen AI/ML"
       org: "PT Orbit Ventura Indonesia"
       period: "Februari 2022 - Juli 2022"

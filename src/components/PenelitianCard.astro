@@ -24,7 +24,7 @@ const status = d.statusShort ?? d.status;
 ---
 
 <article class="card card-hover group relative flex flex-col">
-  {/* Baris notasi. Status dibiarkan membungkus, tidak dipotong — teks
+  {/* Baris notasi. Status dibiarkan membungkus, tidak dipotong. Teks
       yang terpotong hanya bisa dibaca lewat tooltip `title`, yang tidak
       bisa dibuka di perangkat sentuh. */}
   <div class="u-mono mb-3 flex items-start justify-between gap-3 text-[11px] text-muted">
@@ -37,7 +37,7 @@ const status = d.statusShort ?? d.status;
 
   <div class="flex items-start justify-between gap-3">
     <h3 class="card-title transition-colors group-hover:text-accent">
-      {/* Tautan meregang menutupi seluruh kartu lewat ::after — menghindari
+      {/* Tautan meregang menutupi seluruh kartu lewat ::after untuk menghindari
           <a> bersarang dengan tautan repo di bawah. */}
       <a
         href={href}

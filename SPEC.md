@@ -1,4 +1,4 @@
-# SPEC.md — struktur situs
+# SPEC.md: struktur situs
 
 ## Rute
 
@@ -20,14 +20,14 @@ Helper bahasa ada di `src/i18n.ts`: `getSite(lang)`, `getPenelitian(lang)`, `loc
 - Navigasi antarhalaman memakai View Transitions Astro (`<ClientRouter />`): tanpa memuat ulang dokumen. Tanpa JS, tautan berperilaku biasa. Aturan script-nya di `DESIGN.md`, "Bahasa".
 - Menambah atau mengubah teks berarti mengubah **kedua** bahasa. Kunci `content/id/site.md` dan `content/en/site.md` wajib sama; frontmatter penelitian di kedua folder wajib punya field yang sama.
 
-## Landing — hero + lima seksi, urut
+## Landing: hero + lima seksi, urut
 
-0. **Hero** (`#hero`) — tanpa nomor, tanpa foto. Setinggi layar. Bar atas (status, lokasi | peran bergantian berukuran besar + penghitung), tengah (sambutan, nama `h1`, intro, lede stack | kartu catatan lab), bar bawah (dua tombol | petunjuk gulir). Latar kisi milimeter + kata raksasa `hero.backdrop` di tengah. Detail visual di `DESIGN.md`, "Hero landing".
-1. **Tentang** — kepala: label, judul, deskripsi, kotak hipotesis kerja. Isi: kartu paragraf (paragraf pertama sebagai pembuka berwarna `--ink`), label pendidikan, kartu pendidikan (grid dua kolom di ≥640px). Latar `--sunken`.
-2. **Pengalaman** — kepala selebar 5/12 berisi tab (satu per entri: peran ringkas, organisasi, periode ringkas); di layar sempit tab menjadi carousel dengan panah kiri-kanan. Isi: panel per entri — kode `EXP-NN`, peran (`h3`), organisasi, chip periode (aksen bila `current`), ringkasan, poin, tag di dasar kartu. Pola WAI-ARIA tabs dengan navigasi panah/Home/End. Kolom kiri tidak bergerak saat tab diganti (detail di `DESIGN.md`, "Pengalaman — tab"). **Tanpa JS** tab dan panah disembunyikan dan semua panel tampil berurutan.
-3. **Keahlian** — kepala dengan kotak ringkasan (jumlah kategori dihitung dari data). Isi: grid kartu 1 / 2 kolom (0 / 640px), tiap kartu: judul, kode `LAB-NN`, pill; item di `highlight` diberi latar aksen. Latar `--sunken`.
-4. **Penelitian** — kepala dengan kotak jumlah berkas + petunjuk (angka dan rentang katalog dihitung dari data). Isi: grid kartu 1 / 2 kolom.
-5. **Kontak** — isi: kartu email (alamat, tombol salin, tombol kirim), kartu GitHub dan LinkedIn. Di bawahnya footer landing (teks footer + tautan kembali ke hero). Latar `--sunken`. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
+0. **Hero** (`#hero`). Tanpa nomor, tanpa foto. Setinggi layar. Bar atas (status, lokasi | peran bergantian berukuran besar + penghitung), tengah (sambutan, nama `h1`, intro, lede stack | kartu catatan lab), bar bawah (dua tombol | petunjuk gulir). Latar kisi milimeter + kata raksasa `hero.backdrop` di tengah. Detail visual di `DESIGN.md`, "Hero landing".
+1. **Tentang**. Kepala: label, judul, deskripsi, kotak hipotesis kerja. Isi: kartu paragraf (paragraf pertama sebagai pembuka berwarna `--ink`), label pendidikan, kartu pendidikan (grid dua kolom di ≥640px). Latar `--sunken`.
+2. **Pengalaman**. Kepala selebar 5/12 berisi tab (satu per entri: peran ringkas, organisasi, periode ringkas); di layar sempit tab menjadi carousel dengan panah kiri-kanan. Isi: panel per entri berisi kode `EXP-NN`, peran (`h3`), organisasi, chip periode (aksen bila `current`), ringkasan, poin, tag di dasar kartu. Pola WAI-ARIA tabs dengan navigasi panah/Home/End. Kolom kiri tidak bergerak saat tab diganti (detail di `DESIGN.md`, "Pengalaman: tab"). **Tanpa JS** tab dan panah disembunyikan dan semua panel tampil berurutan.
+3. **Keahlian**. Kepala dengan kotak ringkasan (jumlah kategori dihitung dari data). Isi: grid kartu 1 / 2 kolom (0 / 640px), tiap kartu: judul, kode `LAB-NN`, pill; item di `highlight` diberi latar aksen. Latar `--sunken`.
+4. **Penelitian**. Kepala dengan kotak jumlah berkas + petunjuk (angka dan rentang katalog dihitung dari data). Isi: grid kartu 1 / 2 kolom.
+5. **Kontak**. Isi: kartu email (alamat, tombol salin, tombol kirim), kartu GitHub dan LinkedIn. Di bawahnya footer landing (teks footer + tautan kembali ke hero). Latar `--sunken`. **Tanpa form.** Tanpa Calendly, tanpa janji waktu respons.
 
 Nomor seksi diberikan halaman dari urutan seksi yang dirender, bukan ditulis di `content/`. Hero tidak ikut dihitung.
 
@@ -63,7 +63,7 @@ Urut: eyebrow judul seksi Penelitian (tautan balik) → judul (`h1`) → `summar
 
 Kepala halaman memakai kisi milimeter yang sama seperti hero landing.
 
-Semua gambar dalam isi Markdown dibungkus `figure` berbingkai secara otomatis lewat `src/plugins/satteri-figure.mjs` — override di lapisan prosesor Markdown, jangan tulis manual per gambar. Tabel juga dibungkus `.table-scroll` di sana.
+Semua gambar dalam isi Markdown dibungkus `figure` berbingkai secara otomatis lewat `src/plugins/satteri-figure.mjs`, yaitu override di lapisan prosesor Markdown, jangan tulis manual per gambar. Tabel juga dibungkus `.table-scroll` di sana.
 
 Tabel Markdown: header mono uppercase kecil, garis 1px `--line`, tanpa zebra stripe, bisa di-scroll horizontal di layar sempit.
 
@@ -102,7 +102,7 @@ Penanda di dalam teks:
 
 Tautan `mailto:` di `kontak.links` dirender sebagai kartu email; sisanya kartu tautan dengan `display` di kakinya.
 
-Teks bertanda `[GANTI: ...]` adalah fakta yang belum tersedia. **Dirender apa adanya** — jangan dihapus, jangan ditebak, jangan "diperbaiki".
+Teks bertanda `[GANTI: ...]` adalah fakta yang belum tersedia. **Dirender apa adanya**: jangan dihapus, jangan ditebak, jangan "diperbaiki".
 
 ## Skema koleksi `penelitian`
 
@@ -136,7 +136,7 @@ Sumber: `content/id/*.md` dan `content/en/*.md` (kecuali `site.md`). id entri = 
 
 ## SEO
 
-- `<title>`: `radlabs — [judul halaman]`
+- `<title>`: `radlabs · [judul halaman]`
 - Meta description dari `summary`
 - og:image dari `cover`; landing pakai `/images/og.png` bila ada, kalau tidak ada lewati
 - `site: 'https://radlabs.my.id'` di `astro.config.mjs`

@@ -4,7 +4,7 @@ import { join } from "node:path";
 // Override elemen `img` dan `table` untuk semua konten Markdown.
 //
 // Astro hanya mendukung prop `components` pada MDX, bukan .md biasa, jadi
-// pembungkusan dilakukan di lapisan prosesor Markdown — tetap otomatis,
+// pembungkusan dilakukan di lapisan prosesor Markdown agar tetap otomatis,
 // tidak ada markup yang perlu ditulis per gambar di file konten.
 //
 //   <p><img></p>  →  <figure class="figure-frame"><img><figcaption>alt</figcaption></figure>
@@ -28,7 +28,7 @@ function pngSize(src) {
 const isElement = (node, tagName) =>
   node?.type === "element" && node.tagName === tagName;
 
-/** Isi bermakna sebuah node — teks kosong/whitespace diabaikan. */
+/** Isi bermakna sebuah node; teks kosong/whitespace diabaikan. */
 const meaningful = (children = []) =>
   children.filter(
     (child) => !(child.type === "text" && child.value.trim() === ""),
@@ -86,7 +86,7 @@ export const satteriFigurePlugin = {
     {
       // Tabel selalu bisa di-scroll horizontal di layar sempit.
       // `tabindex` membuatnya bisa di-scroll lewat keyboard. Tanpa
-      // `role="region"` — region tanpa nama aksesibel justru jadi temuan
+      // `role="region"`: region tanpa nama aksesibel justru jadi temuan
       // aksesibilitas, dan namanya tidak ada di content/.
       filter: ["table"],
       visit(node, ctx) {

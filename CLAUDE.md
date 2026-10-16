@@ -1,19 +1,21 @@
-# CLAUDE.md — radlabs.my.id
+# CLAUDE.md: radlabs.my.id
 
 Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual) sebelum menulis kode.
 
-## Stack — terkunci
+## Stack (terkunci)
 
 - Astro + Tailwind CSS. Tidak ada framework JS lain.
 - **Dilarang menambah dependency apa pun** tanpa bertanya lebih dulu. Tidak ada UI library, tidak ada animation library, tidak ada icon pack.
 - Output statis ke `dist/`. Tidak ada SSR, tidak ada adapter.
 - Deploy: GitHub Pages via GitHub Actions.
-- Batas lebar (`max-width`) ditulis di CSS, bukan ditempel sebagai utility `max-w-*` di komponen — utility tidak bisa ditimpa dari `@layer components`, karena lapisan `utilities` selalu menang.
+- Batas lebar (`max-width`) ditulis di CSS, bukan ditempel sebagai utility `max-w-*` di komponen, karena utility tidak bisa ditimpa dari `@layer components`, karena lapisan `utilities` selalu menang.
 
 ## Konten
 
-- **Semua teks yang tampil di halaman wajib dibaca dari `content/`.** Dilarang menulis teks langsung di file `.astro` — termasuk label tombol dan nama aksesibel.
-- Situs dua bahasa: `content/id/` (default, `/`) dan `content/en/` (`/en/`). Setiap perubahan teks wajib dilakukan di **kedua** bahasa. Terjemahan harus setia pada versi Indonesia — tidak menambah atau mengurangi fakta.
+- **Semua teks yang tampil di halaman wajib dibaca dari `content/`.** Dilarang menulis teks langsung di file `.astro`, termasuk label tombol dan nama aksesibel.
+- Situs dua bahasa: `content/id/` (default, `/`) dan `content/en/` (`/en/`). Setiap perubahan teks wajib dilakukan di **kedua** bahasa. Terjemahan harus setia pada versi Indonesia, tidak menambah atau mengurangi fakta.
+- **Dilarang memakai em dash (—)** di mana pun: konten, label antarmuka, kode, komentar, dan dokumen. Ganti dengan koma, titik, titik dua, titik koma, atau tanda kurung sesuai kalimatnya. Penanda poin daftar memakai hyphen (`-`).
+- En dash (–) hanya boleh untuk rentang waktu atau rentang angka, tanpa diubah: `Februari 2026 – Agustus 2026`, `2026 – Kini`, `42–50 MB/s`.
 - **Dilarang mengarang konten.** Tidak boleh membuat angka, nama, testimoni, tanggal, atau deskripsi project yang tidak ada di `content/`. Termasuk dilarang mengisi lorem ipsum.
 - Teks bertanda `[GANTI: ...]` adalah placeholder yang disengaja. Render apa adanya, jangan diganti, jangan dihapus, jangan "diperbaiki".
 - Nilai `TODO` di frontmatter juga dirender apa adanya.
@@ -28,14 +30,14 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 
 ## Wajib ada
 
-- `public/CNAME` berisi satu baris: `radlabs.my.id`. **Jangan pernah dihapus** — file ini hilang berarti custom domain mati.
+- `public/CNAME` berisi satu baris: `radlabs.my.id`. **Jangan pernah dihapus**; file ini hilang berarti custom domain mati.
 - Script anti-kedip tema inline di `<head>`, dieksekusi sebelum body dirender. Detail di `DESIGN.md`.
 - Setiap halaman: `<title>`, meta description, dan og:image.
 
 ## Batas kualitas
 
 - Responsif sampai 360px **dan** enak dilihat di landscape lebar (cek 1440px, bukan cuma layar sempit).
-- **Dalam satu halaman, lebar teks dan lebar media harus sepadan.** Kalau gambar atau tabel dirender selebar container, kolom teks di halaman itu wajib ikut lebar container juga. Dilarang membiarkan paragraf terkunci di kolom sempit sementara gambar mencapai tepi kanan — sisanya terbaca sebagai lubang, bukan margin. Kalau memang mau kolom baca yang sempit, media di halaman itu harus ikut dipersempit.
+- **Dalam satu halaman, lebar teks dan lebar media harus sepadan.** Kalau gambar atau tabel dirender selebar container, kolom teks di halaman itu wajib ikut lebar container juga. Dilarang membiarkan paragraf terkunci di kolom sempit sementara gambar mencapai tepi kanan, karena sisanya terbaca sebagai lubang, bukan margin. Kalau memang mau kolom baca yang sempit, media di halaman itu harus ikut dipersempit.
 - Setelah mengubah lebar container atau padding, **cek ulang semua halaman di layar lebar**. Melebarkan container tidak otomatis melebarkan isinya.
 - Focus ring terlihat pada semua elemen interaktif.
 - `prefers-reduced-motion` dihormati.

@@ -21,21 +21,21 @@ metrics: []
 
 ## Summary
 
-Every AI agent I used shared the same habit: whatever went into the prompt got acted on straight away. That included sentences that were plainly questions — ending in a question mark, without a single instruction in them — which still got answered by changing code.
+Every AI agent I used shared the same habit: whatever went into the prompt got acted on straight away. That included sentences that were plainly questions (ending in a question mark, without a single instruction in them), which still got answered by changing code.
 
 I designed a workflow to close off that habit. Its core rule fits in one sentence: **the agent may only touch code once its plan is written as a ticket and I have approved that ticket.** Everything else is structure that makes the rule enforceable, not merely encouraged.
 
 This workflow is now the starting point of every project I work on.
 
-## The problem — questions answered by writing code
+## The problem: questions answered by writing code
 
 Agents do not tell "please do this" apart from "what do you think if we did this". Both arrive as instructions. While I was still weighing an approach, the code had already changed.
 
-The cost is paid twice. First, the wrong result has to be torn out and redone. Second, the rework itself burns tokens — an already long context gets read again from the start to undo work I never asked for.
+The cost is paid twice. First, the wrong result has to be torn out and redone. Second, the rework itself burns tokens. An already long context gets read again from the start to undo work I never asked for.
 
 What made it tiring was not any single mistake but the need to supervise constantly. Every sentence I typed could become a command, so every sentence had to be thought through twice before sending.
 
-A second problem came from a different direction. I move between computers, while the agent's local memory is not committed. Context built on one machine — agreed decisions, the reasoning behind a design, work left half-finished — was not available on the next. The same discussions repeated, and sometimes decisions changed without anyone noticing.
+A second problem came from a different direction. I move between computers, while the agent's local memory is not committed. Context built on one machine (agreed decisions, the reasoning behind a design, work left half-finished) was not available on the next. The same discussions repeated, and sometimes decisions changed without anyone noticing.
 
 ## The approval gate
 
@@ -48,11 +48,11 @@ Every piece of work goes through a plan ticket with four statuses, and the statu
 | `DRAFT` | Decisions not yet locked | No |
 | `REVIEW` | Decisions locked, waiting for my corrections | No |
 | `READY` | I have approved it in writing | Yes |
-| `DONE` | Implementation and verification complete | — |
+| `DONE` | Implementation and verification complete | Already done |
 
 What makes this work is one constraint on `READY`: **the agent may not set that status on its own judgement.** The agent raises the ticket to `REVIEW` and stops. Only my written approval in the conversation moves it to `READY`.
 
-The effect is more than preventing wrong code. The debate moves from the code to the ticket — and correcting one paragraph of a plan is far cheaper than tearing out a change that has already spread across many files.
+The effect is more than preventing wrong code. The debate moves from the code to the ticket, and correcting one paragraph of a plan is far cheaper than tearing out a change that has already spread across many files.
 
 ## Four stops
 
@@ -65,13 +65,13 @@ The workflow has four stops, each for a different kind of information. Most docu
 | A feature that has shipped | Feature doc | A summary, a catalogue as a table, and gotchas not visible from the code |
 | The reasoning behind a decision | Decision log | Four fixed fields: the decision, the reason, the impact, the related ticket |
 
-This separation also answers a question that used to hang unresolved: where does something I mention in passing go? If it may not be worked on, it is an idea — it goes in the backlog. If it has been decided, it is a ticket. If it is already running, it is a feature doc. If what needs remembering is the reasoning, it is a decision entry.
+This separation also answers a question that used to hang unresolved: where does something I mention in passing go? If it may not be worked on, it is an idea and goes in the backlog. If it has been decided, it is a ticket. If it is already running, it is a feature doc. If what needs remembering is the reasoning, it is a decision entry.
 
 ## Rules that bind the agent
 
 Three rules keep this workflow from sliding back into old habits.
 
-**Context must be committed, not kept in the agent's local memory.** Everything that needs to survive between sessions — decisions, ticket status, analysis results, progress from the last session — is written to files that go into git. The agent's local memory may not be treated as the source of truth, because it is not committed and therefore does not exist on the next computer. This is what lets work continue from another machine: I open the project, the agent reads the files, and the context is whole again without me retelling it.
+**Context must be committed, not kept in the agent's local memory.** Everything that needs to survive between sessions (decisions, ticket status, analysis results, progress from the last session) is written to files that go into git. The agent's local memory may not be treated as the source of truth, because it is not committed and therefore does not exist on the next computer. This is what lets work continue from another machine: I open the project, the agent reads the files, and the context is whole again without me retelling it.
 
 **Technical contracts in a ticket may not be ambiguous.** A ticket names file paths, function signatures, return value shapes, and integration points exactly. The template has two explicit prohibitions: writing "or related files" is forbidden, and widening the scope without fresh approval is forbidden. Loose wording is the most common loophole for an agent to do something it was not asked to do while still feeling compliant with the ticket.
 
@@ -98,4 +98,4 @@ Everything is plain Markdown files, with no extra tooling and no dependency on a
 
 Finished tickets are not deleted. They move to an archive folder and their entry is removed from the index, so the index only lists work that is actually running. New ticket numbers are checked against the archive first so they never collide with old tickets.
 
-The mandate is deliberately split into two layers. The top four parts — tech stack, architectural boundaries, technical rules, and development environment — differ per project and are filled in at initiation. The workflow part is not refilled: it is the part that must be the same everywhere, because if every project had its own version of the rules, none of them would truly bind.
+The mandate is deliberately split into two layers. The top four parts (tech stack, architectural boundaries, technical rules, and development environment) differ per project and are filled in at initiation. The workflow part is not refilled: it is the part that must be the same everywhere, because if every project had its own version of the rules, none of them would truly bind.

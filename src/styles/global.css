@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Token warna — DESIGN.md
+   Token warna (DESIGN.md)
    Gelap adalah default. Tanpa JS, `data-theme` tidak pernah
    terpasang, jadi bare :root wajib berisi nilai gelap dan
    preferensi sistem ditangani lewat media query.
@@ -60,7 +60,7 @@
   }
 }
 
-/* Token turunan, bukan warna baru. Ditulis sekali saja — var()
+/* Token turunan, bukan warna baru. Ditulis sekali saja: var()
    disubstitusi saat dipakai, jadi nilainya ikut berubah sendiri ketika
    token dasarnya diganti per tema.
    --grid: --line yang diredam ke arah --bg, untuk garis kisi.
@@ -656,7 +656,7 @@ html:has(dialog[open]) {
   /* Tumpukan item yang bergantian (peran, catatan lab): semua item di
      satu sel grid, hanya .is-active yang terlihat. Sel selebar item
      terlebar, jadi tidak ada lompatan ukuran saat berganti. Item lama
-     keluar dulu, baru item baru masuk — keduanya tidak pernah
+     keluar dulu, baru item baru masuk, jadi keduanya tidak pernah
      bertumpuk. */
   .stack {
     display: grid;
@@ -1143,7 +1143,7 @@ html:has(dialog[open]) {
      kiri ikut naik-turun. Karena itu semua panel ditumpuk di satu sel
      grid: tinggi sel = panel tertinggi dan tidak pernah berubah, jadi
      kolom kiri diam. Tiap kartu tetap setinggi isinya (align-self:
-     start) — sisa ruang ada di bawah kartu, bukan di dalamnya.
+     start); sisa ruang ada di bawah kartu, bukan di dalamnya.
      Panel tidak aktif disembunyikan dengan visibility (ikut keluar dari
      pohon aksesibilitas), bukan display: none, supaya tetap ikut
      mengukur tinggi sel. */
@@ -1346,7 +1346,7 @@ html:has(dialog[open]) {
     color: var(--muted);
   }
 
-  /* --- Blok manifest — dipakai di halaman detail penelitian --- */
+  /* --- Blok manifest, dipakai di halaman detail penelitian --- */
   .manifest {
     border-top: 1px solid var(--line);
   }
@@ -1437,7 +1437,7 @@ html:has(dialog[open]) {
   }
 
   .prose ul > li::before {
-    content: "—";
+    content: "-";
     position: absolute;
     left: -1.15em;
     color: var(--muted);
@@ -1529,7 +1529,7 @@ html:has(dialog[open]) {
 }
 
 /* ============================================================
-   Toggle tema — label menyebut tema TUJUAN.
+   Toggle tema: label menyebut tema TUJUAN.
    Ditentukan lewat CSS, bukan JS, supaya tidak ada kedipan
    dan tetap benar saat JS mati.
    ============================================================ */

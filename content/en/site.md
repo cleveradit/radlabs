@@ -1,6 +1,6 @@
 ---
 # English landing page text. EVERY visible string on /en/ is read from
-# here. Indonesian source: content/id/site.md — keys must match.
+# here. Indonesian source: content/id/site.md. Keys must match.
 #
 # Text marked [GANTI: ...] is a fact not yet available. Render it as is.
 #
@@ -15,7 +15,7 @@ meta:
   siteName: "radlabs"
   siteNameExpansion: "radityo laboratory"
   url: "https://radlabs.my.id"
-  description: "Radityo Dwiki Putra Hamas — Web Developer & System Analyst at LHI International Islamic School, Surabaya. Analyses and builds the school's internal systems, including a student admission system used by five school units. Laravel, Filament, Docker."
+  description: "Radityo Dwiki Putra Hamas, Web Developer & System Analyst at LHI International Islamic School, Surabaya. Analyses and builds the school's internal systems, including a student admission system used by five school units. Laravel, Filament, Docker."
 
 ui:
   navLabel: "Main navigation"
@@ -155,7 +155,7 @@ pengalaman:
         - "Recorded and catalogued information on assets owned by the East Java Provincial Government."
         - "Recapitulated asset data to ensure administrative completeness and order."
       tags: ["Web Maintenance", "Asset Data Management", "Administrative Recapitulation"]
-    - role: "AI/ML Independent Study Participant — Kampus Merdeka"
+    - role: "AI/ML Independent Study Participant, Kampus Merdeka"
       tabRole: "AI/ML Independent Study"
       org: "PT Orbit Ventura Indonesia"
       period: "February 2022 - July 2022"

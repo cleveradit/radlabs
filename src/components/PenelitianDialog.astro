@@ -5,7 +5,7 @@ import { catalog, getSite, localePath, type Lang } from "../i18n";
 // Modal "lembar lab" untuk satu penelitian. <dialog> native: fokus
 // dikurung di dalamnya, Escape menutup, latar di belakangnya inert, dan
 // fokus kembali ke kartu asal saat ditutup. Tanpa JS modal tidak pernah
-// dibuka — kartu langsung menuju halaman detail.
+// dibuka; kartu langsung menuju halaman detail.
 interface Props {
   entry: CollectionEntry<"penelitian">;
   lang: Lang;
