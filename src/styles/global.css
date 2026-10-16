@@ -39,26 +39,35 @@
   --accent: #b45309;
 }
 
-/* Tinggi nav yang menempel. Dipakai untuk scroll-padding jangkar dan
-   untuk seksi setinggi layar, supaya tepi bawahnya kira-kira tepat di
-   lipatan. Nav dua baris di bawah 768px; tingginya bergeser beberapa px
-   tergantung scrollbar daftar tautan, jadi nilai ini perkiraan —
-   meleset sedikit tidak merusak apa pun. */
+/* Tinggi nav yang menempel (56px + border 1px). Dipakai untuk
+   scroll-padding jangkar, kepala seksi yang menempel, dan seksi
+   setinggi layar.
+   Tanpa JS, di bawah 768px tautan seksi jatuh ke baris kedua sehingga
+   nav jadi sekitar 88px; dengan JS tautan itu pindah ke menu dan nav
+   tetap satu baris. */
 :root {
   --nav-h: 88px;
 }
 
+:root.js,
+:root:not(.landing-page) {
+  --nav-h: 57px;
+}
+
 @media (min-width: 768px) {
   :root {
-    --nav-h: 54px;
+    --nav-h: 57px;
   }
 }
 
-/* Token turunan, bukan warna baru: --line yang diredam ke arah --bg.
-   Ditulis sekali saja — var() disubstitusi saat dipakai, jadi nilainya
-   ikut berubah sendiri ketika --line dan --bg diganti per tema. */
+/* Token turunan, bukan warna baru. Ditulis sekali saja — var()
+   disubstitusi saat dipakai, jadi nilainya ikut berubah sendiri ketika
+   token dasarnya diganti per tema.
+   --grid: --line yang diredam ke arah --bg, untuk garis kisi.
+   --accent-soft: --accent tipis, untuk latar chip/pill aktif. */
 :root {
   --grid: color-mix(in srgb, var(--line) 55%, var(--bg));
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 /* ============================================================
@@ -73,12 +82,12 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
 
-  --font-serif: "IBM Plex Serif", Georgia, serif;
-  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --radius-card: 8px;
+  --radius-card: 12px;
   --radius-tag: 999px;
 
   --spacing-section: 80px;
@@ -95,13 +104,9 @@
     color: var(--ink);
     -webkit-text-size-adjust: 100%;
     /* Tautan nav dan tombol hero menggulir, bukan melompat. Blok
-       prefers-reduced-motion di bawah mengembalikannya ke `auto`, jadi
-       pengunjung yang sensitif gerakan tetap dapat lompatan instan. */
+       prefers-reduced-motion di bawah mengembalikannya ke `auto`. */
     scroll-behavior: smooth;
-    /* Nav menempel di atas; jangkar seksi berhenti tepat di bawahnya.
-       Tepat, bukan diberi jarak lebih: seksi setinggi layar harus mengisi
-       viewport tanpa menyisakan potongan seksi sebelumnya di atasnya.
-       Seksi lain sudah punya padding atas 80px sebagai jarak napas. */
+    /* Jangkar seksi berhenti tepat di bawah nav. */
     scroll-padding-top: var(--nav-h);
   }
 
@@ -126,38 +131,44 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 500;
+    font-family: var(--font-sans);
+    font-weight: 700;
     color: var(--ink);
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
   h1 {
     font-size: clamp(2.1rem, 6vw, 3.1rem);
     line-height: 1.1;
-    letter-spacing: -0.02em;
   }
 
   h2 {
-    font-size: clamp(1.6rem, 4vw, 1.95rem);
+    font-size: clamp(1.5rem, 4vw, 1.875rem);
     line-height: 1.2;
-    letter-spacing: -0.014em;
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     line-height: 1.35;
+    letter-spacing: -0.01em;
   }
 
   h4 {
     font-size: 1rem;
     line-height: 1.4;
+    letter-spacing: -0.01em;
   }
 
   a {
     color: var(--accent);
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--ink);
   }
 
   :focus-visible {
@@ -188,16 +199,42 @@
   }
 }
 
+/* Elemen yang hanya bermakna dengan JS (tab, tombol salin, tombol menu)
+   disembunyikan saat JS mati. Kelas .js dipasang oleh script di <head>,
+   sebelum body dirender, jadi tidak ada lompatan tata letak. */
+html:not(.js) .js-only {
+  display: none !important;
+}
+
+/* Modal terbuka: halaman di belakangnya tidak ikut tergulir. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
 /* ============================================================
    Pola berulang
    ============================================================ */
 
 @layer components {
   /* Container adalah SATU-SATUNYA pembatas lebar teks. Tidak ada batas
-     baca terpisah (68ch/62ch) di paragraf, lede, manifest, atau daftar:
-     gambar, tabel, dan grid kartu semuanya dirender selebar container,
-     jadi kolom teks yang lebih sempit akan menumpuk di kiri dan
-     menyisakan lubang di kanan pada layar landscape. */
+     baca terpisah di paragraf, lede, manifest, atau daftar: gambar,
+     tabel, dan grid kartu semuanya dirender selebar container (atau
+     selebar kolomnya), jadi kolom teks yang lebih sempit akan menumpuk
+     di kiri dan menyisakan lubang di kanan pada layar landscape. */
   .container-page {
     width: 100%;
     max-width: var(--container-page);
@@ -206,12 +243,275 @@
   }
 
   /* Padding naik di layar besar. Tanpa ini, laptop 1440px membuat
-     container hampir menyentuh tepi jendela — margin sisa cuma 10px
-     per sisi, yang terbaca sesak, bukan lapang. */
+     container hampir menyentuh tepi jendela. */
   @media (min-width: 1024px) {
     .container-page {
       padding-inline: 40px;
     }
+  }
+
+  /* --- Header --- */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--line);
+    background-color: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 24px;
+    min-height: 56px;
+  }
+
+  .brand {
+    order: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .brand-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .brand-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--accent);
+    opacity: 0.75;
+    animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .brand-name {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+
+  .brand-expansion {
+    display: none;
+    padding-left: 10px;
+    border-left: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  @media (min-width: 520px) {
+    .brand-expansion {
+      display: inline;
+    }
+  }
+
+  /* Tanpa JS di layar sempit: baris kedua yang bisa digeser. */
+  .nav-links {
+    order: 3;
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    margin-inline: -12px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .js .nav-links {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .nav-links,
+    .js .nav-links {
+      order: 2;
+      display: flex;
+      width: auto;
+      margin-inline: 0;
+      padding-bottom: 0;
+      overflow: visible;
+    }
+  }
+
+  .nav-link {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-current] {
+    color: var(--accent);
+  }
+
+  .nav-link[aria-current] {
+    background-color: var(--accent-soft);
+  }
+
+  .nav-controls {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .nav-controls {
+      order: 3;
+    }
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background-color: var(--surface);
+    color: var(--muted);
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .lang-toggle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .menu-icon-close,
+  [aria-expanded="true"] .menu-icon-open {
+    display: none;
+  }
+
+  [aria-expanded="true"] .menu-icon-close {
+    display: block;
+  }
+
+  .nav-drawer {
+    border-top: 1px solid var(--line);
+    background-color: var(--surface);
+  }
+
+  .nav-drawer li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-drawer-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .nav-drawer-link:hover {
+    color: var(--accent);
+  }
+
+  /* --- Rel indikator seksi (≥1024px) --- */
+  .side-rail {
+    position: fixed;
+    right: 16px;
+    top: 50%;
+    z-index: 40;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    transform: translateY(-50%);
+  }
+
+  @media (min-width: 1024px) {
+    .side-rail {
+      display: flex;
+    }
+  }
+
+  .side-rail-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .side-rail-label {
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background-color: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .side-rail-link:hover .side-rail-label,
+  .side-rail-link:focus-visible .side-rail-label {
+    opacity: 1;
+  }
+
+  .side-rail-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background-color: var(--surface);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .side-rail-link:hover .side-rail-dot {
+    border-color: var(--accent);
+  }
+
+  .side-rail-link[aria-current] .side-rail-dot {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    transform: scale(1.25);
   }
 
   /* --- Kisi milimeter (DESIGN.md, "Kerangka lembar lab") ---
@@ -243,23 +543,25 @@
     mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
   }
 
-  /* --- Hero landing: setinggi layar, isi di empat sudut --- */
+  /* --- Hero landing: setinggi layar, tiga baris --- */
   .hero {
     overflow: clip;
+    border-bottom: 1px solid var(--line);
   }
 
   .hero-inner {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 56px;
+    gap: 32px;
     min-height: calc(100vh - var(--nav-h));
     min-height: calc(100svh - var(--nav-h));
-    padding-block: 40px 56px;
+    padding-block: 32px;
   }
 
-  /* Kata raksasa: tekstur, bukan teks. Warnanya turunan --line yang
-     sedikit lebih kuat dari kisi, jadi tetap samar di kedua tema. */
+  /* Kata raksasa: tekstur, bukan teks. Di tengah latar, di atas kisi,
+     di bawah isi. Warnanya turunan --line yang sedikit lebih kuat dari
+     kisi, jadi tetap samar di kedua tema. */
   .hero-backdrop {
     position: absolute;
     inset-inline: 0;
@@ -278,64 +580,66 @@
     user-select: none;
   }
 
-  .hero-top,
-  .hero-bottom {
+  .hero-bar,
+  .hero-foot {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .hero-bar {
     flex-direction: column;
-    gap: 32px;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
   }
 
   @media (min-width: 860px) {
-    .hero-top {
+    .hero-bar {
       flex-direction: row;
-      align-items: flex-start;
       justify-content: space-between;
     }
+  }
 
-    .hero-bottom {
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 48px;
-    }
+  .hero-foot {
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
 
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius: 6px;
+    background-color: var(--accent-soft);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--accent);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Peran bergantian: besar, uppercase, kata pertama --ink dan sisanya
+     --accent. Penghitung mono di bawahnya, angka aktif beraksen. */
+  @media (min-width: 860px) {
     .hero-roles {
       text-align: right;
     }
-  }
-
-  /* Semua peran menumpuk di satu sel; hanya .is-active yang terlihat. */
-  .hero-roles-list {
-    display: grid;
-  }
-
-  .hero-role {
-    grid-area: 1 / 1;
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: clamp(2.4rem, 7vw, 5.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.035em;
-    text-transform: uppercase;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(0.25em);
-    transition:
-      opacity 0.3s ease,
-      transform 0.3s ease,
-      visibility 0s linear 0.3s;
-  }
-
-  /* Masuk setelah peran lama selesai keluar, supaya dua kata tidak
-     pernah bertumpuk di tengah transisi. */
-  .hero-role.is-active {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition:
-      opacity 0.4s ease 0.3s,
-      transform 0.4s ease 0.3s,
-      visibility 0s linear 0.3s;
   }
 
   .hero-roles-count {
@@ -345,152 +649,637 @@
     color: var(--muted);
   }
 
-  .hero-roles-count [data-hero-roles-index] {
+  .hero-roles-count [data-role-index] {
     color: var(--accent);
   }
 
-  .hero-name {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: clamp(2.4rem, 7.2vw, 6.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+  /* Tumpukan item yang bergantian (peran, catatan lab): semua item di
+     satu sel grid, hanya .is-active yang terlihat. Sel selebar item
+     terlebar, jadi tidak ada lompatan ukuran saat berganti. Item lama
+     keluar dulu, baru item baru masuk — keduanya tidak pernah
+     bertumpuk. */
+  .stack {
+    display: grid;
   }
 
-  .hero-lede {
-    margin-top: 20px;
-    font-size: 13px;
-    letter-spacing: 0.05em;
+  .stack-inline {
+    display: inline-grid;
+  }
+
+  .stack-item {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .stack-item.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.4s ease 0.3s,
+      visibility 0s linear 0.3s;
+  }
+
+  /* Peran hero: masuk dari sedikit di bawah. Ditulis setelah
+     .stack-item supaya transisinya menimpa yang umum. */
+  .hero-role {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    transform: translateY(0.25em);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .hero-role.is-active {
+    transform: none;
+    transition:
+      opacity 0.4s ease 0.3s,
+      transform 0.4s ease 0.3s,
+      visibility 0s linear 0.3s;
+  }
+
+  .hero-main {
+    display: grid;
+    gap: 24px;
+    margin-block: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-main {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: center;
+    }
+
+    .hero-main > :first-child {
+      grid-column: span 8;
+    }
+
+    .hero-main > :last-child {
+      grid-column: span 4;
+    }
+  }
+
+  .hero-name {
+    margin-top: 10px;
+    font-size: clamp(1.875rem, 4.6vw, 3.35rem);
+    line-height: 1.12;
+  }
+
+  .hero-intro {
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.7;
     color: var(--muted);
   }
 
-  /* --- Seksi setinggi layar: satu seksi mengisi satu layar. Isi yang
-     lebih tinggi dari layar tetap memanjang — ini batas bawah, bukan
-     tinggi tetap. --- */
-  .section-full {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - var(--nav-h));
-    min-height: calc(100svh - var(--nav-h));
+  .hero-intro strong {
+    font-weight: 500;
   }
 
-  /* Judul tetap di atas; hanya isinya yang ditengahkan di sisa ruang. */
-  .section-full > .container-page {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  @media (min-width: 640px) {
+    .hero-intro {
+      font-size: 16px;
+    }
   }
 
-  .section-full .section-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  .hero-lede {
+    margin-top: 16px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .lab-note {
+    padding: 18px 20px;
+    background-color: color-mix(in srgb, var(--surface) 90%, transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .scroll-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  .scroll-hint:hover {
+    color: var(--accent);
+  }
+
+  .scroll-hint-icon {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background-color: var(--surface);
+    color: var(--accent);
   }
 
-  /* --- Seksi dengan judul menempel: nomor + judul menempel di bawah
-     nav selama isi di bawahnya di-scroll. Latarnya sewarna seksi supaya
-     isi yang lewat di bawahnya tertutup, bukan bertumpuk. Hanya di
-     ≥768px — di layar sempit judul besar yang menempel memakan terlalu
-     banyak ruang baca. */
-  @media (min-width: 768px) {
-    .section-sticky-title .section-head {
+  /* --- Seksi landing ---
+     Di ≥1024px tiap seksi minimal setinggi layar (dikurangi nav) dan
+     isinya ditengahkan secara vertikal; isi yang lebih tinggi tetap
+     memanjang. */
+  .section {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: 64px;
+  }
+
+  @media (min-width: 1024px) {
+    .section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - var(--nav-h));
+      min-height: calc(100svh - var(--nav-h));
+      padding-block: 48px;
+    }
+
+    /* Seksi dengan baris penutup (Kontak): grid di tengah, penutup di
+       dasar seksi. */
+    .section-has-after .section-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-has-after .section-grid {
+      margin-block: auto;
+    }
+  }
+
+  /* minmax(0, 1fr): tanpa ini kolom tunggal di layar sempit ikut
+     melebar mengikuti isi yang tidak membungkus (baris tab pengalaman)
+     dan memotong teks di tepi kanan. */
+  .section-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    .section-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .section-head {
+      grid-column: span 4;
+      /* Menempel di bawah nav selama kolom kanan di-scroll, lalu ikut
+         naik saat seksi habis. Murni CSS. */
+      position: sticky;
+      top: calc(var(--nav-h) + 28px);
+    }
+
+    .section-body {
+      grid-column: span 8;
+    }
+
+    .section-grid-wide .section-head {
+      grid-column: span 5;
+    }
+
+    /* stickyTitle: kolom kepala tidak menempel, tapi direntangkan
+       setinggi baris grid supaya blok judul di dalamnya punya ruang
+       untuk menempel sepanjang seksi. Latar blok judul sewarna seksi dan
+       membentang sampai tepat di bawah nav (padding atas + margin negatif),
+       jadi tab yang tergulir lewat di bawahnya tertutup rapi. */
+    .section-grid-sticky-title .section-head {
+      position: static;
+      align-self: stretch;
+    }
+
+    .section-grid-sticky-title .section-title-block {
       position: sticky;
       top: var(--nav-h);
       z-index: 1;
-      padding-block: 20px 16px;
-      margin-top: -20px;
+      /* Padding memberi latar penutup di atas dan bawah judul; margin
+         negatif membatalkannya di tata letak, jadi jarak ke elemen
+         sekitar tetap sama seperti tanpa sticky. */
+      margin-block: -28px -16px;
+      padding-block: 28px 16px;
       background-color: var(--bg);
     }
 
-    .section-alt.section-sticky-title .section-head {
+    .section-alt .section-grid-sticky-title .section-title-block {
       background-color: var(--sunken);
+    }
+
+    .section-grid-wide .section-body {
+      grid-column: span 7;
     }
   }
 
-  /* --- Kartu keahlian ---
-     Grid 1 / 2 / 3 kolom di 0 / 560px / 900px. Di seksi setinggi layar
-     grid mengisi sisa tinggi di bawah judul, dengan baris yang sama
-     tinggi. Pill tetap rata atas, tepat di bawah judul, supaya titik
-     mulainya sejajar di semua kartu. */
-  .keahlian-grid {
+  .section-title {
+    margin-top: 8px;
+  }
+
+  .section-desc {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .aside-box {
+    margin-top: 20px;
+    padding: 16px;
+  }
+
+  .hypothesis {
+    margin-top: 6px;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .hypothesis strong {
+    font-weight: 400;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .hypothesis strong:first-child {
+    text-decoration-color: var(--accent);
+  }
+
+  .hint strong {
+    font-weight: 500;
+  }
+
+  .landing-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* --- Kartu --- */
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .card {
+      padding: 24px;
+    }
+  }
+
+  .card-hover {
+    transition: border-color 0.2s ease;
+  }
+
+  .card-hover:hover {
+    border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  }
+
+  .card-title {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .catalog-chip {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: var(--sunken);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .catalog-chip-accent {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background-color: var(--accent-soft);
+  }
+
+  .period-chip {
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background-color: var(--sunken);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .period-chip-accent {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .inset-box {
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background-color: var(--sunken);
+  }
+
+  /* --- Tab pengalaman ---
+     Layar sempit: baris tab yang bisa digeser. ≥1024px: kolom di bawah
+     kepala seksi. Tanpa JS tablist disembunyikan (.js-only) dan semua
+     panel tampil berurutan. */
+  .exp-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  /* position: relative → offsetLeft tab dihitung dari daftar ini,
+     dipakai JS untuk menengahkan tab aktif. */
+  .exp-tabs {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+    padding-block: 2px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Panah sudah menjadi penanda bahwa daftar bisa digeser. */
+    scrollbar-width: none;
+  }
+
+  .exp-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .exp-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  @media (min-width: 1024px) {
+    .exp-nav {
+      display: block;
+    }
+
+    .exp-tabs {
+      flex-direction: column;
+      padding-block: 0;
+      overflow: visible;
+    }
+
+    .exp-arrow {
+      display: none;
+    }
+  }
+
+  .exp-tab {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    /* Layar sempit: satu tab penuh di antara dua panah, seperti
+       carousel. Tablet: beberapa tab terlihat sekaligus. */
+    flex-basis: 100%;
+    scroll-snap-align: center;
+    min-width: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background-color: color-mix(in srgb, var(--sunken) 60%, transparent);
+    text-align: left;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  /* Satu tab penuh di layar sempit: periode turun ke bawah judul supaya
+     judulnya tidak terpotong. */
+  @media (max-width: 639px) {
+    .exp-tab {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+
+    .exp-tab > * {
+      max-width: 100%;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .exp-tab {
+      flex-basis: 260px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .exp-tab {
+      flex-basis: auto;
+    }
+  }
+
+  .exp-tab:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  }
+
+  .exp-tab[aria-selected="true"] {
+    border-color: var(--accent);
+    background-color: var(--surface);
+  }
+
+  .exp-tab-period {
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .exp-tab[aria-selected="true"] .exp-tab-period {
+    color: var(--accent);
+  }
+
+  .exp-panels {
     display: grid;
     gap: 16px;
   }
 
-  .section-full .keahlian-grid {
-    flex: 1;
-    grid-auto-rows: 1fr;
-  }
-
-  @media (min-width: 560px) {
-    .keahlian-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 900px) {
-    .keahlian-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  .keahlian-card {
+  .exp-panel {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+  }
+
+  /* Layar sempit: panel tidak aktif disembunyikan biasa. Tab ada di
+     atas panel, jadi perubahan tinggi panel tidak menggeser tab. */
+  .js .exp-panel:not(.is-active) {
+    display: none;
+  }
+
+  /* ≥1024px: isi seksi ditengahkan vertikal. Kalau tinggi kolom kanan
+     ikut berubah tiap tab diganti, titik tengahnya bergeser dan kolom
+     kiri ikut naik-turun. Karena itu semua panel ditumpuk di satu sel
+     grid: tinggi sel = panel tertinggi dan tidak pernah berubah, jadi
+     kolom kiri diam. Tiap kartu tetap setinggi isinya (align-self:
+     start) — sisa ruang ada di bawah kartu, bukan di dalamnya.
+     Panel tidak aktif disembunyikan dengan visibility (ikut keluar dari
+     pohon aksesibilitas), bukan display: none, supaya tetap ikut
+     mengukur tinggi sel. */
+  @media (min-width: 1024px) {
+    .js .exp-panel {
+      grid-area: 1 / 1;
+      align-self: start;
+      transition:
+        opacity 0.25s ease,
+        visibility 0s linear 0.25s;
+    }
+
+    .js .exp-panel:not(.is-active) {
+      display: flex;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .js .exp-panel.is-active {
+      transition:
+        opacity 0.25s ease,
+        visibility 0s;
+    }
+  }
+
+  /* --- Modal penelitian (<dialog>) --- */
+  .case-dialog {
+    width: calc(100% - 32px);
+    max-width: 42rem;
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .case-dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .case-dialog-panel {
     padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background-color: var(--surface);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
   }
 
-  .keahlian-card h3 {
-    font-size: 1.25rem;
-  }
-
-  .keahlian-pills {
-    display: flex;
-    flex-wrap: wrap;
+  /* --- Tombol --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      opacity 0.2s ease;
   }
 
-  .keahlian-pills .pill {
-    font-size: 12.5px;
-    padding: 5px 14px;
+  .btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
   }
 
-  /* --- Timeline pengalaman --- */
-  .timeline {
-    position: relative;
-    padding-left: 32px;
+  .btn-primary:hover {
+    opacity: 0.9;
   }
 
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background-color: var(--line);
+  .btn-outline {
+    background-color: var(--surface);
+    border-color: var(--line);
+    color: var(--ink);
   }
 
-  .timeline-marker {
-    position: absolute;
-    left: -32px;
-    top: 7px;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background-color: var(--bg);
-    border: 2px solid var(--accent);
-  }
-
-  /* Seksi berlatar --sunken: markernya harus ikut latar itu supaya
-     garis timeline tidak terlihat menembus lubang markernya. */
-  .section-alt .timeline-marker {
+  .btn-ghost {
     background-color: var(--sunken);
+    border-color: var(--line);
+    color: var(--ink);
   }
 
-  /* --- Erlenmeyer di latar Tentang ---
+  .btn-outline:hover,
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+
+  /* --- Pill: tag stack, daftar keahlian --- */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.3;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-tag);
+    background-color: var(--sunken);
+    color: var(--ink);
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .pill:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+  }
+
+  .pill-accent {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background-color: var(--accent-soft);
+  }
+
+  /* --- Erlenmeyer di latar seksi ---
      Garis saja, tanpa isian. Warnanya --muted yang diredam ke arah
      --sunken supaya samar di kedua tema dan tidak bersaing dengan teks. */
   .flasks {
@@ -509,139 +1298,12 @@
     stroke-linejoin: round;
   }
 
-  /* Di layar sempit isi seksi memenuhi tinggi seksi; sisakan yang di
-     sudut saja supaya latarnya tidak ramai di balik paragraf. */
+  /* Di layar sempit isi seksi memenuhi lebar; sisakan yang di sudut
+     saja supaya latarnya tidak ramai di balik paragraf. */
   @media (max-width: 767px) {
     .flask-wide {
       display: none;
     }
-  }
-
-  /* --- Judul seksi: serif + garis aksen 48px di bawahnya --- */
-  .section-title {
-    position: relative;
-    padding-bottom: 18px;
-    font-size: clamp(2.2rem, 5vw, 3.25rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-
-  .section-title::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 48px;
-    height: 3px;
-    border-radius: 2px;
-    background-color: var(--accent);
-  }
-
-  /* --- Tombol --- */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 26px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-card);
-    font-size: 0.95rem;
-    font-weight: 500;
-    line-height: 1.2;
-    text-decoration: none;
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .btn-primary {
-    background-color: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
-  }
-
-  .btn-primary:hover {
-    background-color: transparent;
-    color: var(--accent);
-  }
-
-  .btn-outline {
-    background-color: transparent;
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .btn-outline:hover {
-    background-color: var(--accent);
-    color: var(--bg);
-  }
-
-  /* --- Kartu --- */
-  .card {
-    background-color: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-card);
-    padding: 28px;
-  }
-
-  /* --- Slider penelitian --- */
-  .penelitian-track {
-    display: flex;
-    align-items: stretch;
-    gap: 20px;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    cursor: grab;
-    touch-action: pan-y;
-    user-select: none;
-  }
-
-  .penelitian-slider.is-enhanced .penelitian-track {
-    scroll-snap-type: none;
-  }
-
-  .penelitian-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .penelitian-track.is-dragging {
-    scroll-snap-type: none;
-    cursor: grabbing;
-  }
-
-  .penelitian-slide {
-    display: flex;
-    flex: 0 0 calc((100% - 20px) / 2);
-    min-width: 0;
-    scroll-snap-align: start;
-  }
-
-  .penelitian-slide > .card {
-    width: 100%;
-    height: 100%;
-  }
-
-  @media (max-width: 719px) {
-    .penelitian-slide {
-      flex-basis: calc(100% - 40px);
-    }
-  }
-
-  /* --- Pill: tag stack, daftar keahlian --- */
-  .pill {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    line-height: 1.5;
-    letter-spacing: 0.03em;
-    padding: 4px 12px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-tag);
-    background-color: var(--sunken);
-    color: var(--muted);
   }
 
   /* --- Mono utility: label, eyebrow, caption, footer --- */
@@ -649,7 +1311,7 @@
     font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.5;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
   }
 
   .u-label {
@@ -663,9 +1325,9 @@
 
   .u-eyebrow {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.5;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
   }
@@ -674,7 +1336,7 @@
     font-family: var(--font-mono);
     font-size: 11.5px;
     line-height: 1.55;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     color: var(--muted);
   }
 

@@ -12,7 +12,8 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 
 ## Konten
 
-- **Semua teks yang tampil di halaman wajib dibaca dari `content/`.** Dilarang menulis teks langsung di file `.astro`.
+- **Semua teks yang tampil di halaman wajib dibaca dari `content/`.** Dilarang menulis teks langsung di file `.astro` — termasuk label tombol dan nama aksesibel.
+- Situs dua bahasa: `content/id/` (default, `/`) dan `content/en/` (`/en/`). Setiap perubahan teks wajib dilakukan di **kedua** bahasa. Terjemahan harus setia pada versi Indonesia — tidak menambah atau mengurangi fakta.
 - **Dilarang mengarang konten.** Tidak boleh membuat angka, nama, testimoni, tanggal, atau deskripsi project yang tidak ada di `content/`. Termasuk dilarang mengisi lorem ipsum.
 - Teks bertanda `[GANTI: ...]` adalah placeholder yang disengaja. Render apa adanya, jangan diganti, jangan dihapus, jangan "diperbaiki".
 - Nilai `TODO` di frontmatter juga dirender apa adanya.
@@ -39,7 +40,8 @@ Situs portofolio statis. Baca `SPEC.md` (struktur) dan `DESIGN.md` (token visual
 - Focus ring terlihat pada semua elemen interaktif.
 - `prefers-reduced-motion` dihormati.
 - Lighthouse ≥ 95 di keempat kategori.
-- Tanpa JavaScript, halaman tetap terbaca penuh. JS hanya untuk peningkatan: toggle tema, rotasi peran hero, slider penelitian.
+- Tanpa JavaScript, halaman tetap terbaca penuh dan semua tautan tetap berfungsi. JS hanya untuk peningkatan: toggle tema, View Transitions antarhalaman, rotasi peran hero, tab pengalaman (tanpa JS semua entri tampil berurutan), modal penelitian (tanpa JS kartu langsung ke halaman detail), menu mobile (tanpa JS tautan tampil sebagai baris geser), salin email, dan scroll spy. Elemen yang hanya bermakna dengan JS diberi kelas `js-only`. Script dijalankan lewat `astro:page-load` dan dibersihkan pada `astro:before-swap` (lihat `DESIGN.md`, "Bahasa").
+- Warna belum final. Jangan mengubah nilai token warna tanpa diminta.
 
 ## Cara kerja
 

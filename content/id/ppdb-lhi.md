@@ -6,6 +6,9 @@ role: "Analis & pengembang aplikasi — melanjutkan aplikasi yang sudah berjalan
 team: "Tim IT SIT LHI (2 orang)"
 period: "Februari 2026 – Agustus 2026"
 status: "Live — dipakai seluruh unit sekolah yayasan, dirawat hingga sekarang"
+statusShort: "Live — dipakai 5 unit sekolah"
+problem: "Yayasan dengan lima unit sekolah membutuhkan pengelolaan tahun ajaran, kuota pendaftaran, dan pemisahan hak akses data antar-unit secara terstruktur, sekaligus kanal komunikasi resmi yang terintegrasi ke wali murid."
+solution: "Merancang dan mengimplementasikan lapisan pengelolaan tahun ajaran dan kuota multi-unit menggunakan Laravel & Filament, batas isolasi data antar-unit, antrean Redis, deployment Docker, serta notifikasi otomatis via Email dan WhatsApp Business Cloud API."
 domain: "Teknologi pendidikan"
 stack:
   ["Laravel", "Filament", "Livewire", "Tailwind CSS", "Redis", "Docker", "WhatsApp Cloud API"]

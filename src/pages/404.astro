@@ -1,9 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
-import { frontmatter as site } from "../../content/id/site.md";
+import { getSite } from "../i18n";
+
+// GitHub Pages menyajikan satu 404.html untuk semua path, jadi halaman
+// ini memakai bahasa default.
+const site = getSite("id");
 ---
 
-<Base title={site.notFound.heading} description={site.notFound.body}>
+<Base lang="id" title={site.notFound.heading} description={site.notFound.body}>
   <div class="lab-grid">
     <div class="container-page pt-[80px] pb-[var(--spacing-section)]">
       <h1>{site.notFound.heading}</h1>

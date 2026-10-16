@@ -1,0 +1,718 @@
+---
+import { existsSync } from "node:fs";
+import Base from "../layouts/Base.astro";
+import Section from "./Section.astro";
+import Flasks from "./Flasks.astro";
+import PenelitianCard from "./PenelitianCard.astro";
+import PenelitianDialog from "./PenelitianDialog.astro";
+import {
+  catalog,
+  fill,
+  getPenelitian,
+  getSite,
+  inline,
+  localePath,
+  otherLang,
+  type Lang,
+} from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const site = getSite(lang);
+const penelitian = await getPenelitian(lang);
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const roles = site.hero.roles as string[];
+const notes = site.hero.labNote.notes as {
+  code: string;
+  title: string;
+  desc: string;
+}[];
+
+// Rentang katalog penelitian ("P-01" s.d. "P-04"), dihitung dari data.
+const orders = penelitian.map((e) => e.data.order);
+const range = {
+  n: penelitian.length,
+  first: orders.length ? catalog(site.penelitian.catalogPrefix, Math.min(...orders)) : "",
+  last: orders.length ? catalog(site.penelitian.catalogPrefix, Math.max(...orders)) : "",
+};
+
+// Erlenmeyer di latar seksi (lihat Flasks.astro). Posisinya di pita
+// kosong: tepi kiri-kanan di luar isi, dan pita atas/bawah seksi.
+const heroFlasks = [
+  { x: 5, y: 22, size: 40, rot: -12, wide: true },
+  { x: 94, y: 78, size: 30, rot: 10, wide: true },
+];
+
+const tentangFlasks = [
+  { x: 92, y: 12, size: 44, rot: 6 },
+  { x: 4, y: 86, size: 36, rot: -12 },
+  { x: 60, y: 94, size: 24, rot: 8, wide: true },
+];
+
+const pengalamanFlasks = [
+  { x: 3, y: 84, size: 40, rot: 6 },
+  { x: 96, y: 14, size: 40, rot: -6, wide: true },
+  { x: 97, y: 60, size: 26, rot: 12, wide: true },
+];
+
+const keahlianFlasks = [
+  { x: 4, y: 86, size: 44, rot: 12 },
+  { x: 97, y: 10, size: 28, rot: -8, wide: true },
+];
+
+const penelitianFlasks = [
+  { x: 95, y: 10, size: 40, rot: -8 },
+  { x: 3, y: 50, size: 30, rot: 10, wide: true },
+  { x: 50, y: 95, size: 26, rot: -10, wide: true },
+];
+
+// Aset opsional: dilewati kalau filenya belum ada, tanpa placeholder.
+const ogImage = existsSync("public/images/og.png") ? "/images/og.png" : undefined;
+
+type Action = { label: string; href: string; variant: "primary" | "outline" };
+type Pendidikan = {
+  title: string;
+  org: string;
+  period: string;
+  note?: string;
+  href?: string;
+};
+type Pengalaman = {
+  role: string;
+  tabRole?: string;
+  org: string;
+  period: string;
+  tabPeriod?: string;
+  current?: boolean;
+  summary: string;
+  points: string[];
+  tags: string[];
+};
+type Keahlian = { title: string; items: string[]; highlight?: string[] };
+type Link = { label: string; value: string; href: string; display?: string };
+
+const pengalaman = site.pengalaman.items as Pengalaman[];
+const links = site.kontak.links as Link[];
+const email = links.find((l) => l.href.startsWith("mailto:"));
+const others = links.filter((l) => l !== email);
+---
+
+<Base lang={lang} ogImage={ogImage} altPath={localePath(otherLang(lang), "/")} landing>
+  <!-- Hero -->
+  <section id="hero" data-spy data-landing class="hero lab-grid">
+    <p class="hero-backdrop" aria-hidden="true">{site.hero.backdrop}</p>
+    <Flasks items={heroFlasks} />
+
+    <div class="container-page hero-inner">
+      <div class="hero-bar">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <span class="status-chip">
+            <span class="status-dot" aria-hidden="true"></span>
+            {site.hero.status}
+          </span>
+          <span class="u-eyebrow">{site.hero.eyebrow}</span>
+        </div>
+
+        {/*
+          Semua peran dirender di server dan ditumpuk di satu sel grid;
+          tanpa JS yang terlihat peran pertama. Pembaca layar membaca
+          daftar lengkap dari teks sr-only, bukan dari animasinya.
+        */}
+        <div class="hero-roles" data-roles>
+          <p class="sr-only">{roles.join(" · ")}</p>
+          <ul class="stack" aria-hidden="true">
+            {
+              roles.map((role, i) => {
+                const [head, ...rest] = role.split(" ");
+                return (
+                  <li class:list={["stack-item hero-role", i === 0 && "is-active"]} data-role-item>
+                    <span class="block text-ink">{head}</span>
+                    <span class="block text-accent">{rest.join(" ")}</span>
+                  </li>
+                );
+              })
+            }
+          </ul>
+          <p class="hero-roles-count u-mono" aria-hidden="true">
+            <span data-role-index>{pad(1)}</span> / {pad(roles.length)}
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-main">
+        <div class="min-w-0">
+          <p class="u-eyebrow font-medium text-accent">{site.hero.welcome}</p>
+          <h1 class="hero-name">{site.hero.name}</h1>
+          <p class="hero-intro" set:html={inline(site.hero.intro)} />
+          <p class="hero-lede u-mono">{site.hero.lede}</p>
+        </div>
+
+        <div class="card lab-note" data-roles-note>
+          <div class="u-mono flex items-center justify-between border-b border-line pb-2.5 text-[11px]">
+            <span class="font-semibold text-accent uppercase">
+              {site.hero.labNote.label} //{" "}
+              <span class="stack stack-inline">
+                {notes.map((n, i) => (
+                  <span class:list={["stack-item", i === 0 && "is-active"]} data-note-item>{n.code}</span>
+                ))}
+              </span>
+            </span>
+            <span class="text-muted uppercase">{site.hero.labNote.live}</span>
+          </div>
+          <div class="stack mt-3">
+            {
+              notes.map((n, i) => (
+                <div class:list={["stack-item", i === 0 && "is-active"]} data-note-item>
+                  <p class="u-mono text-xs font-semibold tracking-[0.08em] text-ink uppercase">{n.title}</p>
+                  <p class="mt-1.5 text-[13px] leading-relaxed text-muted">{n.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+          <dl class="u-mono mt-4 grid grid-cols-2 gap-2 border-t border-line pt-3 text-[11px]">
+            <div>
+              <dt class="text-[10px] text-muted uppercase">{site.hero.labNote.stationsLabel}</dt>
+              <dd class="font-semibold text-ink">{fill(site.hero.labNote.stationsValue, { n: site.nav.length })}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-muted uppercase">{site.hero.labNote.archiveLabel}</dt>
+              <dd class="font-semibold text-accent">{fill(site.hero.labNote.archiveValue, range)}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <div class="flex flex-wrap gap-3">
+          {
+            (site.hero.actions as Action[]).map((action) => (
+              <a
+                href={action.href}
+                class:list={["btn", action.variant === "primary" ? "btn-primary" : "btn-outline"]}
+              >
+                {action.label}
+              </a>
+            ))
+          }
+        </div>
+        <a href={site.nav[0].href} class="scroll-hint">
+          <span>{site.hero.scrollHint}</span>
+          <span class="scroll-hint-icon" aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 — Tentang -->
+  <Section
+    id="tentang"
+    index={1}
+    eyebrow={site.tentang.eyebrow}
+    title={site.tentang.title}
+    description={site.tentang.description}
+    alt
+  >
+    <Flasks slot="backdrop" items={tentangFlasks} />
+
+    <div slot="aside" class="card aside-box">
+      <p class="u-label text-[10px] text-accent">{site.tentang.hypothesis.label}</p>
+      <p class="hypothesis" set:html={inline(site.tentang.hypothesis.text)} />
+    </div>
+
+    <div class="card space-y-3.5">
+      {
+        (site.tentang.paragraphs as string[]).map((text, i) => (
+          <p class:list={[i === 0 ? "font-medium text-ink" : "text-[15px] text-muted"]} set:html={inline(text)} />
+        ))
+      }
+    </div>
+
+    <h3 class="u-label mt-6 mb-3">{site.tentang.pendidikan.title}</h3>
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        (site.tentang.pendidikan.items as Pendidikan[]).map((item) => (
+          <li class="card card-hover">
+            <h4 class="card-title">{item.title}</h4>
+            <p class="mt-1 text-sm text-ink">{item.org}</p>
+            <p class="u-mono mt-1.5 text-[11px] tracking-[0.08em] text-muted">{item.period}</p>
+            {(item.note || item.href) && (
+              <div class="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">
+                {item.note && <span class="text-xs text-muted">{item.note}</span>}
+                {item.href && (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="u-mono text-[11px] no-underline hover:underline"
+                  >
+                    {site.tentang.pendidikan.verifyLabel}
+                  </a>
+                )}
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- 02 — Pengalaman -->
+  <Section
+    id="pengalaman"
+    index={2}
+    eyebrow={site.pengalaman.eyebrow}
+    title={site.pengalaman.title}
+    description={site.pengalaman.description}
+    wideHead
+    stickyTitle
+  >
+    <Flasks slot="backdrop" items={pengalamanFlasks} />
+
+    {/* Tab hanya tampil dengan JS. Tanpa JS semua panel tampil
+        berurutan, jadi isi tetap terbaca penuh. Panah kiri-kanan hanya
+        di bawah 1024px, tempat tab berupa baris yang bisa digeser. */}
+    <div slot="aside" class="exp-nav js-only">
+      <button
+        type="button"
+        class="icon-btn exp-arrow"
+        data-exp-step="-1"
+        aria-label={site.pengalaman.prevLabel}
+      >
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+    <div
+      class="exp-tabs"
+      role="tablist"
+      aria-label={site.pengalaman.tabsLabel}
+      data-exp-tabs
+    >
+      {
+        pengalaman.map((job, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`exp-tab-${i}`}
+            aria-controls={`exp-panel-${i}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+            class="exp-tab"
+          >
+            <span class="min-w-0">
+              <span class="block truncate text-sm font-bold text-ink">{job.tabRole ?? job.role}</span>
+              <span class="block truncate text-[11px] text-muted">{job.org}</span>
+            </span>
+            <span class="exp-tab-period u-mono">{job.tabPeriod ?? job.period}</span>
+          </button>
+        ))
+      }
+    </div>
+      <button
+        type="button"
+        class="icon-btn exp-arrow"
+        data-exp-step="1"
+        aria-label={site.pengalaman.nextLabel}
+      >
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="exp-panels">
+      {
+        pengalaman.map((job, i) => (
+          <article
+            id={`exp-panel-${i}`}
+            class:list={["card exp-panel", i === 0 && "is-active"]}
+            role="tabpanel"
+            aria-labelledby={`exp-tab-${i}`}
+            data-exp-panel
+          >
+            <div class="flex flex-wrap items-start justify-between gap-2 border-b border-line pb-3">
+              <div>
+                <p class="u-label text-[10px] text-accent">
+                  {site.pengalaman.logLabel} // {site.pengalaman.codePrefix}{pad(i + 1)}
+                </p>
+                <h3 class="mt-0.5 text-lg font-bold sm:text-xl">{job.role}</h3>
+                <p class="text-sm text-ink">{job.org}</p>
+              </div>
+              <span class:list={["period-chip u-mono", job.current && "period-chip-accent"]}>{job.period}</span>
+            </div>
+
+            {job.summary && <p class="mt-4 text-sm text-ink">{job.summary}</p>}
+
+            {job.points.length > 0 && (
+              <ul class="mt-4 space-y-2.5 text-sm text-muted">
+                {job.points.map((point) => (
+                  <li class="flex items-start gap-2.5">
+                    <span class="u-mono mt-px text-accent" aria-hidden="true">—</span>
+                    <span set:html={inline(point)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {job.tags.length > 0 && (
+              <div class="pt-6">
+                <ul class="flex flex-wrap gap-2 border-t border-line pt-4">
+                  {job.tags.map((tag) => (
+                    <li class="pill">{tag}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 03 — Keahlian -->
+  <Section
+    id="keahlian"
+    index={3}
+    eyebrow={site.keahlian.eyebrow}
+    title={site.keahlian.title}
+    description={site.keahlian.description}
+    alt
+  >
+    <Flasks slot="backdrop" items={keahlianFlasks} />
+
+    <div slot="aside" class="card aside-box">
+      <p class="u-mono flex items-center justify-between text-xs text-muted uppercase">
+        <span>{site.keahlian.summary.label}</span>
+        <span class="font-semibold text-accent">
+          {fill(site.keahlian.summary.value, { n: pad(site.keahlian.groups.length) })}
+        </span>
+      </p>
+      <p class="mt-2 text-xs text-muted">{site.keahlian.summary.text}</p>
+    </div>
+
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        (site.keahlian.groups as Keahlian[]).map((group, i) => (
+          <li class="card card-hover">
+            <div class="mb-3 flex items-center justify-between gap-3">
+              <h3 class="card-title">{group.title}</h3>
+              <span class="u-mono text-[11px] text-accent">
+                {site.keahlian.codePrefix}{pad(i + 1)}
+              </span>
+            </div>
+            <ul class="flex flex-wrap gap-1.5">
+              {group.items.map((item) => (
+                <li class:list={["pill", group.highlight?.includes(item) && "pill-accent"]}>{item}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- 04 — Penelitian -->
+  <Section
+    id="penelitian"
+    index={4}
+    eyebrow={site.penelitian.eyebrow}
+    title={site.penelitian.title}
+    description={site.penelitian.description}
+  >
+    <Flasks slot="backdrop" items={penelitianFlasks} />
+
+    <div slot="aside" class="card aside-box">
+      <p class="u-mono flex items-center gap-2 text-[11px] text-accent uppercase">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>{fill(site.penelitian.countLabel, range)}</span>
+      </p>
+      <p class="hint mt-1.5 text-xs text-muted" set:html={inline(fill(site.penelitian.hint, range))} />
+    </div>
+
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        penelitian.map((entry) => (
+          <li class="flex">
+            <PenelitianCard entry={entry} lang={lang} />
+          </li>
+        ))
+      }
+    </ul>
+
+    {penelitian.map((entry) => <PenelitianDialog entry={entry} lang={lang} />)}
+  </Section>
+
+  <!-- 05 — Kontak -->
+  <Section
+    id="kontak"
+    index={5}
+    eyebrow={site.kontak.eyebrow}
+    title={site.kontak.title}
+    description={site.kontak.description}
+    alt
+  >
+    <ul class="grid gap-4 sm:grid-cols-3">
+      {
+        email && (
+          <li class="card card-hover flex flex-col justify-between">
+            <div>
+              <p class="flex items-center justify-between">
+                <span class="u-label text-accent">{email.label}</span>
+                <span class="size-2 rounded-full bg-accent" aria-hidden="true" />
+              </p>
+              <p class="mt-3 font-mono text-[13px] font-semibold break-all text-ink">{email.value}</p>
+            </div>
+            <div class="mt-5 flex flex-wrap items-center gap-2 border-t border-line pt-3">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm js-only"
+                data-copy={email.value}
+                data-copied-label={site.kontak.copiedLabel}
+              >
+                <span aria-live="polite" data-copy-label>{site.kontak.copyLabel}</span>
+              </button>
+              <a href={email.href} class="btn btn-ghost btn-sm">{site.kontak.sendLabel}</a>
+            </div>
+          </li>
+        )
+      }
+      {
+        others.map((link) => (
+          <li class="flex">
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="card card-hover group flex w-full flex-col justify-between no-underline"
+            >
+              <span>
+                <span class="flex items-center justify-between">
+                  <span class="u-label group-hover:text-accent">{link.label}</span>
+                  <span class="u-mono text-muted group-hover:text-accent" aria-hidden="true">↗</span>
+                </span>
+                <span class="mt-3 block font-mono text-sm font-bold text-ink">{link.value}</span>
+              </span>
+              {link.display && (
+                <span class="u-mono mt-5 block border-t border-line pt-3 text-[11px] text-accent">
+                  {link.display}
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <footer slot="after" class="landing-footer">
+      <p class="u-mono text-xs text-muted">{site.footer.text}</p>
+      <a href="#hero" class="u-mono text-xs text-muted no-underline hover:text-accent">
+        {site.kontak.backToTop}
+      </a>
+    </footer>
+  </Section>
+</Base>
+
+
+<script>
+  // Situs memakai View Transitions (ClientRouter): pindah halaman tidak
+  // memuat ulang dokumen. Script modul ini hanya berjalan sekali, jadi
+  // semua inisialisasi dijalankan ulang di setiap `astro:page-load`, dan
+  // listener di document/window dilepas lewat AbortController sebelum
+  // halaman ditukar supaya tidak menumpuk.
+  document.addEventListener("astro:page-load", () => {
+    if (!document.querySelector("[data-landing]")) return;
+    const ac = new AbortController();
+    const { signal } = ac;
+    document.addEventListener("astro:before-swap", () => ac.abort(), { once: true });
+    initRoles(signal);
+    initExperience();
+    initDialogs();
+    initCopy();
+    initSpy(signal);
+  });
+
+  const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- Rotasi peran hero + catatan lab yang berpasangan ----
+     Ganti tiap 4 detik; berhenti saat peran/catatan ditunjuk kursor
+     atau difokus, dan saat tab tidak terlihat. Tidak berjalan sama
+     sekali dengan prefers-reduced-motion. */
+  function initRoles(signal: AbortSignal) {
+    const roleBox = document.querySelector<HTMLElement>("[data-roles]");
+    const noteBox = document.querySelector<HTMLElement>("[data-roles-note]");
+    const roleItems = document.querySelectorAll<HTMLElement>("[data-role-item]");
+    if (!roleBox || roleItems.length < 2 || reduceMotion()) return;
+
+    const noteGroups = noteBox
+      ? [...noteBox.querySelectorAll<HTMLElement>(".stack")].map((s) =>
+          s.querySelectorAll<HTMLElement>("[data-note-item]"),
+        )
+      : [];
+    const index = roleBox.querySelector("[data-role-index]");
+    let current = 0;
+    let timer: number | undefined;
+    let paused = false;
+
+    const show = (next: number) => {
+      const set = (list: NodeListOf<HTMLElement>) =>
+        list.forEach((el, i) => el.classList.toggle("is-active", i === next));
+      set(roleItems);
+      noteGroups.forEach(set);
+      current = next;
+      if (index) index.textContent = String(next + 1).padStart(2, "0");
+    };
+    const stop = () => {
+      clearInterval(timer);
+      timer = undefined;
+    };
+    const start = () => {
+      if (timer || paused || document.hidden) return;
+      timer = window.setInterval(() => show((current + 1) % roleItems.length), 4000);
+    };
+
+    for (const box of [roleBox, noteBox]) {
+      if (!box) continue;
+      const pause = () => ((paused = true), stop());
+      const resume = () => ((paused = false), start());
+      box.addEventListener("mouseenter", pause);
+      box.addEventListener("mouseleave", resume);
+      box.addEventListener("focusin", pause);
+      box.addEventListener("focusout", resume);
+    }
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()), {
+      signal,
+    });
+    signal.addEventListener("abort", stop);
+    start();
+  }
+
+  /* ---- Pengalaman: tab (pola WAI-ARIA tabs, aktivasi otomatis) ---- */
+  function initExperience() {
+    const tablist = document.querySelector<HTMLElement>("[data-exp-tabs]");
+    if (!tablist) return;
+    const tabs = [...tablist.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const panels = document.querySelectorAll<HTMLElement>("[data-exp-panel]");
+    const arrows = document.querySelectorAll<HTMLButtonElement>("[data-exp-step]");
+    let current = 0;
+
+    const select = (i: number, focus = false) => {
+      i = Math.max(0, Math.min(tabs.length - 1, i));
+      current = i;
+      tabs.forEach((tab, j) => {
+        tab.setAttribute("aria-selected", String(i === j));
+        tab.tabIndex = i === j ? 0 : -1;
+      });
+      panels.forEach((p, j) => p.classList.toggle("is-active", i === j));
+      // Panah mati di ujung daftar, jadi sekaligus jadi penanda posisi.
+      arrows.forEach((a) => {
+        const next = i + Number(a.dataset.expStep);
+        a.disabled = next < 0 || next >= tabs.length;
+      });
+      // Baris tab yang bisa digeser (layar sempit): tengahkan tab aktif
+      // lewat scrollLeft daftar saja, supaya halaman tidak ikut tergulir.
+      if (tablist.scrollWidth > tablist.clientWidth) {
+        const tab = tabs[i];
+        tablist.scrollTo({
+          left: tab.offsetLeft - (tablist.clientWidth - tab.offsetWidth) / 2,
+          behavior: reduceMotion() ? "auto" : "smooth",
+        });
+      }
+      if (focus) tabs[i].focus({ preventScroll: true });
+    };
+
+    arrows.forEach((a) =>
+      a.addEventListener("click", () => select(current + Number(a.dataset.expStep))),
+    );
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(i));
+      tab.addEventListener("keydown", (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === "ArrowDown" || e.key === "ArrowRight" ? (i === last ? 0 : i + 1)
+          : e.key === "ArrowUp" || e.key === "ArrowLeft" ? (i === 0 ? last : i - 1)
+          : e.key === "Home" ? 0
+          : e.key === "End" ? last
+          : null;
+        if (next === null) return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+
+    select(0);
+  }
+
+  /* ---- Modal penelitian ----
+     Klik biasa membuka <dialog>; klik dengan modifier (tab baru, dsb.)
+     tetap mengikuti tautan ke halaman detail. */
+  function initDialogs() {
+    document.querySelectorAll<HTMLAnchorElement>("[data-case-open]").forEach((link) => {
+      const dialog = document.getElementById(link.dataset.caseOpen ?? "");
+      if (!(dialog instanceof HTMLDialogElement)) return;
+      link.addEventListener("click", (e) => {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        dialog.showModal();
+      });
+    });
+    // Klik di luar panel (di backdrop) menutup modal.
+    document.querySelectorAll<HTMLDialogElement>("dialog.case-dialog").forEach((d) => {
+      d.addEventListener("click", (e) => {
+        if (e.target === d) d.close();
+      });
+    });
+  }
+
+  /* ---- Salin email ---- */
+  function initCopy() {
+    document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+      const label = btn.querySelector("[data-copy-label]");
+      if (!label) return;
+      const original = label.textContent;
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+          label.textContent = btn.dataset.copiedLabel ?? original;
+        } catch {
+          // Clipboard ditolak: tampilkan alamatnya supaya bisa disalin manual.
+          label.textContent = btn.dataset.copy ?? original;
+        }
+        setTimeout(() => (label.textContent = original), 2200);
+      });
+    });
+  }
+
+  /* ---- Scroll spy: tautan nav, rel indikator, dan tombol bahasa ----
+     Seksi aktif = seksi yang memotong garis tengah viewport. Lebih
+     andal daripada ambang persentase, yang tidak pernah tercapai oleh
+     seksi yang jauh lebih tinggi dari layar. Tombol bahasa ikut membawa
+     seksi aktif, jadi ganti bahasa tetap di seksi yang sedang dibaca. */
+  function initSpy(signal: AbortSignal) {
+    const spied = document.querySelectorAll<HTMLElement>("[data-spy]");
+    const navItems = document.querySelectorAll<HTMLElement>("[data-nav]");
+    const lang = document.querySelector<HTMLAnchorElement>("[data-lang-toggle]");
+    if (!("IntersectionObserver" in window) || !spied.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const id = entry.target.id;
+          navItems.forEach((el) => {
+            if (el.dataset.nav === id) el.setAttribute("aria-current", "true");
+            else el.removeAttribute("aria-current");
+          });
+          if (lang?.dataset.base) {
+            lang.href = id === "hero" ? lang.dataset.base : `${lang.dataset.base}#${id}`;
+          }
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    spied.forEach((s) => observer.observe(s));
+    signal.addEventListener("abort", () => observer.disconnect());
+  }
+</script>

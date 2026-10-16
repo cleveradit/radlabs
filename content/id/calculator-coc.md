@@ -6,6 +6,8 @@ role: "Pengembang tunggal"
 team: "Solo"
 period: "Juni 2026 – September 2026"
 status: "Live — tersedia untuk umum"
+problem: "Pemain Clash of Clans kesulitan menghitung secara presisi kombinasi level Equipment (Fireball, Giant Arrow, Rocket Backpack) dan Earthquake Spell yang dibutuhkan untuk menghancurkan bangunan dengan kapasitas HP tertentu."
+solution: "Membangun kalkulator simulasi damage berbasis React, TypeScript, dan Vite yang menghitung dan merekomendasikan kombinasi serangan paling efisien berdasarkan HP bangunan target."
 domain: "Perkakas permainan"
 stack: ["React", "TypeScript", "Vite", "GitHub Pages"]
 summary: "Membuat kalkulator damage Clash of Clans yang menggabungkan Fireball, Giant Arrow, Rocket Backpack, dan Earthquake untuk mencari kombinasi serangan berdasarkan HP bangunan target."

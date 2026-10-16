@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { catalog, getSite, localePath, type Lang } from "../i18n";
+
+// Modal "lembar lab" untuk satu penelitian. <dialog> native: fokus
+// dikurung di dalamnya, Escape menutup, latar di belakangnya inert, dan
+// fokus kembali ke kartu asal saat ditutup. Tanpa JS modal tidak pernah
+// dibuka — kartu langsung menuju halaman detail.
+interface Props {
+  entry: CollectionEntry<"penelitian">;
+  lang: Lang;
+}
+
+const { entry, lang } = Astro.props;
+const d = entry.data;
+const p = getSite(lang).penelitian;
+const t = p.dialog;
+
+const id = `case-${lang}-${d.slug}`;
+const href = localePath(lang, `/penelitian/${d.slug}/`);
+---
+
+<dialog id={id} class="case-dialog" aria-labelledby={`${id}-title`}>
+  <div class="case-dialog-panel">
+    <div class="flex items-center justify-between gap-3 border-b border-line pb-3">
+      <p class="u-mono flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] text-muted">
+        <span>{t.label}</span>
+        <span class="catalog-chip catalog-chip-accent">{catalog(p.catalogPrefix, d.order)}</span>
+      </p>
+      <form method="dialog">
+        <button type="submit" class="icon-btn" aria-label={t.closeSrLabel}>
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <h3 id={`${id}-title`} class="mt-4 text-xl font-bold">{d.title}</h3>
+    <p class="u-mono mt-1 text-xs text-accent">{d.status}</p>
+
+    <div class="mt-4 space-y-3">
+      <div class="inset-box">
+        <p class="u-label text-ink">{t.problemLabel}</p>
+        <p class="mt-1 text-sm text-muted">{d.problem}</p>
+      </div>
+      <div class="inset-box">
+        <p class="u-label text-ink">{t.solutionLabel}</p>
+        <p class="mt-1 text-sm text-muted">{d.solution}</p>
+      </div>
+    </div>
+
+    <ul class="mt-5 flex flex-wrap gap-1.5 border-t border-line pt-4">
+      {d.stack.map((tag) => <li class="pill">{tag}</li>)}
+    </ul>
+
+    <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <a href={href} class="btn btn-primary">{t.openLabel}</a>
+      <form method="dialog">
+        <button type="submit" class="btn btn-ghost">{t.closeLabel}</button>
+      </form>
+    </div>
+  </div>
+</dialog>

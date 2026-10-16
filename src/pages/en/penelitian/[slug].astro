@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths } from "astro";
+import PenelitianDetail from "../../../components/PenelitianDetail.astro";
+import { getPenelitian } from "../../../i18n";
+
+export const getStaticPaths = (async () => {
+  const entries = await getPenelitian("en");
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+---
+
+<PenelitianDetail entry={entry} lang="en" />

@@ -1,64 +1,84 @@
 ---
-// Seksi landing: nomor mono, judul serif bergaris aksen, lalu isi.
+// Seksi landing: dua kolom di ≥1024px. Kolom kiri berisi kepala seksi
+// (nomor // eyebrow, judul, deskripsi, lalu slot `aside`) yang menempel
+// di bawah nav selama kolom kanan di-scroll. Di layar sempit keduanya
+// menumpuk dan kepala tidak menempel.
 //
 // `index` diberikan oleh halaman, bukan ditulis di content/ — nomornya
 // mengikuti urutan seksi yang benar-benar dirender, jadi tidak pernah
 // ada nomor yang bolong kalau ada seksi ditambah atau dihapus.
 //
 // `alt` menyalakan latar --sunken. Seksi diselang-seling supaya batas
-// antar-bagian terbaca tanpa perlu garis pemisah.
+// antar-bagian terbaca.
 //
-// `fullscreen` membuat seksi minimal setinggi layar (dikurangi nav).
-// Judul tetap di atas; isinya ditengahkan secara vertikal di sisa ruang.
+// `wideHead` melebarkan kolom kepala dari 4 ke 5 dari 12 kolom (dipakai
+// Pengalaman, yang menaruh tab di kolom itu).
 //
-// `stickyTitle`: di ≥768px nomor + judul menempel di bawah nav selama
-// isi di bawahnya di-scroll, lalu ikut naik saat seksi habis. Murni CSS
-// sticky, tanpa JS.
+// `stickyTitle`: yang menempel hanya blok judul (nomor, judul,
+// deskripsi), bukan seluruh kolom kepala — isi slot `aside` di bawahnya
+// ikut tergulir biasa dan lewat di bawah judul. Tanpa prop ini seluruh
+// kolom kepala yang menempel.
 //
-// Slot `backdrop` untuk hiasan latar: dirender di belakang isi dan
-// dipotong di tepi seksi.
+// Slot `backdrop` untuk hiasan latar; slot `after` untuk baris penutup
+// di bawah grid (footer di seksi Kontak), didorong ke dasar seksi.
 interface Props {
+  id: string;
+  index: number;
+  eyebrow: string;
   title: string;
-  index?: number;
-  id?: string;
+  description?: string;
   alt?: boolean;
-  fullscreen?: boolean;
+  wideHead?: boolean;
   stickyTitle?: boolean;
 }
 
 const {
-  title,
-  index,
   id,
+  index,
+  eyebrow,
+  title,
+  description,
   alt = false,
-  fullscreen = false,
+  wideHead = false,
   stickyTitle = false,
 } = Astro.props;
-const num = index === undefined ? null : String(index).padStart(2, "0");
+const num = String(index).padStart(2, "0");
+const hasAfter = Astro.slots.has("after");
 ---
 
 <section
   id={id}
+  data-spy
   class:list={[
-    "relative isolate overflow-clip py-[var(--spacing-section)]",
+    "section",
     alt && "section-alt bg-sunken",
-    fullscreen && "section-full",
-    stickyTitle && "section-sticky-title",
+    hasAfter && "section-has-after",
   ]}
 >
   <slot name="backdrop" />
 
-  <div class="container-page">
-    <div class="section-head">
-      {/* Hanya nomornya. Judulnya sudah ada di h2 tepat di bawah — menulis
-          ulang di sini membuat pembaca layar mengumumkannya dua kali. */}
-      {num && <p class="u-eyebrow mb-2.5 text-accent">{num}</p>}
+  <div class="container-page section-inner">
+    <div
+      class:list={[
+        "section-grid",
+        wideHead && "section-grid-wide",
+        stickyTitle && "section-grid-sticky-title",
+      ]}
+    >
+      <div class="section-head">
+        <div class="section-title-block">
+          <p class="u-eyebrow font-semibold text-accent">{num} // {eyebrow}</p>
+          <h2 class="section-title">{title}</h2>
+          {description && <p class="section-desc">{description}</p>}
+        </div>
+        <slot name="aside" />
+      </div>
 
-      <h2 class="section-title">{title}</h2>
+      <div class="section-body">
+        <slot />
+      </div>
     </div>
 
-    <div class="section-body mt-10">
-      <slot />
-    </div>
+    {hasAfter && <slot name="after" />}
   </div>
 </section>

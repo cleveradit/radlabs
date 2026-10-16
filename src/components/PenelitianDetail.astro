@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Manifest from "./Manifest.astro";
+import { getSite, localePath, otherLang, type Lang } from "../i18n";
+
+// Halaman detail penelitian, dipakai rute semua bahasa.
+interface Props {
+  entry: CollectionEntry<"penelitian">;
+  lang: Lang;
+}
+
+const { entry, lang } = Astro.props;
+const d = entry.data;
+const p = getSite(lang).penelitian;
+const m = p.manifest;
+const { Content } = await render(entry);
+
+const rows = [
+  { label: m.role, value: d.role },
+  { label: m.team, value: d.team },
+  { label: m.period, value: d.period },
+  { label: m.status, value: d.status },
+  { label: m.stack, value: d.stack.join(", ") },
+  d.repo
+    ? { label: m.repo, value: p.repoLabel, href: d.repo }
+    : { label: m.repo, value: p.privateRepoLabel },
+];
+
+// Semua metrics dirender, wrap bila perlu. Dibatasi 4 agar barisnya
+// tidak melar melewati lebar kolom teks.
+const metrics = d.metrics.slice(0, 4);
+const back = localePath(lang, "/#penelitian");
+---
+
+<Base
+  lang={lang}
+  altPath={localePath(otherLang(lang), `/penelitian/${d.slug}/`)}
+  title={d.title}
+  description={d.summary}
+  ogImage={d.cover}
+>
+  <article>
+    {/* Kepala halaman memakai kisi yang sama seperti hero landing supaya
+        kedua halaman terasa satu sistem. */}
+    <div class="lab-grid">
+      <div class="container-page pt-[64px] pb-[64px]">
+        <p class="u-eyebrow">
+          <a href={back} class="text-muted no-underline hover:text-accent">{p.title}</a>
+        </p>
+
+        <h1 class="mt-3">{d.title}</h1>
+        <p class="lede mt-5">{d.summary}</p>
+
+        {
+          d.liveUrl && d.liveLabel && (
+            <p class="mt-8">
+              <a href={d.liveUrl} target="_blank" rel="noopener" class="btn btn-primary">
+                {d.liveLabel}
+              </a>
+            </p>
+          )
+        }
+
+        <Manifest rows={rows} caption={p.dataSheetLabel} class="mt-10" />
+
+        {
+          metrics.length > 0 && (
+            <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+              {metrics.map((metric) => (
+                <li>
+                  <p class="font-mono text-[13px] leading-tight font-medium tracking-[0.02em] text-accent">
+                    {metric.value}
+                  </p>
+                  <p class="u-label mt-1">{metric.label}</p>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="container-page pt-[8px] pb-[var(--spacing-section)]">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <div class="mt-[var(--spacing-section)] border-t border-line pt-6">
+        <a
+          href={back}
+          class="u-mono text-[11px] tracking-[0.1em] text-muted uppercase no-underline hover:text-accent"
+          >{p.backLabel}</a
+        >
+      </div>
+    </div>
+  </article>
+</Base>

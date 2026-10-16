@@ -1,0 +1,28 @@
+---
+// Tombol bahasa: tautan biasa ke halaman padanan di bahasa lain, jadi
+// tetap berfungsi tanpa JS. Labelnya menyebut bahasa TUJUAN, sejalan
+// dengan toggle tema yang menyebut tema tujuan.
+//
+// `data-base` menyimpan path padanan; di landing, scroll spy menambahkan
+// #seksi yang sedang dibaca supaya ganti bahasa tetap di seksi itu.
+interface Props {
+  href: string;
+  lang: string;
+  label: string;
+  srLabel: string;
+}
+
+const { href, lang, label, srLabel } = Astro.props;
+---
+
+<a
+  href={href}
+  hreflang={lang}
+  lang={lang}
+  class="icon-btn lang-toggle"
+  data-lang-toggle
+  data-base={href}
+>
+  <span aria-hidden="true">{label}</span>
+  <span class="sr-only">{srLabel}</span>
+</a>
